@@ -13,10 +13,10 @@ export default {
         "clarks-red": "#C14627",
       },
       fontFamily: {
-        jost: ["Jost", "sans-serif"],
-        blanch: ["Blanch-Caps"],
-        damion: ["Damion", "serif"],
-        goudy: ["GoudyStd-Heavyface"],
+        jost: ["var(--font-jost)"],
+        blanch: ["var(--font-blanch)"],
+        damion: ["var(--font-damion)"],
+        goudy: ["var(--font-goudy)"],
       },
       animation: {
         "spin-pulse": "spin-pulse 10s linear infinite",

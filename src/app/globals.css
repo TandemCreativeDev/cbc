@@ -15,16 +15,6 @@
   font-style: normal;
 }
 
-/* @font-face {
-  font-family: "Blanch-Caps";
-  src: url("./assets/fonts/Blanch-Caps.woff2") format("woff2");
-}
-
-@font-face {
-  font-family: "GoudyStd-Heavyface";
-  src: url("./assets/fonts/GoudyStd-Heavyface.woff2") format("woff2");
-} */
-
 body {
   @apply bg-slate-950 font-jost text-white;
 }

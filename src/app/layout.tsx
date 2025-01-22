@@ -5,19 +5,28 @@ import Header from "@/components/Header/Header";
 import { LanguageProvider } from "@/context/LanguageContext";
 import localFont from "next/font/local";
 
-const BlanchCaps = localFont({
+const blanchCaps = localFont({
   src: "../fonts/Blanch-Caps.woff2",
+  variable: "--font-blanch",
   display: "swap",
 });
 
-const GoudyStd = localFont({
+const goudyStd = localFont({
   src: "../fonts/GoudyStd-Heavyface.woff2",
+  variable: "--font-goudy",
   display: "swap",
 });
 
-// const geistMono = Geist_Mono({
-//   variable: "--font-geist-mono",
-//   subsets: ["latin"],
+// const jost = localFont({
+//   src: "../fonts/Jost.woff2", // Make sure this matches your actual file name
+//   variable: "--font-jost",
+//   display: "swap",
+// });
+
+// const damion = localFont({
+//   src: "../fonts/Damion.woff2", // Make sure this matches your actual file name
+//   variable: "--font-damion",
+//   display: "swap",
 // });
 
 export const metadata: Metadata = {
@@ -33,7 +42,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${BlanchCaps.variable} ${GoudyStd.variable} antialiased`}
+        className={`
+          ${blanchCaps.variable} 
+          ${goudyStd.variable} 
+     
+          antialiased
+        `}
       >
         <LanguageProvider>
           <Header />
