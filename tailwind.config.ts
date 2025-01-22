@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import type { PluginAPI } from "tailwindcss/types/config";
 
 export default {
   content: [
@@ -13,9 +14,9 @@ export default {
         "clarks-red": "#C14627",
       },
       fontFamily: {
-        jost: ["var(--font-jost)"],
+        jost: ["'Jost'", "sans-serif"],
         blanch: ["var(--font-blanch)"],
-        damion: ["var(--font-damion)"],
+        damion: ["'Damion'", "cursive"],
         goudy: ["var(--font-goudy)"],
       },
       animation: {
@@ -38,8 +39,8 @@ export default {
     },
   },
   plugins: [
-    function ({ addUtilities }) {
-      addUtilities({
+    function (api: PluginAPI) {
+      api.addUtilities({
         ".transform-style-3d": {
           "transform-style": "preserve-3d",
         },
