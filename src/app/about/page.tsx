@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useLanguage } from "../../context/LanguageContext";
-import { Page } from "../../utils/types";
-import Carousel from "../../components/Carousel";
-import parsePageCsv from "../../utils/parsePageCsv";
-import fetchSheet from "../../utils/fetchSheet";
+import { useLanguage } from "@/context/LanguageContext";
+import { Page } from "@/utils/types";
+import Carousel from "@/components/Carousel";
+import parsePageCsv from "@/utils/parsePageCsv";
+import fetchSheet from "@/utils/fetchSheet";
 
 const carouselImages = [
   "/images/carousel/argentic.jpg",
@@ -25,7 +25,7 @@ export default function About() {
     const fetchContent = async () => {
       try {
         const csvData = await fetchSheet(sheetTabGid);
-        const parsedContent = parsePageCsv<Page>(csvData);
+        const parsedContent = parsePageCsv(csvData);
         setEnglishContent(parsedContent[1]);
         setFrenchContent(parsedContent[0]);
       } catch (error) {
