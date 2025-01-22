@@ -1,8 +1,11 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useLanguage } from "../../context/LanguageContext";
 import { Page } from "../../utils/types";
 import Carousel from "../../components/Carousel";
+import parsePageCsv from "../../utils/parsePageCsv";
+import fetchSheet from "../../utils/fetchSheet";
 
 const carouselImages = [
   "/images/carousel/argentic.jpg",
@@ -10,26 +13,38 @@ const carouselImages = [
   "/images/carousel/leaving.jpg",
   "/images/carousel/yesday.jpg",
 ];
-
-const french: Page = {
-  title: "Bio",
-  content:
-    "Clark's Bowling Club est un groupe de funk/pop qui fait vibrer les dancefloors lyonnais dans une ambiance disco-funk remise au goût du jour. À la croisée de Deluxe et Jungle, ils ont partagé la scène avec des artistes de renom tels que Guts, Vulfpeck, Dabeull, Imanbek, Peter Bence, Arnaud Rebotini, Etienne de Crécy... En 2023, le groupe a été sélectionné par le programme d'accompagnement Ninkasi Musik Lab.",
-};
-
-const english: Page = {
-  title: "About",
-  content:
-    "Clark's Bowling Club is a 6-piece funk/pop band based in Lyon, France. Inspired by the likes of Jungle and Deluxe, their music brings a modern twist to disco-funk, hip-hop, and jazz genres, breathing new life into the vibrant music scene. They have shared the stage with acclaimed artists including Guts, Dabeull, Imanbek, Vulfpeck, Peter Bence, Arnaud Rebotini, Etienne de Crécy, and many more. Rising to prominence with their unique spin on funk, Clark's Bowling Club has achieved notable recognition, notably being selected for the prestigious Ninkasi Musik Lab program in 2023.",
-};
+const sheetTabGid = 0;
 
 export default function About() {
   const { isFrench } = useLanguage();
-  const pageContent = isFrench ? french : english;
+  const [englishContent, setEnglishContent] = useState<Page | null>(null);
+  const [frenchContent, setFrenchContent] = useState<Page | null>(null);
+  const [pageContent, setPageContent] = useState<Page | null>(null);
+
+  useEffect(() => {
+    const fetchContent = async () => {
+      try {
+        const csvData = await fetchSheet(sheetTabGid);
+        const parsedContent = parsePageCsv<Page>(csvData);
+        setEnglishContent(parsedContent[1]);
+        setFrenchContent(parsedContent[0]);
+      } catch (error) {
+        console.error("Error fetching or parsing page content:", error);
+      }
+    };
+
+    fetchContent();
+  }, []);
+
+  useEffect(() => {
+    setPageContent(isFrench ? frenchContent : englishContent);
+  }, [isFrench, frenchContent, englishContent]);
+
+  if (!pageContent) return <div>Loading...</div>;
 
   return (
     <div className="container mx-auto pt-28 mb-5xl max-w-5xl p-8">
-      <h2 className="text-4xl font-blanch mb-6">{pageContent.title}</h2>
+      <h2 className="text-4xl font-[Blanch-Caps] mb-6">{pageContent.title}</h2>
       <p className="text-lg leading-relaxed mb-8">{pageContent.content}</p>
       <Carousel images={carouselImages} />
     </div>
