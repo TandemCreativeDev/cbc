@@ -2,20 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+.damion-regular {
+  font-family: "Damion", serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.jost {
+  font-family: "Jost", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
 }
+
+/* @font-face {
+  font-family: "Blanch-Caps";
+  src: url("./assets/fonts/Blanch-Caps.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "GoudyStd-Heavyface";
+  src: url("./assets/fonts/GoudyStd-Heavyface.woff2") format("woff2");
+} */
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  @apply bg-slate-950 font-jost text-white;
 }
