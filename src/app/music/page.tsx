@@ -15,7 +15,7 @@ export default function Music() {
   const { isFrench } = useLanguage();
   const [iFrames, setIFrames] = useState<IFrameProps[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | number | readonly string[] | undefined>("Live Performances");
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -54,10 +54,10 @@ export default function Music() {
     selectedCategory === null
       ? []
       : iFrames.filter(
-          (item) =>
-            item[(isFrench ? "categorie" : "category") as keyof IFrameProps] ===
-            selectedCategory
-        );
+        (item) =>
+          item[(isFrench ? "categorie" : "category") as keyof IFrameProps] ===
+          selectedCategory
+      );
 
   return (
     <div className="container mx-auto pt-28 mb-5xl max-w-5xl p-8">
@@ -65,19 +65,20 @@ export default function Music() {
         {isFrench ? "Musique" : "Music"}
       </h2>
       <div className="flex mb-8 space-x-4">
-        {categories.map((category) => (
-          <button
-            key={category}
-            className={`py-2 px-4 rounded-full transition-colors duration-200 ${
-              selectedCategory === category
-                ? "bg-clarks-orange text-white"
-                : "bg-gray-200 text-gray-800 hover:bg-gray-300"
-            }`}
-            onClick={() => setSelectedCategory(category)}
-          >
-            {category}
-          </button>
-        ))}
+      </div>
+      <div className="w-full flex justify-center items-center">
+
+        <select
+          className="py-2 px-4 rounded-md transition-colors duration-200 bg-gray-200 text-gray-800 hover:bg-gray-300 text-center mb-10"
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
+        >
+          {categories.map((category) => (
+            <option key={category} value={category}>
+              {category}
+            </option>
+          ))}
+        </select>
       </div>
       <div className="grid gap-8">
         {filteredIFrames.map((item) =>
