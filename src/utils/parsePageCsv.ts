@@ -1,6 +1,6 @@
 import Papa from "papaparse";
 
-export default function parsePageCsv<T extends Record<string, any>>(
+export default function parsePageCsv<T extends Record<string, string[]>>(
   csv: string
 ): T[] {
   const parsed = Papa.parse<string[]>(csv, {
@@ -21,12 +21,12 @@ export default function parsePageCsv<T extends Record<string, any>>(
   }
 
   const languages = headers.slice(1);
-  const result: T[] = languages.map(() => ({}) as T);
+  const result: T[] = languages.map(() => ({} as T));
 
   rows.forEach((row) => {
     const key = row[0];
     row.slice(1).forEach((value, index) => {
-      (result[index] as Record<string, any>)[key] = value;
+      (result[index] as Record<string, string[]>)[key] = [value];
     });
   });
 
