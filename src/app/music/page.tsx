@@ -60,7 +60,7 @@ export default function Music() {
         );
 
   return (
-    <div className="container mx-auto pt-28 mb-5xl max-w-5xl p-8">
+    <>
       <h2 className="text-4xl font-blanch mb-6">
         {isFrench ? "Musique" : "Music"}
       </h2>
@@ -95,6 +95,6 @@ export default function Music() {
           )
         )}
       </div>
-    </div>
+    </>
   );
 }
