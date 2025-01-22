@@ -86,13 +86,13 @@ export default function Tour() {
   if (!pageContent) return <div>Loading...</div>;
 
   return (
-    <div className="container mx-auto pt-28 mb-5xl max-w-5xl p-8">
+    <>
       <h2 className="text-4xl mb-6 font-blanch">{pageContent.title}</h2>
       <p className="text-lg leading-relaxed mb-8">{pageContent.content}</p>
       <div className="mt-10">
         <TourDatesContainer tourDates={futureGigs} title={"upcoming events"} />
         <TourDatesContainer tourDates={pastGigs} title={"past events"} />
       </div>
-    </div>
+    </>
   );
 }
