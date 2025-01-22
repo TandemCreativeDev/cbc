@@ -1,6 +1,6 @@
 import Papa from "papaparse";
 
-export default function parseCsv<T extends Record<string, string[]>>(
+export default function parseCsv<T extends object>(
   csv: string,
   isValidRow: (row: T) => boolean
 ): T[] {
