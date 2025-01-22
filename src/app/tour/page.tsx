@@ -1,15 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useLanguage } from "../../context/LanguageContext";
-import { Page, TourDateType } from "../../utils/types";
+import { useLanguage } from "@/context/LanguageContext";
+import { Page, TourDateType } from "@/utils/types";
 
-import fetchSheet from "../../utils/fetchSheet";
-import parseCsv from "../../utils/parseCsv";
-import parsePageCsv from "../../utils/parsePageCsv";
-import dateInPast from "../../utils/dateInPast";
+import fetchSheet from "@/utils/fetchSheet";
+import parseCsv from "@/utils/parseCsv";
+import parsePageCsv from "@/utils/parsePageCsv";
+import dateInPast from "@/utils/dateInPast";
 
-import TourDatesContainer from "../../components/TourDates/TourDatesContainer";
+import TourDatesContainer from "@/components/TourDates/TourDatesContainer";
 
 const sheetTabGid = 127405583; // Main Tour page content
 const sheetTabGidTourDates = 572869052; // Tour dates
@@ -27,7 +27,7 @@ export default function Tour() {
     const fetchContent = async () => {
       try {
         const pageCsvData = await fetchSheet(sheetTabGid);
-        const parsedPageContent = parsePageCsv<Page>(pageCsvData);
+        const parsedPageContent = parsePageCsv(pageCsvData);
         setEnglishContent(parsedPageContent[1]);
         setFrenchContent(parsedPageContent[0]);
 
