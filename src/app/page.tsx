@@ -21,12 +21,12 @@ export default function Home() {
   };
 
   return (
-    <div className="relative min-h-full">
+    <>
       {/* Background video container */}
       <div className="fixed inset-0 -z-10">
         <video
           ref={videoRef}
-          className="absolute top-0 left-0 min-h-full w-auto object-cover"
+          className="absolute inset-0 top-0 left-0 min-h-full w-auto object-cover"
           src="/videos/teaser.mp4"
           autoPlay
           loop
@@ -77,6 +77,6 @@ export default function Home() {
       >
         {muted ? <FaVolumeMute size={24} /> : <FaVolumeUp size={24} />}
       </button>
-    </div>
+    </>
   );
 }
