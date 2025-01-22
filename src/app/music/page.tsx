@@ -1,12 +1,12 @@
 "use client";
 
-import Bandcamp from "../../components/IFrame/Bandcamp";
-import Youtube from "../../components/IFrame/Youtube";
-import Spotify from "../../components/IFrame/Spotify";
-import { useLanguage } from "../../context/LanguageContext";
-import { IFrameProps } from "../../utils/types";
-import fetchSheet from "../../utils/fetchSheet";
-import parseCsv from "../../utils/parseCsv";
+import Bandcamp from "@/components/IFrame/Bandcamp";
+import Youtube from "@/components/IFrame/Youtube";
+import Spotify from "@/components/IFrame/Spotify";
+import { useLanguage } from "@/context/LanguageContext";
+import { IFrameProps } from "@/utils/types";
+import fetchSheet from "@/utils/fetchSheet";
+import parseCsv from "@/utils/parseCsv";
 import { useEffect, useState } from "react";
 
 const sheetTabGid = 1713768433;
