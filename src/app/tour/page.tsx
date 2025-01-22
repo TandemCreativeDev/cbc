@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { useLanguage } from "../../context/LanguageContext";
 import { Page, TourDateType } from "../../utils/types";
@@ -85,7 +87,7 @@ export default function Tour() {
 
   return (
     <div className="container mx-auto pt-28 mb-5xl max-w-5xl p-8">
-      <h2 className="text-4xl mb-6">{pageContent.title}</h2>
+      <h2 className="text-4xl mb-6 font-blanch">{pageContent.title}</h2>
       <p className="text-lg leading-relaxed mb-8">{pageContent.content}</p>
       <div className="mt-10">
         <TourDatesContainer tourDates={futureGigs} title={"upcoming events"} />

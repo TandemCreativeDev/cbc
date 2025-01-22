@@ -1,3 +1,5 @@
+"use client";
+
 import Bandcamp from "../../components/IFrame/Bandcamp";
 import Youtube from "../../components/IFrame/Youtube";
 import Spotify from "../../components/IFrame/Spotify";
@@ -59,7 +61,7 @@ export default function Music() {
 
   return (
     <div className="container mx-auto pt-28 mb-5xl max-w-5xl p-8">
-      <h2 className="text-4xl font-[Blanch-Caps] mb-6">
+      <h2 className="text-4xl font-blanch mb-6">
         {isFrench ? "Musique" : "Music"}
       </h2>
       <div className="flex mb-8 space-x-4">
