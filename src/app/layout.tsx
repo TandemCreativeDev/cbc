@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-// import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header/Header";
 import { LanguageProvider } from "@/context/LanguageContext";
@@ -18,21 +17,10 @@ const goudyStd = localFont({
   display: "swap",
 });
 
-// const jost = localFont({
-//   src: "../fonts/Jost.woff2", // Make sure this matches your actual file name
-//   variable: "--font-jost",
-//   display: "swap",
-// });
-
-// const damion = localFont({
-//   src: "../fonts/Damion.woff2", // Make sure this matches your actual file name
-//   variable: "--font-damion",
-//   display: "swap",
-// });
-
 export const metadata: Metadata = {
   title: "Clark's Bowling Club",
-  description: "Clark's Bowling Club",
+  description:
+    "Clark’s Bowling Club is a 6-piece funk/pop band based in Lyon, France. Inspired by the likes of Jungle and Deluxe, their music brings a modern twist to disco-funk, hip-hop, and jazz genres, breathing new life into the vibrant music scene.",
 };
 
 export default function RootLayout({
@@ -52,7 +40,9 @@ export default function RootLayout({
       >
         <LanguageProvider>
           <Header />
-          {children}
+          <main className="container mx-auto pt-28 mb-5xl max-w-5xl p-8 min-h-[calc(100vh-4.5rem)]">
+            {children}
+          </main>
         </LanguageProvider>
         <Footer />
       </body>
