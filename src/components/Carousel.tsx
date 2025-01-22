@@ -30,7 +30,7 @@ export default function Carousel({ images }: CarouselProps) {
       >
         {images.map((image, index) => (
           <Image
-            width={500}
+            width={5000}
             height={500}
             key={index}
             src={image}
