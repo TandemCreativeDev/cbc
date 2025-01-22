@@ -1,7 +1,7 @@
 "use client";
 
-import { useLanguage } from "../../context/LanguageContext";
-import { Page } from "../../utils/types";
+import { useLanguage } from "@/context/LanguageContext";
+import { Page } from "@/utils/types";
 
 const french: Page = {
   title: "Boutique",
