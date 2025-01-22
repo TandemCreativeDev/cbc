@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/Header/Header";
 import { LanguageProvider } from "@/context/LanguageContext";
 import localFont from "next/font/local";
+import Footer from "@/components/Footer";
 
 const blanchCaps = localFont({
   src: "../fonts/Blanch-Caps.woff2",
@@ -53,6 +54,7 @@ export default function RootLayout({
           <Header />
           {children}
         </LanguageProvider>
+        <Footer />
       </body>
     </html>
   );
