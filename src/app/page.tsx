@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { FaVolumeMute, FaVolumeUp } from "react-icons/fa";
 import Image from "next/image";
+import Logo from "@/components/Logo";
 
 // import hologramNoLight from "../assets/hologram/hologram_nolight.png";
 // import hologramLight1 from "../assets/hologram/hologram_light1.png";
@@ -34,6 +35,7 @@ export default function Home() {
         />
       </div>
 
+      <Logo />
       {/* Hologram */}
       <div className="absolute top-[calc(50vh-12rem)] left-[calc(50vw-19.2rem)] -translate-x-1/2 -translate-y-1/2 h-96 w-[38.4rem] z-10 transform-style-3d hidden md:block animate-spin-pulse">
         <Image
