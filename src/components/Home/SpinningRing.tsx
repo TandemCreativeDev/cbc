@@ -89,7 +89,7 @@ export default function SpinningRing() {
   return (
     <div
       ref={refContainer}
-      className="fixed top-0 left-0 w-full h-full overflow-hidden hidden md:block"
+      className="fixed top-0 left-0 w-full h-full overflow-hidden hidden md:block -z-10"
     ></div>
   );
 }
