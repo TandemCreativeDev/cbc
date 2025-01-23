@@ -7,57 +7,87 @@ export default function Logo() {
   useEffect(() => {
     const scene = new THREE.Scene();
 
-    // Camera setup
     const camera = new THREE.PerspectiveCamera(
       75,
       window.innerWidth / window.innerHeight,
       0.1,
       1000
     );
-    camera.position.z = 5;
 
-    // Renderer setup
-    const renderer = new THREE.WebGLRenderer({ alpha: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    renderer.shadowMap.enabled = true;
 
     if (refContainer.current) {
       refContainer.current.appendChild(renderer.domElement);
     }
 
-    // Lighting setup
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    const setRendererSize = () => {
+      if (refContainer.current) {
+        renderer.setSize(
+          refContainer.current.clientWidth,
+          refContainer.current.clientHeight
+        );
+        camera.aspect =
+          refContainer.current.clientWidth / refContainer.current.clientHeight;
+        camera.updateProjectionMatrix();
+      }
+    };
+
+    setRendererSize();
+    window.addEventListener("resize", setRendererSize);
+
+    const ambientLight = new THREE.AmbientLight(0xc14627, 0.5);
     scene.add(ambientLight);
 
-    const spotLight = new THREE.SpotLight(0xffffff, 1);
-    spotLight.position.set(10, 10, 10);
-    scene.add(spotLight);
+    const pointLight = new THREE.PointLight(0xc14627, 2, 20);
+    pointLight.position.set(0, 0, 5);
+    scene.add(pointLight);
 
-    // Ring geometry with Tailwind color
-    const geometry = new THREE.RingGeometry(1, 1.5, 32);
-    const material = new THREE.MeshBasicMaterial({
-      color: 0x38bdf8,
-      side: THREE.DoubleSide,
+    const radius = 1.75;
+    const curve = new THREE.CatmullRomCurve3(
+      new Array(100).fill(0).map((_, i) => {
+        const angle = (i / 100) * Math.PI * 2;
+        return new THREE.Vector3(
+          Math.cos(angle) * radius,
+          Math.sin(angle) * radius,
+          0
+        );
+      }),
+      true
+    );
+
+    const tubeGeometry = new THREE.TubeGeometry(curve, 100, 0.08, 16, true);
+
+    const tubeMaterial = new THREE.MeshStandardMaterial({
+      color: 0xc14627,
+      transparent: true,
+      opacity: 0.6,
+      emissive: 0xc14627,
+      emissiveIntensity: 1,
+      metalness: 0.8,
+      roughness: 0.3,
     });
 
-    const ring = new THREE.Mesh(geometry, material);
-    scene.add(ring);
+    const tube = new THREE.Mesh(tubeGeometry, tubeMaterial);
+    tube.castShadow = true;
+    tube.receiveShadow = true;
+    scene.add(tube);
 
-    // Animation loop
+    camera.position.set(0, 0, 5);
+
     const animate = function () {
       requestAnimationFrame(animate);
-      ring.rotation.y += 0.01; // Rotate the ring around its Z-axis
+      tube.rotation.y += 0.010549;
       renderer.render(scene, camera);
     };
 
     animate();
-
-    // Cleanup on unmount
-    return () => {
-      if (refContainer.current) {
-        refContainer.current.removeChild(renderer.domElement);
-      }
-    };
   }, []);
 
-  return <div ref={refContainer}></div>;
+  return (
+    <div
+      ref={refContainer}
+      className="fixed top-0 left-0 w-full h-full overflow-hidden"
+    ></div>
+  );
 }
