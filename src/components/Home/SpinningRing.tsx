@@ -1,7 +1,9 @@
+"use client";
+
 import * as THREE from "three";
 import { useEffect, useRef } from "react";
 
-export default function Logo() {
+export default function SpinningRing() {
   const refContainer = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -77,7 +79,7 @@ export default function Logo() {
 
     const animate = function () {
       requestAnimationFrame(animate);
-      tube.rotation.y += 0.010549;
+      tube.rotation.y += 0.0107;
       renderer.render(scene, camera);
     };
 
@@ -87,7 +89,7 @@ export default function Logo() {
   return (
     <div
       ref={refContainer}
-      className="fixed top-0 left-0 w-full h-full overflow-hidden"
+      className="fixed top-0 left-0 w-full h-full overflow-hidden hidden md:block"
     ></div>
   );
 }
