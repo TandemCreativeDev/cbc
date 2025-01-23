@@ -47,7 +47,7 @@ export default function Navbar({ isMenuOpen, setIsMenuOpen }: NavbarProps) {
       <ul
         className={`${
           isMenuOpen ? "block" : "hidden"
-        } absolute md:h-full left-0 w-full h-screen md:bg-transparent md:justify-between md:flex md:gap-[8vw] list-none md:static text-center mt-10 md:mt-0`}
+        } absolute md:h-full left-0 w-full h-screen md:bg-transparent md:justify-between md:flex md:gap-[2vw] lg:gap-[8vw] list-none md:static text-center mt-10 md:mt-0`}
       >
         {menuRoutes.map((route) => (
           <li key={route.path} className="p-2 md:p-0 text-6xl md:text-2xl">
