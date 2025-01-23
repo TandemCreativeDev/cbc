@@ -5,11 +5,6 @@ import { FaVolumeMute, FaVolumeUp } from "react-icons/fa";
 import SpinningLogo from "@/components/Home/SpinningLogo";
 import SpinningRing from "@/components/Home/SpinningRing";
 
-// import hologramNoLight from "../assets/hologram/hologram_nolight.png";
-// import hologramLight1 from "../assets/hologram/hologram_light1.png";
-// import hologramLight2 from "../assets/hologram/hologram_light2.png";
-// import hologramLight3 from "../assets/hologram/hologram_light3.png";
-
 export default function Home() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [muted, setMuted] = useState(true);
