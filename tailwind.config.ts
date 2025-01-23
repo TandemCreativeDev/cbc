@@ -20,7 +20,7 @@ export default {
         goudy: ["var(--font-goudy)"],
       },
       animation: {
-        "spin-pulse": "spin-pulse 10s linear infinite",
+        "spin-pulse": "spin-pulse 5s linear infinite",
         "flicker-1": "flicker 1.5s steps(2) infinite",
         "flicker-2": "flicker 2.1s steps(2) infinite 0.3s",
         "flicker-3": "flicker 1.8s steps(2) infinite 0.7s",
@@ -28,8 +28,8 @@ export default {
       keyframes: {
         "spin-pulse": {
           "0%": { transform: "rotateY(0deg) scale(1)" },
-          "50%": { transform: "rotateY(180deg) scale(0.95)" },
-          "100%": { transform: "rotateY(360deg) scale(1)" },
+          "50%": { transform: "rotateY(90deg) scale(0.9)" },
+          "100%": { transform: "rotateY(0deg) scale(1)" },
         },
         flicker: {
           "0%, 100%": { opacity: "0" },
