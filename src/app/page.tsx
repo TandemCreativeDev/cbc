@@ -3,7 +3,6 @@
 import { useRef, useState } from "react";
 import { FaVolumeMute, FaVolumeUp } from "react-icons/fa";
 import SpinningLogo from "@/components/Home/SpinningLogo";
-import SpinningRing from "@/components/Home/SpinningRing";
 
 export default function Home() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -31,7 +30,6 @@ export default function Home() {
       </div>
 
       {/* Hologram */}
-      <SpinningRing />
       <SpinningLogo />
 
       {/* Mute button */}
