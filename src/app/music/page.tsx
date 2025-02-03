@@ -70,7 +70,7 @@ export default function Music() {
         {categories.map((category) => (
           <button
             key={category}
-            className={`py-2 px-4 rounded-full transition-colors duration-200 text-nowrap font-blanch text-2xl ${
+            className={`py-2 px-4 rounded-full transition-colors duration-200 text-nowrap ${
               selectedCategory === category
                 ? "bg-clarks-orange text-black"
                 : "bg-gray-200 text-gray-800 hover:bg-gray-300"
