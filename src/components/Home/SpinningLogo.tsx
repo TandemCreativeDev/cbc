@@ -1,6 +1,10 @@
 import * as THREE from "three";
 import { useEffect, useRef } from "react";
 
+import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer";
+import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass";
+import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass";
+
 export default function SpinningLogo() {
   const refContainer = useRef<HTMLDivElement>(null);
 
@@ -38,12 +42,24 @@ export default function SpinningLogo() {
     };
     window.addEventListener("resize", setRendererSize);
 
-    const ambientLight = new THREE.AmbientLight(0xc14627, 0.5);
+    const ambientLight = new THREE.AmbientLight(0xfebc12, 0.5);
     scene.add(ambientLight);
 
-    const pointLight = new THREE.PointLight(0xc14627, 2, 20);
+    const pointLight = new THREE.PointLight(0xfebc12, 3, 50);
     pointLight.position.set(0, 0, 5);
     scene.add(pointLight);
+
+    const composer = new EffectComposer(renderer);
+    const renderPass = new RenderPass(scene, camera);
+    composer.addPass(renderPass);
+
+    const bloomPass = new UnrealBloomPass(
+      new THREE.Vector2(window.innerWidth, window.innerHeight),
+      1.5,
+      0.4,
+      0.85
+    );
+    composer.addPass(bloomPass);
 
     const circleCurve = new THREE.CatmullRomCurve3(
       new Array(100).fill(0).map((_, i) => {
@@ -65,14 +81,38 @@ export default function SpinningLogo() {
       true
     );
 
+    function createStripedTexture() {
+      const size = 512;
+      const canvas = document.createElement("canvas");
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext("2d");
+
+      if (ctx) {
+        for (let i = 0; i < size; i += 50) {
+          ctx.fillStyle =
+            i % 16 === 0
+              ? "rgba(255, 255, 255, 1)"
+              : "rgba(255, 255, 255, 0.7)";
+          ctx.fillRect(0, i, size, 50);
+        }
+      }
+
+      const texture = new THREE.CanvasTexture(canvas);
+      texture.wrapS = THREE.RepeatWrapping;
+      texture.wrapT = THREE.RepeatWrapping;
+      texture.repeat.set(1, 10);
+      return texture;
+    }
+
     const tubeMaterial = new THREE.MeshStandardMaterial({
-      color: 0xc14627,
+      map: createStripedTexture(),
       transparent: true,
-      opacity: 0.5,
-      emissive: 0xc14627,
-      emissiveIntensity: 1,
-      metalness: 0.8,
-      roughness: 0.3,
+      opacity: 0.7,
+      emissive: 0xfebc12,
+      emissiveIntensity: 3,
+      metalness: 0.3,
+      roughness: 0.8,
     });
 
     const tube = new THREE.Mesh(tubeGeometry, tubeMaterial);
@@ -135,6 +175,10 @@ export default function SpinningLogo() {
     const animate = function () {
       requestAnimationFrame(animate);
       tube.rotation.y += 0.01;
+      tubeMaterial.opacity = 0.5 + Math.random() * 0.25;
+      if (tubeMaterial.map) {
+        tubeMaterial.map.offset.y -= 0.01;
+      }
       allPlaneMeshes.forEach((mesh) => (mesh.rotation.y += 0.01));
       renderer.render(scene, camera);
     };
