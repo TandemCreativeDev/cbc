@@ -12,7 +12,7 @@ export default function TourDatesContainer({
 }: TourDatesContainerProps) {
   return (
     <div className="mb-10">
-      <h3 className="text-3xl pb-10">{title}</h3>
+      <h3 className="text-3xl pb-10 font-blanch">{title}</h3>
       <div className="flex flex-col">
         {tourDates.map((tourDate) => (
           <TourDate

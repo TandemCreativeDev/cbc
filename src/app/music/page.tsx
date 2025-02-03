@@ -25,7 +25,7 @@ export default function Music() {
         const csvData = await fetchSheet(sheetTabGid);
         const parsedData: IFrameProps[] = parseCsv<IFrameProps>(
           csvData,
-          (row) => !!row.title && !!row.type,
+          (row) => !!row.title && !!row.type
         );
 
         console.log("Parsed Music Content:", parsedData);
@@ -35,9 +35,9 @@ export default function Music() {
         const uniqueCategories = Array.from(
           new Set(
             parsedData.map(
-              (item) => item[categoryKey as keyof IFrameProps] || "",
-            ),
-          ),
+              (item) => item[categoryKey as keyof IFrameProps] || ""
+            )
+          )
         );
 
         setCategories(uniqueCategories);
@@ -58,7 +58,7 @@ export default function Music() {
       : iFrames.filter(
           (item) =>
             item[(isFrench ? "categorie" : "category") as keyof IFrameProps] ===
-            selectedCategory,
+            selectedCategory
         );
 
   return (
@@ -94,7 +94,7 @@ export default function Music() {
             <Spotify key={item.title} src={item.src} title={item.title} />
           ) : (
             <Youtube key={item.title} src={item.src} title={item.title} />
-          ),
+          )
         )}
       </div>
     </>
