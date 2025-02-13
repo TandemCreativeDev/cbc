@@ -18,7 +18,7 @@ export default function Home() {
   return (
     <>
       {/* Background video container */}
-      <div className="fixed inset-0 -z-10">
+      <div className="fixed inset-0 -z-10 motion-reduce:hidden">
         <video
           ref={videoRef}
           className="absolute inset-0 top-0 left-0 min-h-full w-auto object-cover"
