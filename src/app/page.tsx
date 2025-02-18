@@ -69,7 +69,6 @@ export default function Home() {
       >
         {play ? <FaPause size={24} /> : <FaPlay size={24} />}
       </button>
-      s
     </>
   );
 }
