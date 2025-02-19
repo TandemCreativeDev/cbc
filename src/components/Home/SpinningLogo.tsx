@@ -1,5 +1,4 @@
 import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 import { useEffect, useRef } from "react";
 
@@ -39,10 +38,15 @@ export default function SpinningLogo() {
     };
     window.addEventListener("resize", setRendererSize);
 
-    const controls = new OrbitControls(camera, refContainer.current);
-    controls.enableZoom = false;
-    controls.enablePan = false;
-    controls.enableDamping = true;
+    const cursor = {
+      x: 0,
+      y: 0,
+    };
+    window.addEventListener("mousemove", (event) => {
+      const { clientX, clientY } = event;
+      cursor.x = clientX / width - 0.5;
+      cursor.y = -(clientY / height - 0.5);
+    });
 
     const ambientLight = new THREE.AmbientLight(0xfebc12, 0.5);
     scene.add(ambientLight);
@@ -163,7 +167,11 @@ export default function SpinningLogo() {
     flickerLights();
 
     const animate = function () {
-      controls.update();
+      camera.position.x = Math.sin(cursor.x * Math.PI * 2) * 3;
+      camera.position.z = Math.cos(cursor.x * Math.PI * 2) * 3;
+      camera.position.y = cursor.y * 5;
+      camera.lookAt(new THREE.Vector3(0, 0, 0));
+
       tube.rotation.y += 0.01;
       tubeMaterial.opacity = 0.5 + Math.random() * 0.25;
       if (tubeMaterial.map) {
