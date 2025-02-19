@@ -1,9 +1,7 @@
 import * as THREE from "three";
-import { useEffect, useRef } from "react";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
-import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer";
-import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass";
-import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass";
+import { useEffect, useRef } from "react";
 
 export default function SpinningLogo() {
   const refContainer = useRef<HTMLDivElement>(null);
@@ -11,17 +9,16 @@ export default function SpinningLogo() {
   useEffect(() => {
     const scene = new THREE.Scene();
     const radius = 1.6;
+    const headerHeight = 6 * 16;
+    const footerHeight = 4.5 * 16;
+    const height = window.innerHeight - headerHeight - footerHeight;
+    const width = window.innerWidth;
 
-    const camera = new THREE.PerspectiveCamera(
-      75,
-      window.innerWidth / window.innerHeight,
-      0.1,
-      1000
-    );
+    const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
     camera.position.set(0, 0, 5);
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(width, height);
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.shadowMap.enabled = true;
 
@@ -42,24 +39,17 @@ export default function SpinningLogo() {
     };
     window.addEventListener("resize", setRendererSize);
 
+    const controls = new OrbitControls(camera, refContainer.current);
+    controls.enableZoom = false;
+    controls.enablePan = false;
+    controls.enableDamping = true;
+
     const ambientLight = new THREE.AmbientLight(0xfebc12, 0.5);
     scene.add(ambientLight);
 
     const pointLight = new THREE.PointLight(0xfebc12, 3, 50);
     pointLight.position.set(0, 0, 5);
     scene.add(pointLight);
-
-    const composer = new EffectComposer(renderer);
-    const renderPass = new RenderPass(scene, camera);
-    composer.addPass(renderPass);
-
-    const bloomPass = new UnrealBloomPass(
-      new THREE.Vector2(window.innerWidth, window.innerHeight),
-      1.5,
-      0.4,
-      0.85
-    );
-    composer.addPass(bloomPass);
 
     const circleCurve = new THREE.CatmullRomCurve3(
       new Array(100).fill(0).map((_, i) => {
@@ -173,7 +163,7 @@ export default function SpinningLogo() {
     flickerLights();
 
     const animate = function () {
-      requestAnimationFrame(animate);
+      controls.update();
       tube.rotation.y += 0.01;
       tubeMaterial.opacity = 0.5 + Math.random() * 0.25;
       if (tubeMaterial.map) {
@@ -181,6 +171,7 @@ export default function SpinningLogo() {
       }
       allPlaneMeshes.forEach((mesh) => (mesh.rotation.y += 0.01));
       renderer.render(scene, camera);
+      requestAnimationFrame(animate);
     };
 
     animate();
@@ -189,7 +180,7 @@ export default function SpinningLogo() {
   return (
     <div
       ref={refContainer}
-      className="fixed top-0 left-0 w-full h-full overflow-hidden hidden md:block -z-10 md:motion-reduce:hidden"
+      className="fixed top-[5rem] left-0 w-full h-[calc(100vh-9.5rem)] overflow-hidden hidden md:block md:motion-reduce:hidden z-50"
     ></div>
   );
 }
