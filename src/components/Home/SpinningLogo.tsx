@@ -10,15 +10,24 @@ export default function SpinningLogo() {
     const radius = 1.6;
     const headerHeight = 6 * 16;
     const footerHeight = 4.5 * 16;
-    const height = window.innerHeight - headerHeight - footerHeight;
-    const width = window.innerWidth;
+    let height = window.innerHeight - headerHeight - footerHeight;
+    let width = window.innerWidth;
+
+    window.addEventListener("resize", () => {
+      width = window.innerWidth;
+      height = window.innerHeight - headerHeight - footerHeight;
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+      renderer.setSize(width, height);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    });
 
     const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
     camera.position.set(0, 0, 5);
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(width, height);
-    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.shadowMap.enabled = true;
 
     if (refContainer.current) {
