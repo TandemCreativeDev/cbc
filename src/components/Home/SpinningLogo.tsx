@@ -53,8 +53,8 @@ export default function SpinningLogo() {
     };
     window.addEventListener("mousemove", (event) => {
       const { clientX, clientY } = event;
-      cursor.x = clientX / width - 0.5;
-      cursor.y = -(clientY / height - 0.5);
+      cursor.x = -(clientX / width - 0.5);
+      cursor.y = clientY / height - 0.5;
     });
 
     const ambientLight = new THREE.AmbientLight(0xfebc12, 0.5);
@@ -79,7 +79,7 @@ export default function SpinningLogo() {
     const tubeGeometry = new THREE.TubeGeometry(
       circleCurve,
       100,
-      0.07,
+      0.05,
       16,
       true
     );
@@ -129,7 +129,7 @@ export default function SpinningLogo() {
       textureLoader.load("/hologram/hologram_light3.png"),
     ];
 
-    const frontGeometry = new THREE.PlaneGeometry(radius * 2, radius * 2);
+    const planeGeometry = new THREE.PlaneGeometry(radius * 2.5, radius * 1.5);
     const logoMaterials = [
       new THREE.MeshBasicMaterial({
         map: baseTexture,
@@ -146,24 +146,14 @@ export default function SpinningLogo() {
       ),
     ];
 
-    const frontMeshes = logoMaterials.map(
-      (mat) => new THREE.Mesh(frontGeometry, mat)
+    const planeMeshes = logoMaterials.map(
+      (mat) => new THREE.Mesh(planeGeometry, mat)
     );
 
-    frontMeshes.forEach((mesh) => {
+    planeMeshes.forEach((mesh) => {
       mesh.position.set(0, 0, 0.1);
       scene.add(mesh);
     });
-
-    const backMeshes = frontMeshes.map((mesh) => {
-      const backMesh = mesh.clone();
-      backMesh.rotation.y = Math.PI;
-      backMesh.position.set(0, 0, 0.1);
-      scene.add(backMesh);
-      return backMesh;
-    });
-
-    const allPlaneMeshes = [...frontMeshes, ...backMeshes];
 
     function flickerLights() {
       logoMaterials.slice(1).forEach((material) => {
@@ -176,17 +166,11 @@ export default function SpinningLogo() {
     flickerLights();
 
     const animate = function () {
-      camera.position.x = Math.sin(cursor.x * Math.PI * 2) * 3;
-      camera.position.z = Math.cos(cursor.x * Math.PI * 2) * 3;
-      camera.position.y = cursor.y * 5;
+      camera.position.x = cursor.x * 2;
+      camera.position.y = cursor.y * 2;
       camera.lookAt(new THREE.Vector3(0, 0, 0));
 
-      tube.rotation.y += 0.01;
       tubeMaterial.opacity = 0.5 + Math.random() * 0.25;
-      if (tubeMaterial.map) {
-        tubeMaterial.map.offset.y -= 0.01;
-      }
-      allPlaneMeshes.forEach((mesh) => (mesh.rotation.y += 0.01));
       renderer.render(scene, camera);
       requestAnimationFrame(animate);
     };
