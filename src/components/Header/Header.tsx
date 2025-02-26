@@ -3,14 +3,12 @@
 import Navbar from "./Navbar";
 import Toggle from "./Toggle";
 import Link from "next/link";
-// import bowlingBall from "../../assets/bowling-ball-toggle.svg";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // This prevents the user scrolling when the menu is open which I think works great
   useEffect(() => {
     if (isMenuOpen) {
       document.body.style.overflow = "hidden";
