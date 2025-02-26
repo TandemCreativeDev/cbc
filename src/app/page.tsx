@@ -39,7 +39,7 @@ export default function Home() {
       <div className="fixed inset-0 -z-10">
         <video
           ref={videoRef}
-          className={`${backgroundClasses} motion-reduce:hidden`}
+          className={`${backgroundClasses} motion-reduce:hidden brightness-50`}
           src="/videos/teaser.mp4"
           autoPlay
           loop
