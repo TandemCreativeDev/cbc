@@ -1,3 +1,4 @@
+import Link from "next/link";
 import {
   FaFacebookF,
   FaInstagram,
@@ -60,26 +61,38 @@ const socialLinks: SocialLink[] = [
 
 export default function Footer() {
   return (
-    <footer className="bg-transparent h-[4.5rem] flex flex-col justify-center align-bottom">
-      <div className="flex flex-wrap justify-center gap-4 px-4 h-10 align-bottom">
-        {socialLinks.map((link) => (
-          <a
-            key={link.label}
-            href={link.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-clarks-orange transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-clarks-orange focus:ring-offset-2 focus:ring-offset-transparent rounded-full p-1"
-            aria-label={link.label}
+    <footer className="bg-transparent flex flex-col justify-center align-bottom">
+      <ul className="flex flex-wrap justify-center gap-1 align-bottom">
+        {socialLinks.map((link, index) => (
+          <li
+            key={index}
+            className="hover:text-clarks-orange transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-clarks-orange focus:ring-offset-2 focus:ring-offset-transparent"
           >
-            <link.icon className="w-5 h-5" />
-          </a>
+            <Link
+              href={link.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={link.label}
+              role="link"
+              className="flex items-center justify-center p-2"
+            >
+              <link.icon className="h-5 w-5" />
+            </Link>
+          </li>
         ))}
-      </div>
+      </ul>
       <div className="flex flex-row gap-2 justify-center p-2">
-        <p>&copy; 2024</p>
-        <a href="https://viatora.co.uk" className="hover:text-clarks-orange">
-          <p>Viatora Digital &nabla;</p>
-        </a>
+        <p>&copy; 2025</p>
+        <Link
+          href="https://runintandem.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hover:text-clarks-orange"
+          aria-label="Visit the Tandem Creative Dev website"
+          role="link"
+        >
+          Tandem Creative Dev
+        </Link>
       </div>
     </footer>
   );

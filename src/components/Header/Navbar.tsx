@@ -18,7 +18,7 @@ const menuRoutes: MenuRoute[] = [
   { path: "/about", textEN: "About", textFR: "Bio" },
   { path: "/tour", textEN: "Tour", textFR: "Tournée" },
   { path: "/music", textEN: "Music", textFR: "Musique" },
-  { path: "/merch", textEN: "Merch", textFR: "Boutique" },
+  //{ path: "/merch", textEN: "Merch", textFR: "Boutique" },
   { path: "/contact", textEN: "Contact", textFR: "Contact" },
 ];
 
