@@ -28,11 +28,14 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       try {
         const response = await fetch("https://geolocation-db.com/json/");
         const data = await response.json();
-        
-        // Check if user is in France (country_code: FR)
+
         const isInFrance = data.country_code === "FR";
-        console.log("User location detected:", data.country_name, data.country_code);
-        
+        console.log(
+          "User location detected:",
+          data.country_name,
+          data.country_code
+        );
+
         if (isInFrance) {
           console.log("User is in France, setting language to French");
           setIsFrench(true);
@@ -42,7 +45,6 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
         }
       } catch (error) {
         console.error("Error detecting user location:", error);
-        // Default to English on error
         setIsFrench(false);
       } finally {
         setIsLoading(false);
