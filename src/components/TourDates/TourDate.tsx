@@ -2,6 +2,7 @@ import Link from "next/link";
 import { TourDateType } from "../../utils/types";
 
 import { useLanguage } from "@/context/LanguageContext";
+import Button from "../ui/Button";
 
 interface TourDateProps {
   tourDate: TourDateType;
@@ -12,9 +13,6 @@ export default function TourDate({ tourDate, inPast }: TourDateProps) {
   const { eventDate, venue, location, locationUrl, ticketUrl } = tourDate;
   const { isFrench } = useLanguage();
   const unavailable = isFrench ? "Indisponible" : "Unavailable";
-  const buttonClass = "text-center p-3 w-36";
-  const availableClass = "bg-white text-black hover:bg-gray-300";
-  const unavailableClass = "bg-gray-800 text-gray-400 cursor-not-allowed";
 
   const formattedDate = new Date(
     eventDate.split("/").reverse().join("-")
@@ -45,23 +43,18 @@ export default function TourDate({ tourDate, inPast }: TourDateProps) {
         <span className="md:w-1/4">{location}</span>
         <div className="md:w-1/6 mt-4 md:mt-0">
           {inPast ? (
-            <button className={`${buttonClass} ${unavailableClass}`}>
-              {unavailable}
-            </button>
+            <Button label={unavailable} isLink disabled />
           ) : ticketUrl ? (
-            <button
+            <Button
               onClick={() =>
                 window.open(ticketUrl, "_blank", "noopener,noreferrer")
               }
               aria-label={`Buy tickets for ${venue}`}
-              className={`${buttonClass} ${availableClass}`}
-            >
-              {isFrench ? "Acheter billets" : "Buy Tickets"}
-            </button>
+              isLink
+              label={isFrench ? "Acheter billets" : "Buy Tickets"}
+            />
           ) : (
-            <button className={`${buttonClass} ${unavailableClass}`}>
-              {unavailable}
-            </button>
+            <Button label={unavailable} isLink disabled />
           )}
         </div>
       </div>
