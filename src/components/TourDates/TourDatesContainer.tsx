@@ -18,7 +18,7 @@ export default function TourDatesContainer({
           <TourDate
             key={tourDate.eventDate + tourDate.venue}
             tourDate={tourDate}
-            pastOrFuture={title}
+            inPast={title === "past events" || title === "dates passées"}
           />
         ))}
       </div>
