@@ -175,14 +175,14 @@ export default function PrivacyPolicy() {
               ? "Pour exercer ces droits, veuillez nous contacter à l’adresse suivante : "
               : "To exercise these rights, please contact us at "}
             <Link
-              href="mailto:yes@clarksbowlingclub.com"
+              href="mailto:${process.env.EMAIL_USER}"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Email us"
               role="link"
               className="text-clarks-orange hover:underline"
             >
-              yes@clarksbowlingclub.com
+              {process.env.EMAIL_USER}
             </Link>
             .
           </p>
@@ -225,14 +225,14 @@ export default function PrivacyPolicy() {
             <p>
               📧 <strong>{isFrench ? "E-mail:" : "Email:"}</strong>{" "}
               <Link
-                href="mailto:yes@clarksbowlingclub.com"
+                href="mailto:${process.env.EMAIL_USER}"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Email us"
                 role="link"
                 className="text-clarks-orange hover:underline"
               >
-                yes@clarksbowlingclub.com
+                {process.env.EMAIL_USER}
               </Link>
             </p>
           </div>
