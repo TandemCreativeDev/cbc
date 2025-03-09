@@ -24,34 +24,42 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const detectUserLocation = async () => {
-      try {
-        const response = await fetch("https://geolocation-db.com/json/");
-        const data = await response.json();
-
-        const isInFrance = data.country_code === "FR";
-        console.log(
-          "User location detected:",
-          data.country_name,
-          data.country_code
-        );
-
-        if (isInFrance) {
-          console.log("User is in France, setting language to French");
-          setIsFrench(true);
-        } else {
-          console.log("User is not in France, setting language to English");
+    const query = new URLSearchParams(window.location.search);
+    const lang = query.get("isFrench");
+    if (lang === "true" || lang === "false") {
+      console.log("Setting language from URL param:", lang);
+      setIsFrench(lang === "true");
+      setIsLoading(false);
+    } else {
+      const detectUserLocation = async () => {
+        try {
+          const response = await fetch("https://geolocation-db.com/json/");
+          const data = await response.json();
+  
+          const isInFrance = data.country_code === "FR";
+          console.log(
+            "User location detected:",
+            data.country_name,
+            data.country_code
+          );
+  
+          if (isInFrance) {
+            console.log("User is in France, setting language to French");
+            setIsFrench(true);
+          } else {
+            console.log("User is not in France, setting language to English");
+            setIsFrench(false);
+          }
+        } catch (error) {
+          console.error("Error detecting user location:", error);
           setIsFrench(false);
+        } finally {
+          setIsLoading(false);
         }
-      } catch (error) {
-        console.error("Error detecting user location:", error);
-        setIsFrench(false);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    detectUserLocation();
+      };
+  
+      detectUserLocation();
+    }
   }, []);
 
   const handleSetIsFrench = useCallback((value: boolean) => {
