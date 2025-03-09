@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import { Page } from "@/utils/types";
-import Carousel from "@/components/Carousel";
+import Carousel from "@/components/ui/Carousel";
 import parsePageCsv from "@/utils/parsePageCsv";
 import fetchSheet from "@/utils/fetchSheet";
 
