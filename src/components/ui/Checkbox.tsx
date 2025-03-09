@@ -1,7 +1,10 @@
 "use client";
 
+import Link from "next/link";
 import { useState, useEffect } from "react";
 import { twMerge } from "tailwind-merge";
+
+import { useLanguage } from "@/context/LanguageContext";
 
 interface CheckboxProps {
   id: string;
@@ -23,6 +26,7 @@ export default function Checkbox({
   required = false,
 }: CheckboxProps) {
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const { isFrench } = useLanguage();
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -74,13 +78,20 @@ export default function Checkbox({
       )}
       <label htmlFor={id} className={twMerge("text-sm/6", labelClass)}>
         {label}{" "}
-        <a
-          target="_blank"
+        <Link
           href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={
+            isFrench
+              ? "Voir la politique de confidentialité"
+              : "See our Privacy policy"
+          }
+          role="link"
           className="text-clarks-orange focus:ring-clarks-orange focus:ring-2 focus:outline-none hover:underline"
         >
           {urlText}
-        </a>
+        </Link>
       </label>
     </div>
   );
