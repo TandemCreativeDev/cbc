@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Header from "@/components/Header/Header";
+import Header from "@/components/layout/Header";
 import { LanguageProvider } from "@/context/LanguageContext";
 import localFont from "next/font/local";
-import Footer from "@/components/Footer";
+import Footer from "@/components/layout/Footer";
 
 const blanchCaps = localFont({
   src: "../fonts/Blanch-Caps.woff2",

@@ -1,7 +1,7 @@
 "use client";
 
 import Navbar from "./Navbar";
-import Toggle from "./Toggle";
+import Toggle from "../ui/Toggle";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import Image from "next/image";
