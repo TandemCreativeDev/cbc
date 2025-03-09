@@ -61,7 +61,7 @@ export default function Tour() {
       }
     });
 
-    past.sort((a, b) => {
+    past.sort((b, a) => {
       const [dayA, monthA, yearA] = a.eventDate.split("/").map(Number);
       const [dayB, monthB, yearB] = b.eventDate.split("/").map(Number);
       return (
@@ -90,8 +90,14 @@ export default function Tour() {
       <h2 className="text-4xl mb-6 font-blanch">{pageContent.title}</h2>
       <p className="text-lg leading-relaxed mb-8">{pageContent.content}</p>
       <div className="mt-10">
-        <TourDatesContainer tourDates={futureGigs} title={"upcoming events"} />
-        <TourDatesContainer tourDates={pastGigs} title={"past events"} />
+        <TourDatesContainer
+          tourDates={futureGigs}
+          title={isFrench ? "prochaines dates" : "upcoming events"}
+        />
+        <TourDatesContainer
+          tourDates={pastGigs}
+          title={isFrench ? "dates passées" : "past events"}
+        />
       </div>
     </>
   );
