@@ -80,7 +80,7 @@ export default function ContactForm({ legend }: { legend: string }) {
           id={"privacyPolicy"}
           name={"privacyPolicy"}
           label={isFrench ? "J’accepte la " : "Agree to our "}
-          url={isFrench ? "/privacy-policy?isFrench=true" : "/privacy-policy"}
+          url={`/privacy-policy?isFrench=${isFrench}`}
           urlText={isFrench ? "politique de confidentialité" : "privacy policy"}
           required
         />
