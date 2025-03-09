@@ -63,9 +63,9 @@ export default function Music() {
 
   return (
     <>
-      <h2 className="text-4xl font-blanch mb-6">
+      <h1 className="text-4xl font-blanch mb-6">
         {isFrench ? "Musique" : "Music"}
-      </h2>
+      </h1>
       <div className="flex justify-between m-auto mb-10 overflow-x-scroll gap-3 no-scrollbar">
         {categories.map((category) => (
           <button
