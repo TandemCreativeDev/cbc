@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import Image from "next/image";
+import clsx from "clsx";
 
 interface CarouselProps {
   images: string[];
@@ -43,7 +44,7 @@ export default function Carousel({ images }: CarouselProps) {
       {/* Navigation buttons */}
       <button
         onClick={prevSlide}
-        className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/75 focus:outline-none focus:ring-2 focus:ring-clarks-orange"
+        className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/75 focus:outline-none focus-visible:ring-2 focus:ring-clarks-orange"
         aria-label="Previous slide"
       >
         <FaChevronLeft size={24} />
@@ -63,9 +64,10 @@ export default function Carousel({ images }: CarouselProps) {
           <button
             key={index}
             onClick={() => setCurrentIndex(index)}
-            className={`w-2 h-2 m-2 rounded-full transition-colors ${
+            className={clsx(
+              "w-2 h-2 m-2 rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus:ring-clarks-orange",
               index === currentIndex ? "bg-clarks-orange" : "bg-white/50"
-            }`}
+            )}
             aria-label={`Go to photo ${index + 1}`}
             role="button"
           />
