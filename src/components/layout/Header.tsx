@@ -25,7 +25,7 @@ export default function Header() {
         <div className="flex flex-col gap-2 md:flex-row items-center p-4 md:justify-between">
           <Link
             href="/"
-            className="flex flex-col items-center text-center md:items-start md:text-left group"
+            className="flex flex-col items-center text-center md:items-start md:text-left group focus:outline-none focus-visible:ring-2 focus-visible:ring-clarks-orange focus:ring-offset-2 focus:ring-offset-transparent transition-colors"
           >
             <p className="font-damion mb-0 text-3xl transition-colors group-hover:text-clarks-orange">
               Clark&apos;s
