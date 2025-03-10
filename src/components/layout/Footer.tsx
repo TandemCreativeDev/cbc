@@ -64,17 +64,14 @@ export default function Footer() {
     <footer className="bg-transparent flex flex-col justify-center align-bottom">
       <ul className="flex flex-wrap justify-center gap-1 align-bottom">
         {socialLinks.map((link, index) => (
-          <li
-            key={index}
-            className="hover:text-clarks-orange transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-clarks-orange focus:ring-offset-2 focus:ring-offset-transparent"
-          >
+          <li key={index} className="hover:text-clarks-orange">
             <Link
               href={link.url}
               target="_blank"
               rel="noopener noreferrer"
               aria-label={link.label}
               role="link"
-              className="flex items-center justify-center p-2"
+              className="flex items-center justify-center p-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-clarks-orange focus:ring-offset-2 focus:ring-offset-transparent transition-colors"
             >
               <link.icon className="h-5 w-5" />
             </Link>
@@ -87,7 +84,7 @@ export default function Footer() {
           href="https://runintandem.com"
           target="_blank"
           rel="noopener noreferrer"
-          className="hover:text-clarks-orange"
+          className="hover:text-clarks-orange focus:outline-none focus-visible:ring-2 focus-visible:ring-clarks-orange focus:ring-offset-2 focus:ring-offset-transparent transition-colors"
           aria-label="Visit the Tandem Creative Dev website"
           role="link"
         >
