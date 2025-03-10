@@ -28,6 +28,16 @@ export default function Checkbox({
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const { isFrench } = useLanguage();
 
+  const handleInvalid = (e: React.FormEvent<HTMLInputElement>) => {
+    if (e.currentTarget.validity.valueMissing) {
+      e.currentTarget.setCustomValidity(isFrench ? "Ce champ est obligatoire" : "This field is required");
+    }
+  };
+
+  const handleInput = (e: React.FormEvent<HTMLInputElement>) => {
+    e.currentTarget.setCustomValidity("");
+  };
+
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     setPrefersReducedMotion(mediaQuery.matches);
@@ -49,6 +59,8 @@ export default function Checkbox({
           type="checkbox"
           required={required}
           className="block"
+          onInvalid={handleInvalid}
+          onInput={handleInput}
         />
       ) : (
         <div className="checkbox-wrapper-30">
@@ -59,6 +71,8 @@ export default function Checkbox({
               type="checkbox"
               required={required}
               className="block focus:ring-2 focus:ring-clarks-orange focus:outline-none"
+              onInvalid={handleInvalid}
+              onInput={handleInput}
             />
             <svg>
               <use xlinkHref="#checkbox-30" className="checkbox"></use>
