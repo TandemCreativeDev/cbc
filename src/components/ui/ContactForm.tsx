@@ -89,7 +89,7 @@ export default function ContactForm({ legend }: { legend: string }) {
       <Button
         type="submit"
         className="block w-full font-blanch text-2xl p-1"
-        label={isFrench ? "Parlez-nous" : "Let's talk"}
+        label={isFrench ? "Faisons de la music!" : "Let's jam!"}
       />
     </form>
   );
