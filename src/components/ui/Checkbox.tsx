@@ -30,7 +30,9 @@ export default function Checkbox({
 
   const handleInvalid = (e: React.FormEvent<HTMLInputElement>) => {
     if (e.currentTarget.validity.valueMissing) {
-      e.currentTarget.setCustomValidity(isFrench ? "Ce champ est obligatoire" : "This field is required");
+      e.currentTarget.setCustomValidity(
+        isFrench ? "Ce champ est obligatoire" : "This field is required"
+      );
     }
   };
 
@@ -102,7 +104,7 @@ export default function Checkbox({
               : "See our Privacy policy"
           }
           role="link"
-          className="text-clarks-orange focus:ring-clarks-orange focus:ring-2 focus:outline-none hover:underline"
+          className="text-clarks-orange focus:ring-clarks-orange focus-visible:ring-2 focus:outline-none hover:underline"
         >
           {urlText}
         </Link>
