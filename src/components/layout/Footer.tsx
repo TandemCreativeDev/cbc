@@ -71,7 +71,7 @@ export default function Footer() {
               rel="noopener noreferrer"
               aria-label={link.label}
               role="link"
-              className="flex items-center justify-center p-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-clarks-orange focus:ring-offset-2 focus:ring-offset-transparent transition-colors"
+              className="flex items-center justify-center p-2 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-clarks-orange focus:ring-offset-2 focus:ring-offset-transparent transition-colors"
             >
               <link.icon className="h-5 w-5" />
             </Link>
