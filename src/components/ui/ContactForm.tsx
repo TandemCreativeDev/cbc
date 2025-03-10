@@ -37,7 +37,7 @@ export default function ContactForm({ legend }: { legend: string }) {
     fd.append("language", isFrench ? "fr" : "en");
     const toastId = toast.loading("Sending message...");
     try {
-      const response = await fetch("/api/contact", {
+      const response = await fetch("/api/send-emails", {
         method: "POST",
         body: fd,
       });
