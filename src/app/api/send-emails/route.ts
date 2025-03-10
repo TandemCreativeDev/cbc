@@ -10,7 +10,9 @@ export async function POST(request: Request) {
     const phoneNumber = formData.get("phoneNumber");
     const message = formData.get("message");
     const isFrench = formData.get("language") === "fr";
+
     let clarksSubject, clarksEmailHtml, userSubject, userEmailHtml;
+
     if (isFrench) {
       clarksSubject = `${firstName} souhaite entrer en contact`;
       clarksEmailHtml = `
@@ -32,11 +34,11 @@ export async function POST(request: Request) {
           <body>
             <div class="container">
               <h2>Nouvelle soumission du formulaire de contact</h2>
-              <p>Quelqu'un a soumis un formulaire de contact sur le site du Clarks Bowling Club. Voici les détails :</p>
+              <p>Quelqu'un a soumis un formulaire de contact sur le site Clarks Bowling Club. Voici les détails :</p>
               <div class="details">
                 <p><strong>Nom :</strong> ${name}</p>
                 <p><strong>Entreprise :</strong> ${company}</p>
-                <p><strong>Email :</strong> <a href="mailto:${email}">${email}</a></p>
+                <p><strong>E-mail :</strong> <a href="mailto:${email}">${email}</a></p>
                 <p><strong>Téléphone :</strong> ${phoneNumber}</p>
                 <p><strong>Message :</strong><br> ${message}</p>
               </div>
@@ -56,7 +58,7 @@ export async function POST(request: Request) {
           <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Merci d'avoir contacté le Clarks Bowling Club</title>
+            <title>Merci d'avoir contacté Clarks Bowling Club</title>
             <style>
               body { font-family: Arial, sans-serif; background-color: #f5f5f5; margin: 0; padding: 20px; }
               .container { max-width: 600px; margin: auto; background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
@@ -68,7 +70,7 @@ export async function POST(request: Request) {
           </head>
           <body>
             <div class="container">
-              <h2>Merci, <span style="color: #0073e6;">${firstName}</span>!</h2>
+              <h2>Merci, <span style="color: #FEBC12;">${firstName}</span>!</h2>
               <p>Nous avons bien reçu votre message et nous vous remercions de nous avoir contactés. Nous reviendrons vers vous dans les 2 jours ouvrables.</p>
               <p>Pour vos archives, voici les détails que vous avez soumis :</p>
               <div class="details">
@@ -145,7 +147,7 @@ export async function POST(request: Request) {
           </head>
           <body>
             <div class="container">
-              <h2>Thank You, <span style="color: #0073e6;">${firstName}</span>!</h2>
+              <h2>Thank You, <span style="color: #FEBC12;">${firstName}</span>!</h2>
               <p>We’ve received your message and appreciate you reaching out. We will be in touch within 2 working days.</p>
               <p>For your records, here are the details you submitted:</p>
               <div class="details">
@@ -170,6 +172,7 @@ export async function POST(request: Request) {
     const clarksEmail = await transporter.sendMail({
       from: `${name} <websiteform@clarksbowlingclub.com>`,
       to: process.env.EMAIL_USER,
+      cc: "Clarks Bowling Club <clarksbowlingclub@gmail.com>",
       subject: clarksSubject,
       html: clarksEmailHtml,
     });
