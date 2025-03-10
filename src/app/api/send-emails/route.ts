@@ -171,7 +171,7 @@ export async function POST(request: Request) {
 
     const clarksEmail = await transporter.sendMail({
       from: `${name} <websiteform@clarksbowlingclub.com>`,
-      to: process.env.EMAIL_USER,
+      to: `Clarks Bowling Club <${process.env.EMAIL_USER}>`,
       cc: "Clarks Bowling Club <clarksbowlingclub@gmail.com>",
       subject: clarksSubject,
       html: clarksEmailHtml,
