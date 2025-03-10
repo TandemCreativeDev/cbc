@@ -1,17 +1,23 @@
 import Link from "next/link";
 import { TourDateType } from "../../utils/types";
 
+import { useLanguage } from "@/context/LanguageContext";
+import Button from "../ui/Button";
+import clsx from "clsx";
+
 interface TourDateProps {
   tourDate: TourDateType;
-  pastOrFuture: string;
+  inPast: boolean;
 }
 
-export default function TourDate({ tourDate, pastOrFuture }: TourDateProps) {
+export default function TourDate({ tourDate, inPast }: TourDateProps) {
   const { eventDate, venue, location, locationUrl, ticketUrl } = tourDate;
+  const { isFrench } = useLanguage();
+  const unavailable = isFrench ? "Indisponible" : "Unavailable";
 
   const formattedDate = new Date(
     eventDate.split("/").reverse().join("-")
-  ).toLocaleDateString("en-GB", {
+  ).toLocaleDateString(isFrench ? "fr-FR" : "en-GB", {
     day: "2-digit",
     month: "short",
     year: "numeric",
@@ -27,39 +33,32 @@ export default function TourDate({ tourDate, pastOrFuture }: TourDateProps) {
           rel="noopener noreferrer"
           aria-label={`${venue} in ${location} map`}
           role="link"
-          className={`font-bold text-clarks-orange text-xl md:w-1/3 ${
+          className={clsx(
+            "font-bold text-clarks-orange text-xl md:w-1/3 focus:outline-none focus-visible:ring-2 focus:ring-clarks-orange focus:ring-offset-2 focus:ring-offset-transparent transition-colors",
             locationUrl
               ? "hover:text-clarks-red"
               : "text-gray-400 pointer-events-none"
-          }`}
+          )}
         >
           {venue}
         </Link>
         <span className="md:w-1/4">{location}</span>
-        <span className="md:w-1/6 mt-4 md:mt-0">
-          {pastOrFuture === "upcoming events" ? (
-            ticketUrl ? (
-              <Link
-                href={ticketUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`Buy tickets for ${venue}`}
-                role="link"
-                className="bg-white text-black text-center p-3 hover:bg-gray-300"
-              >
-                Buy Tickets
-              </Link>
-            ) : (
-              <span className="bg-gray-800 text-gray-400 text-center p-3 cursor-not-allowed">
-                Unavailable
-              </span>
-            )
+        <div className="md:w-1/6 mt-4 md:mt-0">
+          {inPast ? (
+            <Button label={unavailable} isLink disabled />
+          ) : ticketUrl ? (
+            <Button
+              onClick={() =>
+                window.open(ticketUrl, "_blank", "noopener,noreferrer")
+              }
+              aria-label={`Buy tickets for ${venue}`}
+              isLink
+              label={isFrench ? "Acheter billets" : "Buy Tickets"}
+            />
           ) : (
-            <span className="bg-gray-800 text-gray-400 text-center p-3 cursor-not-allowed">
-              Unavailable
-            </span>
+            <Button label={unavailable} isLink disabled />
           )}
-        </span>
+        </div>
       </div>
     </div>
   );

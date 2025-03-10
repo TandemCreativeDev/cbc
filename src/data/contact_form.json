@@ -1,0 +1,52 @@
+[
+  {
+    "id": "name",
+    "name": "name",
+    "type": "text",
+    "label": "Name",
+    "label_FR": "Noms",
+    "required": true,
+    "long": false,
+    "className": ""
+  },
+  {
+    "id": "company",
+    "name": "company",
+    "type": "text",
+    "label": "Company",
+    "label_FR": "Entreprise",
+    "required": false,
+    "long": false,
+    "className": ""
+  },
+  {
+    "id": "email",
+    "name": "email",
+    "type": "email",
+    "label": "Email",
+    "label_FR": "E-mail",
+    "required": true,
+    "long": false,
+    "className": ""
+  },
+  {
+    "id": "phoneNumber",
+    "name": "phoneNumber",
+    "type": "tel",
+    "label": "Phone Number",
+    "label_FR": "Numéro de téléphone",
+    "required": false,
+    "long": false,
+    "className": ""
+  },
+  {
+    "id": "message",
+    "name": "message",
+    "type": "text",
+    "label": "Message",
+    "label_FR": "Message",
+    "required": true,
+    "long": true,
+    "className": "xl:col-span-2"
+  }
+]

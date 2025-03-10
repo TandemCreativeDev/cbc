@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import { Page } from "@/utils/types";
-import Carousel from "@/components/Carousel";
+import Carousel from "@/components/ui/Carousel";
 import parsePageCsv from "@/utils/parsePageCsv";
 import fetchSheet from "@/utils/fetchSheet";
 
@@ -44,7 +44,7 @@ export default function About() {
 
   return (
     <>
-      <h2 className="text-4xl font-blanch mb-6">{pageContent.title}</h2>
+      <h1 className="text-4xl font-blanch mb-6">{pageContent.title}</h1>
       <p className="text-lg leading-relaxed mb-8">{pageContent.content}</p>
       <Carousel images={carouselImages} />
     </>

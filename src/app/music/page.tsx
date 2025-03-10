@@ -8,6 +8,7 @@ import { IFrameProps } from "@/utils/types";
 import fetchSheet from "@/utils/fetchSheet";
 import parseCsv from "@/utils/parseCsv";
 import { useEffect, useState } from "react";
+import clsx from "clsx";
 
 const sheetTabGid = 1713768433;
 
@@ -63,18 +64,19 @@ export default function Music() {
 
   return (
     <>
-      <h2 className="text-4xl font-blanch mb-6">
+      <h1 className="text-4xl font-blanch mb-6">
         {isFrench ? "Musique" : "Music"}
-      </h2>
+      </h1>
       <div className="flex justify-between m-auto mb-10 overflow-x-scroll gap-3 no-scrollbar">
         {categories.map((category) => (
           <button
             key={category}
-            className={`py-2 px-4 rounded-full transition-colors duration-200 text-nowrap ${
+            className={clsx(
+              "py-2 px-4 rounded-full transition-colors duration-200 text-nowrap focus:ring-clarks-orange focus-visible:ring-2 focus:outline-none",
               selectedCategory === category
                 ? "bg-clarks-orange text-black"
                 : "bg-gray-200 text-gray-800 hover:bg-gray-300"
-            }`}
+            )}
             onClick={() => setSelectedCategory(category)}
           >
             {category}

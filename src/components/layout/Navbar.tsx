@@ -53,7 +53,7 @@ export default function Navbar({ isMenuOpen, setIsMenuOpen }: NavbarProps) {
           <li key={route.path} className="p-2 md:p-0 text-6xl md:text-2xl">
             <Link
               href={route.path}
-              className="hover:text-clarks-orange font-blanch text-center px-4 py-2 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-clarks-orange focus:ring-offset-2 focus:ring-offset-transparent transition-colors"
+              className="hover:text-clarks-orange font-blanch text-center px-4 py-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-clarks-orange focus:ring-offset-2 focus:ring-offset-transparent transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
               {isFrench ? route.textFR : route.textEN}

@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Header from "@/components/Header/Header";
+import Header from "@/components/layout/Header";
 import { LanguageProvider } from "@/context/LanguageContext";
 import localFont from "next/font/local";
-import Footer from "@/components/Footer";
+import Footer from "@/components/layout/Footer";
+import { Toaster } from "react-hot-toast";
 
 const blanchCaps = localFont({
   src: "../fonts/Blanch-Caps.woff2",
@@ -41,6 +42,7 @@ export default function RootLayout({
         <LanguageProvider>
           <Header />
           <main className="container mx-auto pt-28 mb-5xl max-w-5xl p-8 min-h-[calc(100vh-4.5rem)]">
+            <Toaster position="bottom-center" />
             {children}
           </main>
         </LanguageProvider>
