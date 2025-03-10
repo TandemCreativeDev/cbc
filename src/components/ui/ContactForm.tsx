@@ -88,6 +88,7 @@ export default function ContactForm({ legend }: { legend: string }) {
       </fieldset>
       <Button
         type="submit"
+        aria-label="Submit form"
         className="block w-full font-blanch text-2xl p-1"
         label={isFrench ? "Faisons de la music!" : "Let's jam!"}
       />
