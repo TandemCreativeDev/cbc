@@ -3,6 +3,7 @@ import { TourDateType } from "../../utils/types";
 
 import { useLanguage } from "@/context/LanguageContext";
 import Button from "../ui/Button";
+import clsx from "clsx";
 
 interface TourDateProps {
   tourDate: TourDateType;
@@ -32,11 +33,12 @@ export default function TourDate({ tourDate, inPast }: TourDateProps) {
           rel="noopener noreferrer"
           aria-label={`${venue} in ${location} map`}
           role="link"
-          className={`font-bold text-clarks-orange text-xl md:w-1/3 ${
+          className={clsx(
+            "font-bold text-clarks-orange text-xl md:w-1/3 focus:outline-none focus-visible:ring-2 focus:ring-clarks-orange focus:ring-offset-2 focus:ring-offset-transparent transition-colors",
             locationUrl
               ? "hover:text-clarks-red"
               : "text-gray-400 pointer-events-none"
-          }`}
+          )}
         >
           {venue}
         </Link>
