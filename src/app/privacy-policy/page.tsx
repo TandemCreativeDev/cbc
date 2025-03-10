@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
 
 export default function PrivacyPolicy() {
+  const email = "contact@clarksbowlingclub.com";
   const { isFrench } = useLanguage();
   return (
     <>
@@ -182,7 +183,7 @@ export default function PrivacyPolicy() {
               role="link"
               className="text-clarks-orange hover:underline"
             >
-              {process.env.EMAIL_USER}
+              {email}
             </Link>
             .
           </p>
@@ -232,7 +233,7 @@ export default function PrivacyPolicy() {
                 role="link"
                 className="text-clarks-orange hover:underline"
               >
-                {process.env.EMAIL_USER}
+                {email}
               </Link>
             </p>
           </div>
