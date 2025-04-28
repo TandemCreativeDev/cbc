@@ -8,7 +8,7 @@ import { IFrameProps } from "@/utils/types";
 import fetchSheet from "@/utils/fetchSheet";
 import parseCsv from "@/utils/parseCsv";
 import { useEffect, useState } from "react";
-import clsx from "clsx";
+import FilterButton from "@/components/ui/FilterButton";
 
 const sheetTabGid = 1713768433;
 
@@ -69,18 +69,12 @@ export default function Music() {
       </h1>
       <div className="flex justify-between m-auto mb-10 overflow-x-scroll gap-3 no-scrollbar">
         {categories.map((category) => (
-          <button
+          <FilterButton
             key={category}
-            className={clsx(
-              "py-2 px-4 rounded-full transition-colors duration-200 text-nowrap focus:ring-clarks-orange focus-visible:ring-2 focus:outline-none",
-              selectedCategory === category
-                ? "bg-clarks-orange text-black"
-                : "bg-gray-200 text-gray-800 hover:bg-gray-300"
-            )}
+            filter={category}
+            isSelected={selectedCategory === category}
             onClick={() => setSelectedCategory(category)}
-          >
-            {category}
-          </button>
+          />
         ))}
       </div>
       <div className="grid gap-8">
