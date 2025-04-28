@@ -41,12 +41,12 @@ export default function RootLayout({
       >
         <LanguageProvider>
           <Header />
-          <main className="container mx-auto pt-28 mb-5xl max-w-5xl p-8 min-h-[calc(100vh-4.5rem)]">
+          <main className="container mx-auto pt-28 mb-5xl max-w-5xl p-8 min-h-[calc(100vh-6rem)]">
             <Toaster position="bottom-center" />
             {children}
           </main>
+          <Footer />
         </LanguageProvider>
-        <Footer />
       </body>
     </html>
   );

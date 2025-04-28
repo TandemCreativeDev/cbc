@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import {
   FaFacebookF,
@@ -9,6 +11,7 @@ import {
   FaAmazon,
   FaApple,
 } from "react-icons/fa6";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface SocialLink {
   icon: React.ComponentType<{ className: string }>;
@@ -60,9 +63,10 @@ const socialLinks: SocialLink[] = [
 ];
 
 export default function Footer() {
+  const { isFrench } = useLanguage();
   return (
-    <footer className="bg-transparent flex flex-col justify-center align-bottom">
-      <ul className="flex flex-wrap justify-center gap-1 align-bottom">
+    <footer className="bg-transparent flex flex-col justify-center align-bottom gap-4 mb-3">
+      <ul className="flex flex-wrap justify-center gap-5 align-bottom">
         {socialLinks.map((link, index) => (
           <li key={index} className="hover:text-clarks-orange">
             <Link
@@ -71,25 +75,31 @@ export default function Footer() {
               rel="noopener noreferrer"
               aria-label={link.label}
               role="link"
-              className="flex items-center justify-center p-2 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-clarks-orange focus:ring-offset-2 focus:ring-offset-transparent transition-colors"
+              className="flex items-center justify-center rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-clarks-orange focus:ring-offset-2 focus:ring-offset-transparent transition-colors"
             >
               <link.icon className="h-5 w-5" />
             </Link>
           </li>
         ))}
       </ul>
-      <div className="flex flex-row gap-2 justify-center p-2">
-        <p>&copy; 2025</p>
-        <Link
-          href="https://runintandem.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hover:text-clarks-orange focus:outline-none focus-visible:ring-2 focus-visible:ring-clarks-orange focus:ring-offset-2 focus:ring-offset-transparent transition-colors"
-          aria-label="Visit the Tandem Creative Dev website"
-          role="link"
-        >
-          Tandem Creative Dev
-        </Link>
+      <div className="flex flex-col justify-center">
+        <span className="flex justify-center">
+          &copy; {new Date().getFullYear()} Clark&apos;s Bowling Club.{" "}
+          {isFrench ? "Tous droits réservés" : "All rights reserved"}.
+        </span>
+        <div className="flex flex-row gap-1 justify-center">
+          <span>{isFrench ? "Site conçu par" : "Website designed by"}</span>
+          <Link
+            href="https://runintandem.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-clarks-orange focus:outline-none focus-visible:ring-2 focus-visible:ring-clarks-orange focus:ring-offset-2 focus:ring-offset-transparent transition-colors"
+            aria-label="Visit the Tandem Creative Dev website"
+            role="link"
+          >
+            Tandem Creative Dev
+          </Link>
+        </div>
       </div>
     </footer>
   );
