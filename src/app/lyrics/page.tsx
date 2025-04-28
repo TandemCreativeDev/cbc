@@ -108,7 +108,9 @@ export default function Music() {
             <div className="bg-transparent p-6 border-2">
               <h2 className="text-2xl font-bold mb-4">{selectedSong.title}</h2>
               <div className="whitespace-pre-wrap">
-                {isFrench ? selectedSong.paroles : selectedSong.lyrics}
+                {isFrench && selectedSong.paroles
+                  ? selectedSong.paroles
+                  : selectedSong.lyrics}
               </div>
             </div>
           )}
