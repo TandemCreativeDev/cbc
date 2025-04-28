@@ -19,3 +19,11 @@ export interface IFrameProps {
   categorie?: string;
   category?: string;
 }
+
+export interface LyricsProps {
+  title: string;
+  album?: string;
+  date?: string;
+  lyrics: string;
+  paroles: string;
+}
