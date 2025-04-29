@@ -61,7 +61,7 @@ export default function TextInput({
   };
 
   return (
-    <div className={twMerge("col-span-2 xl:col-span-1", className)}>
+    <div className={twMerge("col-span-2 lg:col-span-1", className)}>
       <label
         htmlFor={id}
         className={twMerge("block text-sm/6 font-semibold", labelClass)}
