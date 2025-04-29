@@ -24,6 +24,8 @@ export default {
         "flicker-1": "flicker 1.5s steps(2) infinite",
         "flicker-2": "flicker 2.1s steps(2) infinite 0.3s",
         "flicker-3": "flicker 1.8s steps(2) infinite 0.7s",
+        "bowling-roll": "bowlingRoll 0.6s ease-in-out forwards",
+        "bowling-spin": "bowlingSpin 0.6s linear infinite",
       },
       keyframes: {
         "spin-pulse": {
@@ -34,6 +36,14 @@ export default {
         flicker: {
           "0%, 100%": { opacity: "0" },
           "50%": { opacity: "1" },
+        },
+        bowlingRoll: {
+          "0%": { transform: "translateX(var(--prev-position))" },
+          "100%": { transform: "translateX(var(--next-position))" },
+        },
+        bowlingSpin: {
+          "0%": { transform: "rotate(0deg)" },
+          "100%": { transform: "rotate(360deg)" },
         },
       },
     },
