@@ -6,7 +6,7 @@ export default async function fetchSheet(tabGid: number): Promise<string> {
     const csvData = await response.text();
     return csvData;
   } catch (error) {
-    console.error("Error fetching data:", error);
+    console.error("Error fetching data: ", error);
     throw error;
   }
 }
