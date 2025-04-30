@@ -47,6 +47,6 @@
     "label_FR": "Message",
     "required": true,
     "long": true,
-    "className": "xl:col-span-2"
+    "className": "lg:col-span-2"
   }
 ]

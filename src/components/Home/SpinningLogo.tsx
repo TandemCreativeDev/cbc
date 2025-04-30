@@ -181,7 +181,7 @@ export default function SpinningLogo() {
   return (
     <div
       ref={refContainer}
-      className="fixed top-[5rem] left-0 w-full h-[calc(100vh-9.5rem)] overflow-hidden hidden md:block md:motion-reduce:hidden z-50"
+      className="fixed top-[5rem] left-0 w-full h-[calc(100vh-11rem)] overflow-hidden hidden md:block md:motion-reduce:hidden z-50"
     ></div>
   );
 }

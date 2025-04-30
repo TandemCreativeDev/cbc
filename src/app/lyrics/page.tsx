@@ -89,10 +89,10 @@ export default function Music() {
               <button
                 key={song.title}
                 className={clsx(
-                  "p-4 rounded-md text-left transition-colors duration-200 focus:ring-clarks-orange focus-visible:ring-2 focus:outline-none",
+                  "p-4 border text-left transition-colors duration-200 focus:ring-clarks-orange focus-visible:ring-2 focus:outline-none",
                   selectedSong?.title === song.title
-                    ? "bg-clarks-orange text-black"
-                    : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+                    ? "bg-white text-black"
+                    : "bg-transparent text-white hover:border-2 hover:border-clarks-orange"
                 )}
                 onClick={() => setSelectedSong(song)}
               >

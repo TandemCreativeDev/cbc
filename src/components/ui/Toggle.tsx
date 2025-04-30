@@ -1,8 +1,10 @@
 // import bowlingBall from "../../assets/bowling-ball-toggle.svg";
+import { twMerge } from "tailwind-merge";
 import { useLanguage } from "../../context/LanguageContext";
 import Image from "next/image";
+import clsx from "clsx";
 
-export default function Toggle() {
+export default function Toggle({ className }: { className?: string }) {
   const { isFrench, setIsFrench } = useLanguage();
 
   const handleLanguageToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -13,12 +15,13 @@ export default function Toggle() {
   return (
     <label
       htmlFor="language"
-      className="inline-flex items-center cursor-pointer"
+      className={twMerge("inline-flex items-center cursor-pointer", className)}
     >
       <span
-        className={`mr-3 text-2xl font-medium font-blanch ${
+        className={clsx(
+          "mr-3 text-2xl font-medium font-blanch",
           !isFrench ? "text-clarks-orange" : ""
-        }`}
+        )}
       >
         EN
       </span>
@@ -33,17 +36,19 @@ export default function Toggle() {
         <Image
           src="/svg/bowling-ball-toggle.svg"
           alt="Clark's bowling toggle"
-          className={`absolute h-6 w-6 left-0.5 top-0.5 transition-all duration-300 ${
+          className={clsx(
+            "absolute h-6 w-6 left-0.5 top-0.5 motion-safe:transition-all motion-safe:duration-300",
             isFrench ? "translate-x-7" : ""
-          }`}
+          )}
           height={500}
           width={500}
         />
       </div>
       <span
-        className={`ms-3 text-2xl font-medium font-blanch ${
+        className={clsx(
+          "ms-3 text-2xl font-medium font-blanch",
           isFrench ? "text-clarks-orange" : ""
-        }`}
+        )}
       >
         FR
       </span>
