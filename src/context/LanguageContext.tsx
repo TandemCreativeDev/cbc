@@ -67,6 +67,10 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     setIsFrench(value);
   }, []);
 
+  useEffect(() => {
+    document.documentElement.lang = isFrench ? "fr" : "en";
+  }, [isFrench]);
+
   const value = {
     isFrench,
     setIsFrench: handleSetIsFrench,

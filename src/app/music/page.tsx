@@ -8,9 +8,14 @@ import { IFrameProps } from "@/utils/types";
 import fetchSheet from "@/utils/fetchSheet";
 import parseCsv from "@/utils/parseCsv";
 import { useEffect, useState } from "react";
+import type { Metadata } from "next";
 import FilterButton from "@/components/ui/FilterButton";
 
 const sheetTabGid = 1713768433;
+
+export const metadata: Metadata = {
+  title: "Music",
+};
 
 export default function Music() {
   const { isFrench } = useLanguage();
@@ -19,6 +24,7 @@ export default function Music() {
   const [selectedCategory, setSelectedCategory] = useState<
     string | number | readonly string[] | undefined
   >("Live Performances");
+  const [announcement, setAnnouncement] = useState("");
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -62,6 +68,18 @@ export default function Music() {
             selectedCategory
         );
 
+  useEffect(() => {
+    document.title = `${isFrench ? "Musique" : "Music"} | Clark's Bowling Club`;
+  }, [isFrench]);
+
+  useEffect(() => {
+    setAnnouncement(
+      isFrench
+        ? `${filteredIFrames.length} éléments dans la catégorie ${selectedCategory}`
+        : `${filteredIFrames.length} items in category ${selectedCategory}`
+    );
+  }, [filteredIFrames.length, selectedCategory, isFrench]);
+
   return (
     <>
       <h1 className="text-4xl font-blanch mb-6">
@@ -93,6 +111,7 @@ export default function Music() {
           )
         )}
       </div>
+      <div aria-live="polite" className="sr-only">{announcement}</div>
     </>
   );
 }

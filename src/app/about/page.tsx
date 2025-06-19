@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import type { Metadata } from "next";
 import { useLanguage } from "@/context/LanguageContext";
 import { Page } from "@/utils/types";
 import Carousel from "@/components/ui/Carousel";
@@ -13,7 +14,17 @@ const carouselImages = [
   "/images/carousel/leaving.jpg",
   "/images/carousel/yesday.jpg",
 ];
+const carouselAlts = [
+  "Black and white band portrait",
+  "Band posing together",
+  "Leaving the stage after a show",
+  "Performing at Yes Day festival",
+];
 const sheetTabGid = 0;
+
+export const metadata: Metadata = {
+  title: "About",
+};
 
 export default function About() {
   const { isFrench } = useLanguage();
@@ -40,13 +51,17 @@ export default function About() {
     setPageContent(isFrench ? frenchContent : englishContent);
   }, [isFrench, frenchContent, englishContent]);
 
+  useEffect(() => {
+    document.title = `${isFrench ? 'À propos' : 'About'} | Clark's Bowling Club`;
+  }, [isFrench]);
+
   if (!pageContent) return <div>Loading...</div>;
 
   return (
     <>
       <h1 className="text-4xl font-blanch mb-6">{pageContent.title}</h1>
       <p className="text-lg leading-relaxed mb-8">{pageContent.content}</p>
-      <Carousel images={carouselImages} />
+      <Carousel images={carouselImages} altTexts={carouselAlts} />
     </>
   );
 }

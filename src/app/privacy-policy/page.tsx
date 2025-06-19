@@ -2,10 +2,21 @@
 
 import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
+import { useEffect } from "react";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Privacy Policy",
+};
 
 export default function PrivacyPolicy() {
   const email = "contact@clarksbowlingclub.com";
   const { isFrench } = useLanguage();
+  useEffect(() => {
+    document.title = `${
+      isFrench ? 'Politique de Confidentialité' : 'Privacy Policy'
+    } | Clark's Bowling Club`;
+  }, [isFrench]);
   return (
     <>
       <h1 className="text-4xl font-blanch mb-6">

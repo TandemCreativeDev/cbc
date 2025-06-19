@@ -1,14 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import Image from "next/image";
 import clsx from "clsx";
 
 interface CarouselProps {
   images: string[];
+  altTexts?: string[];
 }
 
-export default function Carousel({ images }: CarouselProps) {
+export default function Carousel({ images, altTexts }: CarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [announcement, setAnnouncement] = useState(
+    `Slide 1 of ${images.length}: ${altTexts?.[0] || "Band image"}`
+  );
 
   const nextSlide = () => {
     setCurrentIndex((prevIndex) =>
@@ -21,6 +25,11 @@ export default function Carousel({ images }: CarouselProps) {
       prevIndex === 0 ? images.length - 1 : prevIndex - 1
     );
   };
+
+  useEffect(() => {
+    const alt = altTexts?.[currentIndex] || `Band image ${currentIndex + 1}`;
+    setAnnouncement(`Slide ${currentIndex + 1} of ${images.length}: ${alt}`);
+  }, [currentIndex, altTexts, images.length]);
 
   return (
     <div className="relative w-full h-96 overflow-hidden rounded-lg">
@@ -35,7 +44,7 @@ export default function Carousel({ images }: CarouselProps) {
             height={500}
             key={index}
             src={image}
-            alt={`Slide ${index + 1}`}
+            alt={altTexts?.[index] || `Band image ${index + 1}`}
             className="w-full h-full object-cover flex-shrink-0"
           />
         ))}
@@ -72,6 +81,9 @@ export default function Carousel({ images }: CarouselProps) {
             role="button"
           />
         ))}
+      </div>
+      <div aria-live="polite" className="sr-only">
+        {announcement}
       </div>
     </div>
   );
