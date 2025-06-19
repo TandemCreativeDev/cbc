@@ -14,10 +14,10 @@ const carouselImages = [
   "/images/carousel/yesday.jpg",
 ];
 const carouselAlts = [
-  "Black and white band portrait",
-  "Band posing together",
-  "Leaving the stage after a show",
-  "Performing at Yes Day festival",
+  "Band portrait inside an abandoned warehouse",
+  "Band posing together in dilapidatedbuilding",
+  "Band eaving the warehouse after rehearsal and shoot",
+  "Still of the band in Yes Day music video shoot",
 ];
 const sheetTabGid = 0;
 
