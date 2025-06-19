@@ -26,18 +26,18 @@ export default function Checkbox({
   required = false,
 }: CheckboxProps) {
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
-  const [error, setError] = useState("");
   const { isFrench } = useLanguage();
 
   const handleInvalid = (e: React.FormEvent<HTMLInputElement>) => {
-    e.preventDefault();
     if (e.currentTarget.validity.valueMissing) {
-      setError(isFrench ? "Ce champ est obligatoire" : "This field is required");
+      e.currentTarget.setCustomValidity(
+        isFrench ? "Ce champ est obligatoire" : "This field is required"
+      );
     }
   };
 
-  const handleInput = () => {
-    setError("");
+  const handleInput = (e: React.FormEvent<HTMLInputElement>) => {
+    e.currentTarget.setCustomValidity("");
   };
 
   useEffect(() => {
@@ -55,29 +55,15 @@ export default function Checkbox({
   return (
     <div className="flex gap-2 pb-6 col-span-2">
       {prefersReducedMotion ? (
-        <>
-          <input
-            id={id}
-            name={name}
-            type="checkbox"
-            required={required}
-            className="block"
-            onInvalid={handleInvalid}
-            onInput={handleInput}
-            aria-invalid={!!error}
-            aria-describedby={error ? `${id}-error` : undefined}
-          />
-          {error && (
-            <p
-              id={`${id}-error`}
-              className="mt-1 text-red-600"
-              role="alert"
-              aria-live="polite"
-            >
-              {error}
-            </p>
-          )}
-        </>
+        <input
+          id={id}
+          name={name}
+          type="checkbox"
+          required={required}
+          className="block"
+          onInvalid={handleInvalid}
+          onInput={handleInput}
+        />
       ) : (
         <div className="checkbox-wrapper-30">
           <span className="checkbox">
@@ -89,8 +75,6 @@ export default function Checkbox({
               className="block focus:ring-2 focus:ring-clarks-orange focus:outline-none"
               onInvalid={handleInvalid}
               onInput={handleInput}
-              aria-invalid={!!error}
-              aria-describedby={error ? `${id}-error` : undefined}
             />
             <svg>
               <use xlinkHref="#checkbox-30" className="checkbox"></use>
@@ -108,16 +92,6 @@ export default function Checkbox({
           </svg>
         </div>
       )}
-      {error && !prefersReducedMotion && (
-        <p
-          id={`${id}-error`}
-          className="mt-1 text-red-600"
-          role="alert"
-          aria-live="polite"
-        >
-          {error}
-        </p>
-      )}
       <label htmlFor={id} className={twMerge("text-sm/6", labelClass)}>
         {label}{" "}
         <Link
@@ -126,7 +100,7 @@ export default function Checkbox({
           rel="noopener noreferrer"
           aria-label={
             isFrench
-              ? "Voir la politique de confidentialité"
+              ? "Voir la politique de confidentialité"
               : "See our Privacy policy"
           }
           role="link"
