@@ -15,8 +15,8 @@ const carouselImages = [
 ];
 const carouselAlts = [
   "Band portrait inside an abandoned warehouse",
-  "Band posing together in dilapidatedbuilding",
-  "Band eaving the warehouse after rehearsal and shoot",
+  "Band posing together in dilapidated building",
+  "Band leaving the warehouse after rehearsal and shoot",
   "Still of the band in Yes Day music video shoot",
 ];
 const sheetTabGid = 0;
