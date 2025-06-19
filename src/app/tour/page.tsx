@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import { Page, TourDateType } from "@/utils/types";
+import type { Metadata } from "next";
 
 import fetchSheet from "@/utils/fetchSheet";
 import parseCsv from "@/utils/parseCsv";
@@ -13,6 +14,10 @@ import TourDatesContainer from "@/components/TourDates/TourDatesContainer";
 
 const sheetTabGid = 127405583; // Main Tour page content
 const sheetTabGidTourDates = 572869052; // Tour dates
+
+export const metadata: Metadata = {
+  title: "Tour",
+};
 
 export default function Tour() {
   const { isFrench } = useLanguage();
@@ -48,6 +53,10 @@ export default function Tour() {
   useEffect(() => {
     setPageContent(isFrench ? frenchContent : englishContent);
   }, [isFrench, englishContent, frenchContent]);
+
+  useEffect(() => {
+    document.title = `${isFrench ? 'Tournée' : 'Tour'} | Clark's Bowling Club`;
+  }, [isFrench]);
 
   useEffect(() => {
     const past: TourDateType[] = [];

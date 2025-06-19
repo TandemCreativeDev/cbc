@@ -19,7 +19,10 @@ const goudyStd = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Clark's Bowling Club",
+  title: {
+    default: "Clark's Bowling Club",
+    template: "%s | Clark's Bowling Club",
+  },
   description:
     "Clark’s Bowling Club is a 6-piece funk/pop band based in Lyon, France. Inspired by the likes of Jungle and Deluxe, their music brings a modern twist to disco-funk, hip-hop, and jazz genres, breathing new life into the vibrant music scene.",
 };

@@ -2,6 +2,8 @@
 
 import { useLanguage } from "@/context/LanguageContext";
 import { Page } from "@/utils/types";
+import { useEffect } from "react";
+import type { Metadata } from "next";
 
 const french: Page = {
   title: "Boutique",
@@ -13,9 +15,17 @@ const english: Page = {
   content: "Coming soon!",
 };
 
+export const metadata: Metadata = {
+  title: "Merch",
+};
+
 export default function Tour() {
   const { isFrench } = useLanguage();
   const pageContent = isFrench ? french : english;
+
+  useEffect(() => {
+    document.title = `${isFrench ? "Boutique" : "Merch"} | Clark's Bowling Club`;
+  }, [isFrench]);
 
   return (
     <>

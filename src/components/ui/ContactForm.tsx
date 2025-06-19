@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useState, useRef } from "react";
 import { toast } from "react-hot-toast";
 
 import TextInput from "./TextInput";
@@ -21,6 +21,7 @@ export default function ContactForm({ legend }: { legend: string }) {
   );
 
   const [formData, setFormData] = useState(contactForm);
+  const formRef = useRef<HTMLFormElement>(null);
   const { isFrench } = useLanguage();
 
   const handleChange = (e: { target: { name: string; value: string } }) => {
@@ -28,8 +29,14 @@ export default function ContactForm({ legend }: { legend: string }) {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  async function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (formRef.current && !formRef.current.checkValidity()) {
+      formRef.current.querySelector<HTMLInputElement | HTMLTextAreaElement>(
+        ':invalid'
+      )?.focus();
+      return;
+    }
     const fd = new FormData();
     for (const key in formData) {
       fd.append(key, formData[key]);
@@ -60,7 +67,12 @@ export default function ContactForm({ legend }: { legend: string }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mt-10">
+    <form
+      ref={formRef}
+      noValidate
+      onSubmit={handleSubmit}
+      className="mt-10"
+    >
       <fieldset className="grid gap-x-8 gap-y-6">
         <legend className="text-lg leading-relaxed mb-8">{legend}</legend>
         {contact_form.map((field) => (

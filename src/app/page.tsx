@@ -1,15 +1,26 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
+import { useLanguage } from "@/context/LanguageContext";
+import type { Metadata } from "next";
 import { FaVolumeMute, FaVolumeUp, FaPause, FaPlay } from "react-icons/fa";
 import SpinningLogo from "@/components/Home/SpinningLogo";
 import Image from "next/image";
 import StaticLogo from "@/components/Home/StaticLogo";
 
+export const metadata: Metadata = {
+  title: "Home",
+};
+
 export default function Home() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [muted, setMuted] = useState(true);
   const [play, setPlay] = useState(true);
+  const { isFrench } = useLanguage();
+
+  useEffect(() => {
+    document.title = `${isFrench ? 'Accueil' : 'Home'} | Clark's Bowling Club`;
+  }, [isFrench]);
 
   const backgroundClasses =
     "absolute inset-0 top-0 left-0 min-h-full w-auto object-cover";
@@ -47,7 +58,7 @@ export default function Home() {
         />
         <Image
           src="/images/home.png"
-          alt=""
+          alt="Band performing on stage"
           fill
           className={`${backgroundClasses} motion-reduce:block hidden`}
         />

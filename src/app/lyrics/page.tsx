@@ -4,11 +4,16 @@ import { useLanguage } from "@/context/LanguageContext";
 import fetchSheet from "@/utils/fetchSheet";
 import parseCsv from "@/utils/parseCsv";
 import { useEffect, useState } from "react";
+import type { Metadata } from "next";
 import clsx from "clsx";
 import { LyricsProps } from "@/utils/types";
 import FilterButton from "@/components/ui/FilterButton";
 
 const sheetTabGid = 145198726;
+
+export const metadata: Metadata = {
+  title: "Lyrics",
+};
 
 export default function Music() {
   const { isFrench } = useLanguage();
@@ -16,6 +21,8 @@ export default function Music() {
   const [albums, setAlbums] = useState<string[]>([]);
   const [selectedAlbum, setSelectedAlbum] = useState<string | undefined>();
   const [selectedSong, setSelectedSong] = useState<LyricsProps | undefined>();
+  const [albumAnnouncement, setAlbumAnnouncement] = useState("");
+  const [songAnnouncement, setSongAnnouncement] = useState("");
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -65,6 +72,28 @@ export default function Music() {
   const filteredSongs = selectedAlbum
     ? lyrics.filter((song) => song.album === selectedAlbum)
     : [];
+
+  useEffect(() => {
+    document.title = `${isFrench ? "Paroles" : "Lyrics"} | Clark's Bowling Club`;
+  }, [isFrench]);
+
+  useEffect(() => {
+    setAlbumAnnouncement(
+      isFrench
+        ? `${filteredSongs.length} chansons dans l'album ${selectedAlbum}`
+        : `${filteredSongs.length} songs from album ${selectedAlbum}`
+    );
+  }, [filteredSongs.length, selectedAlbum, isFrench]);
+
+  useEffect(() => {
+    if (selectedSong) {
+      setSongAnnouncement(
+        isFrench
+          ? `Paroles affichées pour ${selectedSong.title}`
+          : `Showing lyrics for ${selectedSong.title}`
+      );
+    }
+  }, [selectedSong, isFrench]);
 
   return (
     <>
@@ -116,6 +145,8 @@ export default function Music() {
           )}
         </div>
       </div>
+      <div aria-live="polite" className="sr-only">{albumAnnouncement}</div>
+      <div aria-live="polite" className="sr-only">{songAnnouncement}</div>
     </>
   );
 }
