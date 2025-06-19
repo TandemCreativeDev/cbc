@@ -1,5 +1,4 @@
 import { twMerge } from "tailwind-merge";
-import { useState } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 
 interface InputProps {
@@ -32,20 +31,22 @@ export default function TextInput({
   long = false,
 }: InputProps) {
   const { isFrench } = useLanguage();
-  const [error, setError] = useState("");
   const baseClasses =
     "block w-full bg-slate-950 border-white px-3.5 py-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-clarks-orange sm:text-sm/6 mt-2.5 focus:outline-none";
 
+  // Set custom validation messages for better UX
   const handleInvalid = (
     e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     if (e.currentTarget.validity.valueMissing) {
-      setError(isFrench ? "Ce champ est obligatoire" : "This field is required");
+      e.currentTarget.setCustomValidity(
+        isFrench ? "Ce champ est obligatoire" : "This field is required"
+      );
     } else if (
       e.currentTarget.validity.typeMismatch &&
       e.currentTarget.type === "email"
     ) {
-      setError(
+      e.currentTarget.setCustomValidity(
         isFrench
           ? "Veuillez entrer une adresse e-mail valide"
           : "Please enter a valid email address"
@@ -53,8 +54,11 @@ export default function TextInput({
     }
   };
 
-  const handleInput = () => {
-    setError("");
+  const handleInput = (
+    e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    // Clear custom validity message when user starts typing
+    e.currentTarget.setCustomValidity("");
   };
 
   return (
@@ -69,62 +73,35 @@ export default function TextInput({
             <span aria-hidden="true">
               {isFrench ? " (obligatoire)" : " (required)"}
             </span>
-            <span className="hidden"> required</span>
+            <span className="sr-only"> required</span>
           </>
         ) : null}
       </label>
+
       {long ? (
-        <>
-          <textarea
-            id={id}
-            name={name}
-            rows={4}
-            value={value}
-            onChange={onChange}
-            className={twMerge(baseClasses, inputClass)}
-            required={required}
-            onInvalid={handleInvalid}
-            onInput={handleInput}
-            aria-invalid={!!error}
-            aria-describedby={error ? `${id}-error` : undefined}
-          />
-          {error && (
-            <p
-              id={`${id}-error`}
-              className="mt-1 text-red-600"
-              role="alert"
-              aria-live="polite"
-            >
-              {error}
-            </p>
-          )}
-        </>
+        <textarea
+          id={id}
+          name={name}
+          rows={4}
+          value={value}
+          onChange={onChange}
+          onInvalid={handleInvalid}
+          onInput={handleInput}
+          className={twMerge(baseClasses, inputClass)}
+          required={required}
+        />
       ) : (
-        <>
-          <input
-            id={id}
-            name={name}
-            type={type}
-            value={value}
-            onChange={onChange}
-            className={twMerge(baseClasses, inputClass)}
-            required={required}
-            onInvalid={handleInvalid}
-            onInput={handleInput}
-            aria-invalid={!!error}
-            aria-describedby={error ? `${id}-error` : undefined}
-          />
-          {error && (
-            <p
-              id={`${id}-error`}
-              className="mt-1 text-red-600"
-              role="alert"
-              aria-live="polite"
-            >
-              {error}
-            </p>
-          )}
-        </>
+        <input
+          id={id}
+          name={name}
+          type={type}
+          value={value}
+          onChange={onChange}
+          onInvalid={handleInvalid}
+          onInput={handleInput}
+          className={twMerge(baseClasses, inputClass)}
+          required={required}
+        />
       )}
     </div>
   );
