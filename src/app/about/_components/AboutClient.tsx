@@ -47,7 +47,7 @@ export default function AboutClient() {
   }, [isFrench, frenchContent, englishContent]);
 
   useEffect(() => {
-    document.title = `${isFrench ? "À propos" : "About"} | Clark's Bowling Club`;
+    document.title = `${isFrench ? "Bio" : "About"} | Clark's Bowling Club`;
   }, [isFrench]);
 
   if (!pageContent) return <div>Loading...</div>;
