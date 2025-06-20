@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useState, useRef } from "react";
 import { toast } from "react-hot-toast";
 
 import TextInput from "./TextInput";
@@ -21,6 +21,8 @@ export default function ContactForm({ legend }: { legend: string }) {
   );
 
   const [formData, setFormData] = useState(contactForm);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
   const { isFrench } = useLanguage();
 
   const handleChange = (e: { target: { name: string; value: string } }) => {
@@ -28,14 +30,28 @@ export default function ContactForm({ legend }: { legend: string }) {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  async function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
+    // Use browser validation - will show native bubbles
+    if (formRef.current && !formRef.current.checkValidity()) {
+      // Let browser handle the validation display
+      formRef.current.reportValidity();
+      return;
+    }
+
+    setIsSubmitting(true);
     const fd = new FormData();
     for (const key in formData) {
       fd.append(key, formData[key]);
     }
     fd.append("language", isFrench ? "fr" : "en");
-    const toastId = toast.loading("Sending message...");
+
+    const loadingMessage = isFrench
+      ? "Envoi en cours..."
+      : "Sending message...";
+    const toastId = toast.loading(loadingMessage);
+
     try {
       const response = await fetch("/api/send-emails", {
         method: "POST",
@@ -43,25 +59,43 @@ export default function ContactForm({ legend }: { legend: string }) {
       });
       const data = await response.json();
       toast.dismiss(toastId);
+
       if (response.ok) {
-        toast.success(
-          `Thanks ${
-            formData.name.trim().split(" ")[0]
-          }, we’ll be in touch soon!`
-        );
+        const successMessage = isFrench
+          ? `Merci ${
+              formData.name.trim().split(" ")[0]
+            }, nous vous recontacterons bientôt !`
+          : `Thanks ${
+              formData.name.trim().split(" ")[0]
+            }, we'll be in touch soon!`;
+        toast.success(successMessage);
+
+        // Reset form on success
+        setFormData(contactForm);
+        if (formRef.current) {
+          formRef.current.reset();
+        }
       } else {
-        toast.error(`Something went wrong: ${data.error}`);
+        const errorMessage = isFrench
+          ? `Une erreur s'est produite : ${data.error}`
+          : `Something went wrong: ${data.error}`;
+        toast.error(errorMessage);
       }
     } catch (error) {
       console.error(error);
       toast.dismiss(toastId);
-      toast.error("Failed to send message. Please try again later.");
+      const errorMessage = isFrench
+        ? "Échec de l'envoi du message. Veuillez réessayer plus tard."
+        : "Failed to send message. Please try again later.";
+      toast.error(errorMessage);
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mt-10">
-      <fieldset className="grid gap-x-8 gap-y-6">
+    <form ref={formRef} onSubmit={handleSubmit} className="mt-10">
+      <fieldset className="grid gap-x-8 gap-y-6" disabled={isSubmitting}>
         <legend className="text-lg leading-relaxed mb-8">{legend}</legend>
         {contact_form.map((field) => (
           <TextInput
@@ -80,15 +114,17 @@ export default function ContactForm({ legend }: { legend: string }) {
         <Checkbox
           id={"privacyPolicy"}
           name={"privacyPolicy"}
-          label={isFrench ? "J’accepte la " : "Agree to our "}
+          label={isFrench ? "J'accepte la " : "Agree to our "}
           url={`/privacy-policy?isFrench=${isFrench}`}
-          urlText={isFrench ? "politique de confidentialité" : "privacy policy"}
+          urlText={isFrench ? "politique de confidentialité" : "privacy policy"}
           required
         />
       </fieldset>
+
       <Button
         type="submit"
-        aria-label="Submit form"
+        disabled={isSubmitting}
+        aria-label={isFrench ? "Envoyer le formulaire" : "Submit form"}
         className="block w-full font-blanch text-2xl p-1"
         label={isFrench ? "Faisons de la music!" : "Let's jam!"}
       />

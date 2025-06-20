@@ -100,7 +100,7 @@ export default function Checkbox({
           rel="noopener noreferrer"
           aria-label={
             isFrench
-              ? "Voir la politique de confidentialité"
+              ? "Voir la politique de confidentialité"
               : "See our Privacy policy"
           }
           role="link"

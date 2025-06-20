@@ -1,5 +1,4 @@
 import { twMerge } from "tailwind-merge";
-
 import { useLanguage } from "@/context/LanguageContext";
 
 interface InputProps {
@@ -35,6 +34,7 @@ export default function TextInput({
   const baseClasses =
     "block w-full bg-slate-950 border-white px-3.5 py-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-clarks-orange sm:text-sm/6 mt-2.5 focus:outline-none";
 
+  // Set custom validation messages for better UX
   const handleInvalid = (
     e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -57,6 +57,7 @@ export default function TextInput({
   const handleInput = (
     e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
+    // Clear custom validity message when user starts typing
     e.currentTarget.setCustomValidity("");
   };
 
@@ -72,10 +73,11 @@ export default function TextInput({
             <span aria-hidden="true">
               {isFrench ? " (obligatoire)" : " (required)"}
             </span>
-            <span className="hidden"> required</span>
+            <span className="sr-only"> required</span>
           </>
         ) : null}
       </label>
+
       {long ? (
         <textarea
           id={id}
@@ -83,10 +85,10 @@ export default function TextInput({
           rows={4}
           value={value}
           onChange={onChange}
-          className={twMerge(baseClasses, inputClass)}
-          required={required}
           onInvalid={handleInvalid}
           onInput={handleInput}
+          className={twMerge(baseClasses, inputClass)}
+          required={required}
         />
       ) : (
         <input
@@ -95,10 +97,10 @@ export default function TextInput({
           type={type}
           value={value}
           onChange={onChange}
-          className={twMerge(baseClasses, inputClass)}
-          required={required}
           onInvalid={handleInvalid}
           onInput={handleInput}
+          className={twMerge(baseClasses, inputClass)}
+          required={required}
         />
       )}
     </div>
