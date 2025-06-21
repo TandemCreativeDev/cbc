@@ -6,9 +6,10 @@ import { IFrameProps, LyricsProps, TourDateType } from "@/utils/types";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { slug: string[] } }
+  { params }: { params: Promise<{ slug: string[] }> }
 ) {
-  const slug = params.slug.join("/");
+  const { slug: slugArray } = await params;
+  const slug = slugArray.join("/");
 
   if (!slug.endsWith(".md")) {
     return new Response("Not found", { status: 404 });
