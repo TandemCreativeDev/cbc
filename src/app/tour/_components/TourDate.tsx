@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { TourDateType } from "../../utils/types";
+import { TourDateType } from "../../../utils/types";
 
 import { useLanguage } from "@/context/LanguageContext";
-import Button from "../ui/Button";
+import Button from "../../../components/ui/Button";
 import clsx from "clsx";
 
 interface TourDateProps {

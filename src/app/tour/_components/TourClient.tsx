@@ -7,7 +7,7 @@ import fetchSheet from "@/utils/fetchSheet";
 import parseCsv from "@/utils/parseCsv";
 import parsePageCsv from "@/utils/parsePageCsv";
 import dateInPast from "@/utils/dateInPast";
-import TourDatesContainer from "@/components/TourDates/TourDatesContainer";
+import TourDatesContainer from "./TourDatesContainer";
 
 const sheetTabGid = 127405583; // Main Tour page content
 const sheetTabGidTourDates = 572869052; // Tour dates

@@ -1,4 +1,4 @@
-import { TourDateType } from "../../utils/types";
+import { TourDateType } from "@/utils/types";
 import TourDate from "./TourDate";
 
 interface TourDatesContainerProps {
@@ -10,7 +10,6 @@ export default function TourDatesContainer({
   tourDates,
   title,
 }: TourDatesContainerProps) {
-  // Create ID-safe version of title
   const sectionId = title
     .toLowerCase()
     .replace(/\s+/g, "-")
