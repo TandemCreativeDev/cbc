@@ -8,7 +8,7 @@ import { IFrameProps } from "@/utils/types";
 import fetchSheet from "@/utils/fetchSheet";
 import parseCsv from "@/utils/parseCsv";
 import { useEffect, useState } from "react";
-import FilterButton from "@/components/ui/FilterButton";
+import FilterNavigation from "@/components/layout/FilterNavigation";
 
 const sheetTabGid = 1713768433;
 
@@ -87,28 +87,17 @@ export default function MusicClient() {
         {isFrench ? "Musique" : "Music"}
       </h1>
 
-      <nav
-        id="music-category-filters"
-        aria-label={
+      <FilterNavigation
+        categories={categories}
+        selectedCategory={selectedCategory}
+        onCategoryChange={handleCategoryChange}
+        ariaLabel={
           isFrench
             ? "Filtres de catégories musicales"
             : "Music category filters"
         }
-        className="mb-10"
-      >
-        <ul className="flex justify-between overflow-x-scroll gap-3 no-scrollbar">
-          {categories.map((category) => (
-            <li key={category}>
-              <FilterButton
-                filter={category}
-                isSelected={selectedCategory === category}
-                onClick={() => handleCategoryChange(category)}
-                aria-describedby="category-announcement"
-              />
-            </li>
-          ))}
-        </ul>
-      </nav>
+        announcementId="category-announcement"
+      />
 
       <section
         id={
