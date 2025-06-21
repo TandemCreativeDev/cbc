@@ -53,16 +53,22 @@ export default function Checkbox({
   }, []);
 
   return (
-    <div className="flex gap-2 pb-6 col-span-2">
+    <div
+      className="flex gap-2 pb-6 col-span-2"
+      role="group"
+      aria-labelledby={`${id}-label`}
+    >
       {prefersReducedMotion ? (
         <input
           id={id}
           name={name}
           type="checkbox"
           required={required}
-          className="block"
+          className="block focus:ring-2 focus:ring-clarks-orange focus:outline-none"
           onInvalid={handleInvalid}
           onInput={handleInput}
+          aria-labelledby={`${id}-label`}
+          aria-describedby={`${id}-help`}
         />
       ) : (
         <div className="checkbox-wrapper-30">
@@ -75,9 +81,11 @@ export default function Checkbox({
               className="block focus:ring-2 focus:ring-clarks-orange focus:outline-none"
               onInvalid={handleInvalid}
               onInput={handleInput}
+              aria-labelledby={`${id}-label`}
+              aria-describedby={`${id}-help`}
             />
-            <svg>
-              <use xlinkHref="#checkbox-30" className="checkbox"></use>
+            <svg aria-hidden="true" role="presentation">
+              <use xlinkHref="#checkbox-30"></use>
             </svg>
           </span>
           <svg xmlns="http://www.w3.org/2000/svg" className="hidden">
@@ -92,23 +100,38 @@ export default function Checkbox({
           </svg>
         </div>
       )}
-      <label htmlFor={id} className={twMerge("text-sm/6", labelClass)}>
-        {label}{" "}
-        <Link
-          href={url}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={
-            isFrench
-              ? "Voir la politique de confidentialité"
-              : "See our Privacy policy"
-          }
-          role="link"
-          className="text-clarks-orange focus:ring-clarks-orange focus-visible:ring-2 focus:outline-none hover:underline"
+
+      <div>
+        <label
+          htmlFor={id}
+          id={`${id}-label`}
+          className={twMerge("text-sm/6", labelClass)}
         >
-          {urlText}
-        </Link>
-      </label>
+          {label}{" "}
+          <Link
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={
+              isFrench
+                ? "Voir la politique de confidentialité (s'ouvre dans un nouvel onglet)"
+                : "See our Privacy policy (opens in new tab)"
+            }
+            className="text-clarks-orange focus:ring-clarks-orange focus-visible:ring-2 focus:outline-none hover:underline"
+          >
+            {urlText}
+          </Link>
+        </label>
+
+        {/* Screen reader context */}
+        <div id={`${id}-help`} className="sr-only">
+          {isFrench
+            ? "Case à cocher pour accepter la politique de confidentialité. " +
+              (required ? "Obligatoire." : "")
+            : "Checkbox to agree to privacy policy. " +
+              (required ? "Required." : "")}
+        </div>
+      </div>
     </div>
   );
 }
