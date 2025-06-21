@@ -11,17 +11,17 @@ export default function TourDatesContainer({
   title,
 }: TourDatesContainerProps) {
   return (
-    <div className="mb-10">
-      <h3 className="text-3xl pb-10 font-blanch">{title}</h3>
-      <div className="flex flex-col">
+    <section className="mb-10">
+      <h2 className="text-3xl pb-10 font-blanch">{title}</h2>
+      <ul className="space-y-6">
         {tourDates.map((tourDate) => (
           <TourDate
             key={tourDate.eventDate + tourDate.venue}
             tourDate={tourDate}
-            inPast={title === "past events" || title === "dates passées"}
+            inPast={title === "past events" || title === "dates passées"}
           />
         ))}
-      </div>
-    </div>
+      </ul>
+    </section>
   );
 }

@@ -89,18 +89,16 @@ export default function TourClient() {
 
   return (
     <>
-      <h2 className="text-4xl mb-6 font-blanch">{pageContent.title}</h2>
+      <h1 className="text-4xl mb-6 font-blanch">{pageContent.title}</h1>
       <p className="text-lg leading-relaxed mb-8">{pageContent.content}</p>
-      <div className="mt-10">
-        <TourDatesContainer
-          tourDates={futureGigs}
-          title={isFrench ? "prochaines dates" : "upcoming events"}
-        />
-        <TourDatesContainer
-          tourDates={pastGigs}
-          title={isFrench ? "dates passées" : "past events"}
-        />
-      </div>
+      <TourDatesContainer
+        tourDates={futureGigs}
+        title={isFrench ? "prochaines dates" : "upcoming events"}
+      />
+      <TourDatesContainer
+        tourDates={pastGigs}
+        title={isFrench ? "dates passées" : "past events"}
+      />
     </>
   );
 }
