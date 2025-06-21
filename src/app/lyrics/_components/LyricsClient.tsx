@@ -6,7 +6,7 @@ import parseCsv from "@/utils/parseCsv";
 import { useEffect, useState } from "react";
 import clsx from "clsx";
 import { LyricsProps } from "@/utils/types";
-import FilterButton from "@/components/ui/FilterButton";
+import FilterNavigation from "@/components/layout/FilterNavigation";
 
 const sheetTabGid = 145198726;
 
@@ -69,7 +69,9 @@ export default function LyricsClient() {
     : [];
 
   useEffect(() => {
-    document.title = `${isFrench ? "Paroles" : "Lyrics"} | Clark's Bowling Club`;
+    document.title = `${
+      isFrench ? "Paroles" : "Lyrics"
+    } | Clark's Bowling Club`;
   }, [isFrench]);
 
   useEffect(() => {
@@ -90,58 +92,108 @@ export default function LyricsClient() {
     }
   }, [selectedSong, isFrench]);
 
+  const handleAlbumChange = (album: string) => {
+    setSelectedAlbum(album);
+    // Clear announcements briefly to ensure new ones are read
+    setAlbumAnnouncement("");
+    setSongAnnouncement("");
+  };
+
+  const handleSongSelect = (song: LyricsProps) => {
+    setSelectedSong(song);
+    setSongAnnouncement("");
+  };
+
+  // Create section IDs
+  const selectedAlbumId = selectedAlbum
+    ? selectedAlbum
+        .toLowerCase()
+        .replace(/\s+/g, "-")
+        .replace(/[^a-z0-9-]/g, "")
+    : "lyrics";
+
   return (
     <>
       <h1 className="text-4xl font-blanch mb-6">
         {isFrench ? "Paroles" : "Lyrics"}
       </h1>
-      <div className="flex justify-between m-auto mb-10 overflow-x-scroll gap-3 no-scrollbar">
-        {albums.map((album) => (
-          <FilterButton
-            key={album}
-            filter={album}
-            isSelected={selectedAlbum === album}
-            onClick={() => setSelectedAlbum(album)}
-          />
-        ))}
-      </div>
+
+      <FilterNavigation
+        categories={albums}
+        selectedCategory={selectedAlbum}
+        onCategoryChange={handleAlbumChange}
+        ariaLabel={isFrench ? "Filtres d'albums" : "Album filters"}
+        announcementId="album-announcement"
+      />
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="md:col-span-1">
-          <div className="grid gap-4">
-            {filteredSongs.map((song) => (
-              <button
-                key={song.title}
-                className={clsx(
-                  "p-4 border text-left transition-colors duration-200 focus:ring-clarks-orange focus-visible:ring-2 focus:outline-none",
-                  selectedSong?.title === song.title
-                    ? "bg-white text-black"
-                    : "bg-transparent text-white hover:border-2 hover:border-clarks-orange"
-                )}
-                onClick={() => setSelectedSong(song)}
-              >
-                <h3 className="font-bold">{song.title}</h3>
-                {song.date && <p className="text-sm">{song.date}</p>}
-              </button>
-            ))}
-          </div>
-        </div>
+        <section
+          id={`${selectedAlbumId}-songs`}
+          aria-labelledby={`${selectedAlbumId}-songs-heading`}
+          className="md:col-span-1"
+        >
+          <h2 id={`${selectedAlbumId}-songs-heading`} className="sr-only">
+            {isFrench
+              ? `Chansons de l'album ${selectedAlbum}`
+              : `Songs from ${selectedAlbum} album`}
+          </h2>
 
-        <div className="md:col-span-2">
-          {selectedSong && (
-            <div className="bg-transparent p-6 border-2">
-              <h2 className="text-2xl font-bold mb-4">{selectedSong.title}</h2>
-              <div className="whitespace-pre-wrap">
-                {isFrench && selectedSong.paroles
-                  ? selectedSong.paroles
-                  : selectedSong.lyrics}
-              </div>
-            </div>
-          )}
-        </div>
+          <ul className="space-y-4">
+            {filteredSongs.map((song) => (
+              <li key={song.title}>
+                <button
+                  className={clsx(
+                    "p-4 border text-left transition-colors duration-200 w-full focus:ring-clarks-orange focus-visible:ring-2 focus:outline-none",
+                    selectedSong?.title === song.title
+                      ? "bg-white text-black"
+                      : "bg-transparent text-white hover:border-2 hover:border-clarks-orange"
+                  )}
+                  onClick={() => handleSongSelect(song)}
+                  aria-pressed={selectedSong?.title === song.title}
+                  aria-describedby="song-announcement"
+                >
+                  <h3 className="font-bold">{song.title}</h3>
+                  {song.date && <p className="text-sm">{song.date}</p>}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        {selectedSong && (
+          <>
+            <section
+              id={`${selectedAlbumId}-lyrics-display`}
+              aria-labelledby={`${selectedAlbumId}-lyrics-heading`}
+              className="whitespace-pre-wrap bg-transparent p-6 border-2 md:col-span-2"
+              role="article"
+              aria-label={
+                isFrench
+                  ? `Paroles pour ${selectedSong.title}`
+                  : `Lyrics for ${selectedSong.title}`
+              }
+            >
+              <h2
+                id={`${selectedAlbumId}-lyrics-heading`}
+                className="text-2xl font-bold mb-4"
+              >
+                {selectedSong.title}
+              </h2>
+              {isFrench && selectedSong.paroles
+                ? selectedSong.paroles
+                : selectedSong.lyrics}
+            </section>
+          </>
+        )}
       </div>
-      <div aria-live="polite" className="sr-only">{albumAnnouncement}</div>
-      <div aria-live="polite" className="sr-only">{songAnnouncement}</div>
+
+      <div id="album-announcement" aria-live="polite" className="sr-only">
+        {albumAnnouncement}
+      </div>
+
+      <div id="song-announcement" aria-live="polite" className="sr-only">
+        {songAnnouncement}
+      </div>
     </>
   );
 }
