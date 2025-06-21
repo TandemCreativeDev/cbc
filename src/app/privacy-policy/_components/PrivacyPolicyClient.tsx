@@ -4,50 +4,53 @@ import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
 import { useEffect } from "react";
 
-
 export default function PrivacyPolicy() {
   const email = "contact@clarksbowlingclub.com";
   const { isFrench } = useLanguage();
+
   useEffect(() => {
     document.title = `${
-      isFrench ? 'Politique de Confidentialité' : 'Privacy Policy'
+      isFrench ? "Politique de Confidentialité" : "Privacy Policy"
     } | Clark's Bowling Club`;
   }, [isFrench]);
-  return (
-    <>
-      <h1 className="text-4xl font-blanch mb-6">
-        {isFrench ? "Politique de Confidentialité" : "Privacy Policy"}
-      </h1>
-      <p className="text-sm text-gray-400">
-        {isFrench
-          ? "Dernière mise à jour : 10 mars 2025"
-          : "Last Updated: 10 March 2025"}
-      </p>
 
-      <div className="mt-6 space-y-6">
-        <section>
-          <h2 className="font-blanch uppercase text-2xl font-semibold">
+  return (
+    <article>
+      <header className="mb-6">
+        <h1 className="text-4xl font-blanch mb-2">
+          {isFrench ? "Politique de Confidentialité" : "Privacy Policy"}
+        </h1>
+        <time dateTime="2025-03-10" className="text-sm text-gray-400">
+          {isFrench
+            ? "Dernière mise à jour : 21 juin 2025"
+            : "Last Updated: 21 June 2025"}
+        </time>
+      </header>
+
+      <div className="space-y-6">
+        <section id="introduction">
+          <h2 className="font-blanch uppercase text-2xl font-semibold mb-4">
             {isFrench ? "1. Introduction" : "1. Introduction"}
           </h2>
           <p>
             {isFrench
               ? "Bienvenue sur Clarks Bowling Club (« nous », « notre » ou « nos »). Nous nous engageons à protéger votre vie privée et à garantir que vos informations personnelles soient traitées en toute sécurité. Cette politique de confidentialité explique comment nous collectons, utilisons et protégeons toute information soumise via notre formulaire de contact."
-              : "Welcome to Clarks Bowling Club (“we,” “us,” or “our”). We are committed to protecting your privacy and ensuring that your personal information is handled securely. This Privacy Policy explains how we collect, use, and protect any information submitted through our contact form."}
+              : "Welcome to Clarks Bowling Club ('we,' 'us,' or 'our'). We are committed to protecting your privacy and ensuring that your personal information is handled securely. This Privacy Policy explains how we collect, use, and protect any information submitted through our contact form."}
           </p>
         </section>
 
-        <section>
-          <h2 className="font-blanch uppercase text-2xl font-semibold">
+        <section id="information-collection">
+          <h2 className="font-blanch uppercase text-2xl font-semibold mb-4">
             {isFrench
               ? "2. Quelles informations nous collectons"
               : "2. What Information We Collect"}
           </h2>
-          <p>
+          <p className="mb-4">
             {isFrench
               ? "Lorsque vous soumettez une demande via notre formulaire de contact, nous collectons les informations suivantes :"
               : "When you submit an inquiry through our contact form, we collect the following details:"}
           </p>
-          <ul className="list-disc list-inside mt-2 space-y-1">
+          <ul className="list-disc list-inside space-y-1">
             <li>
               <strong>{isFrench ? "Nom :" : "Name:"}</strong>{" "}
               {isFrench ? "Prénom et nom de famille" : "First and last name"}
@@ -75,21 +78,21 @@ export default function PrivacyPolicy() {
           </ul>
         </section>
 
-        <section>
-          <h2 className="font-blanch uppercase text-2xl font-semibold">
+        <section id="information-usage">
+          <h2 className="font-blanch uppercase text-2xl font-semibold mb-4">
             {isFrench
               ? "3. Comment nous utilisons vos informations"
               : "3. How We Use Your Information"}
           </h2>
-          <p>
+          <p className="mb-4">
             {isFrench
               ? "Nous utilisons les informations que vous fournissez uniquement dans le but de répondre à votre demande et de communiquer avec vous concernant votre requête. Plus précisément, nous :"
               : "We use the information you provide solely for the purpose of responding to your inquiry and communicating with you regarding your request. Specifically, we:"}
           </p>
-          <ul className="list-disc list-inside mt-2 space-y-1">
+          <ul className="list-disc list-inside space-y-1 mb-4">
             <li>
               {isFrench
-                ? "Traiter votre message et l’envoyer à notre équipe par e-mail."
+                ? "Traiter votre message et l'envoyer à notre équipe par e-mail."
                 : "Process your message and send it to our team via email."}
             </li>
             <li>
@@ -98,7 +101,7 @@ export default function PrivacyPolicy() {
                 : "Use your contact details to respond to your inquiry."}
             </li>
           </ul>
-          <p className="mt-2">
+          <p>
             <strong>
               {isFrench
                 ? "Nous ne stockons pas vos informations dans une base de données, ne les utilisons pas pour le marketing, ni ne les partageons avec des tiers."
@@ -107,21 +110,21 @@ export default function PrivacyPolicy() {
           </p>
         </section>
 
-        <section>
-          <h2 className="font-blanch uppercase text-2xl font-semibold">
+        <section id="data-protection">
+          <h2 className="font-blanch uppercase text-2xl font-semibold mb-4">
             {isFrench
               ? "4. Comment nous protégeons vos données"
               : "4. How We Protect Your Data"}
           </h2>
-          <p>
+          <p className="mb-4">
             {isFrench
               ? "Nous prenons des mesures de sécurité appropriées pour protéger vos informations personnelles, notamment :"
               : "We take appropriate security measures to protect your personal information, including:"}
           </p>
-          <ul className="list-disc list-inside mt-2 space-y-1">
+          <ul className="list-disc list-inside space-y-1">
             <li>
               {isFrench
-                ? "Transmission d’e-mails sécurisée avec un cryptage conforme aux normes de l’industrie."
+                ? "Transmission d'e-mails sécurisée avec un cryptage conforme aux normes de l'industrie."
                 : "Secure email transmission with industry-standard encryption."}
             </li>
             <li>
@@ -137,31 +140,31 @@ export default function PrivacyPolicy() {
           </ul>
         </section>
 
-        <section>
-          <h2 className="font-blanch uppercase text-2xl font-semibold">
+        <section id="legal-basis">
+          <h2 className="font-blanch uppercase text-2xl font-semibold mb-4">
             {isFrench
               ? "5. Base légale du traitement (RGPD)"
               : "5. Legal Basis for Processing (GDPR)"}
           </h2>
           <p>
             {isFrench
-              ? "En vertu du Règlement Général sur la Protection des Données (RGPD), notre base légale pour le traitement de vos données est l’**intérêt légitime** — nous traitons vos informations uniquement pour répondre à votre demande."
+              ? "En vertu du Règlement Général sur la Protection des Données (RGPD), notre base légale pour le traitement de vos données est l'**intérêt légitime** — nous traitons vos informations uniquement pour répondre à votre demande."
               : "Under the General Data Protection Regulation (GDPR), our legal basis for processing your data is **legitimate interest**—we process your information solely to respond to your inquiry."}
           </p>
         </section>
 
-        <section>
-          <h2 className="font-blanch uppercase text-2xl font-semibold">
+        <section id="data-rights">
+          <h2 className="font-blanch uppercase text-2xl font-semibold mb-4">
             {isFrench
               ? "6. Vos droits en matière de protection des données"
               : "6. Your Data Protection Rights"}
           </h2>
-          <p>
+          <p className="mb-4">
             {isFrench
-              ? "Si vous êtes résident du Royaume-Uni ou de l’UE, vous avez le droit de :"
+              ? "Si vous êtes résident du Royaume-Uni ou de l'UE, vous avez le droit de :"
               : "If you are a resident of the UK or EU, you have the right to:"}
           </p>
-          <ul className="list-disc list-inside mt-2 space-y-1">
+          <ul className="list-disc list-inside space-y-1 mb-4">
             <li>
               {isFrench
                 ? "Demander l'accès aux données personnelles que nous détenons à votre sujet."
@@ -174,21 +177,22 @@ export default function PrivacyPolicy() {
             </li>
             <li>
               {isFrench
-                ? "S’opposer au traitement si vous pensez que vos données sont utilisées de manière illégale."
+                ? "S'opposer au traitement si vous pensez que vos données sont utilisées de manière illégale."
                 : "Object to processing if you believe your data is being used unlawfully."}
             </li>
           </ul>
-          <p className="mt-2">
+          <p>
             {isFrench
-              ? "Pour exercer ces droits, veuillez nous contacter à l’adresse suivante : "
+              ? "Pour exercer ces droits, veuillez nous contacter à l'adresse suivante : "
               : "To exercise these rights, please contact us at "}
             <Link
-              href="mailto:${process.env.EMAIL_USER}"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Email us"
-              role="link"
-              className="text-clarks-orange hover:underline"
+              href={`mailto:${email}`}
+              aria-label={
+                isFrench
+                  ? "Envoyer un e-mail à l'adresse de contact de Clark's Bowling Club"
+                  : "Send email to Clark's Bowling Club contact address"
+              }
+              className="text-clarks-orange hover:underline focus:outline-none focus-visible:ring-2 focus:ring-clarks-orange"
             >
               {email}
             </Link>
@@ -196,19 +200,19 @@ export default function PrivacyPolicy() {
           </p>
         </section>
 
-        <section>
-          <h2 className="font-blanch uppercase text-2xl font-semibold">
+        <section id="cookies-tracking">
+          <h2 className="font-blanch uppercase text-2xl font-semibold mb-4">
             {isFrench ? "7. Cookies et Suivi" : "7. Cookies and Tracking"}
           </h2>
           <p>
             {isFrench
-              ? "Notre site web n’utilise pas de cookies pour suivre ou stocker des informations personnelles liées aux soumissions de formulaires de contact."
+              ? "Notre site web n'utilise pas de cookies pour suivre ou stocker des informations personnelles liées aux soumissions de formulaires de contact."
               : "Our website does not use cookies to track or store personal information related to contact form submissions."}
           </p>
         </section>
 
-        <section>
-          <h2 className="font-blanch uppercase text-2xl font-semibold">
+        <section id="policy-changes">
+          <h2 className="font-blanch uppercase text-2xl font-semibold mb-4">
             {isFrench
               ? "8. Modifications de cette politique"
               : "8. Changes to This Policy"}
@@ -220,32 +224,34 @@ export default function PrivacyPolicy() {
           </p>
         </section>
 
-        <section>
-          <h2 className="font-blanch uppercase text-2xl font-semibold">
+        <section id="contact-us">
+          <h2 className="font-blanch uppercase text-2xl font-semibold mb-4">
             {isFrench ? "9. Nous contacter" : "9. Contact Us"}
           </h2>
-          <p>
+          <p className="mb-4">
             {isFrench
               ? "Si vous avez des questions concernant cette politique de confidentialité ou sur la manière dont nous traitons vos informations, veuillez nous contacter à :"
               : "If you have any questions about this Privacy Policy or how we handle your information, please contact us at:"}
           </p>
-          <div className="mt-4">
+
+          <address className="not-italic">
             <p>
               📧 <strong>{isFrench ? "E-mail:" : "Email:"}</strong>{" "}
               <Link
-                href="mailto:${process.env.EMAIL_USER}"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Email us"
-                role="link"
-                className="text-clarks-orange hover:underline"
+                href={`mailto:${email}`}
+                aria-label={
+                  isFrench
+                    ? "Envoyer un e-mail à l'adresse de contact de Clark's Bowling Club"
+                    : "Send email to Clark's Bowling Club contact address"
+                }
+                className="text-clarks-orange hover:underline focus:outline-none focus-visible:ring-2 focus:ring-clarks-orange"
               >
                 {email}
               </Link>
             </p>
-          </div>
+          </address>
         </section>
       </div>
-    </>
+    </article>
   );
 }
