@@ -15,6 +15,7 @@ interface InputProps {
   inputClass?: string;
   required?: boolean;
   long?: boolean;
+  helpText?: string;
 }
 
 export default function TextInput({
@@ -29,6 +30,7 @@ export default function TextInput({
   inputClass,
   required = false,
   long = false,
+  helpText,
 }: InputProps) {
   const { isFrench } = useLanguage();
   const baseClasses =
@@ -61,22 +63,37 @@ export default function TextInput({
     e.currentTarget.setCustomValidity("");
   };
 
+  // Generate IDs for help text and descriptions
+  const helpTextId = helpText ? `${id}-help` : undefined;
+  const describedBy = helpTextId;
+
   return (
-    <div className={twMerge("col-span-2 lg:col-span-1", className)}>
+    <div
+      className={twMerge("col-span-2 lg:col-span-1", className)}
+      role="group"
+      aria-labelledby={`${id}-label`}
+    >
       <label
+        id={`${id}-label`}
         htmlFor={id}
         className={twMerge("block text-sm/6 font-semibold", labelClass)}
       >
         {label}
         {required ? (
           <>
-            <span aria-hidden="true">
+            <span aria-hidden="true" className="text-clarks-orange">
               {isFrench ? " (obligatoire)" : " (required)"}
             </span>
             <span className="sr-only"> required</span>
           </>
         ) : null}
       </label>
+
+      {helpText && (
+        <div id={helpTextId} className="text-sm text-gray-400 mt-1">
+          {helpText}
+        </div>
+      )}
 
       {long ? (
         <textarea
@@ -89,6 +106,7 @@ export default function TextInput({
           onInput={handleInput}
           className={twMerge(baseClasses, inputClass)}
           required={required}
+          aria-describedby={describedBy}
         />
       ) : (
         <input
@@ -101,6 +119,7 @@ export default function TextInput({
           onInput={handleInput}
           className={twMerge(baseClasses, inputClass)}
           required={required}
+          aria-describedby={describedBy}
         />
       )}
     </div>
