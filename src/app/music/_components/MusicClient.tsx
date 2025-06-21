@@ -75,38 +75,74 @@ export default function MusicClient() {
     );
   }, [filteredIFrames.length, selectedCategory, isFrench]);
 
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category);
+    // Clear announcement briefly to ensure new one is read
+    setAnnouncement("");
+  };
+
   return (
     <>
       <h1 className="text-4xl font-blanch mb-6">
         {isFrench ? "Musique" : "Music"}
       </h1>
-      <div className="flex justify-between m-auto mb-10 overflow-x-scroll gap-3 no-scrollbar">
-        {categories.map((category) => (
-          <FilterButton
-            key={category}
-            filter={category}
-            isSelected={selectedCategory === category}
-            onClick={() => setSelectedCategory(category)}
-          />
-        ))}
+
+      <nav
+        id="music-category-filters"
+        aria-label={
+          isFrench
+            ? "Filtres de catégories musicales"
+            : "Music category filters"
+        }
+        className="mb-10"
+      >
+        <ul className="flex justify-between overflow-x-scroll gap-3 no-scrollbar">
+          {categories.map((category) => (
+            <li key={category}>
+              <FilterButton
+                filter={category}
+                isSelected={selectedCategory === category}
+                onClick={() => handleCategoryChange(category)}
+                aria-describedby="category-announcement"
+              />
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <section
+        id={
+          selectedCategory
+            ? String(selectedCategory)
+                .toLowerCase()
+                .replace(/\s+/g, "-")
+                .replace(/[^a-z0-9-]/g, "") + "-content"
+            : "music-content"
+        }
+        aria-label={
+          isFrench
+            ? `Contenu de la catégorie ${selectedCategory}`
+            : `${selectedCategory} category content`
+        }
+      >
+        <ul className="space-y-8">
+          {filteredIFrames.map((item) => (
+            <li key={item.title}>
+              {item.type === "bandcamp" ? (
+                <Bandcamp href={item.href} src={item.src} title={item.title} />
+              ) : item.type === "spotify" ? (
+                <Spotify src={item.src} title={item.title} />
+              ) : (
+                <Youtube src={item.src} title={item.title} />
+              )}
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <div id="category-announcement" aria-live="polite" className="sr-only">
+        {announcement}
       </div>
-      <div className="grid gap-8">
-        {filteredIFrames.map((item) =>
-          item.type === "bandcamp" ? (
-            <Bandcamp
-              key={item.title}
-              href={item.href}
-              src={item.src}
-              title={item.title}
-            />
-          ) : item.type === "spotify" ? (
-            <Spotify key={item.title} src={item.src} title={item.title} />
-          ) : (
-            <Youtube key={item.title} src={item.src} title={item.title} />
-          )
-        )}
-      </div>
-      <div aria-live="polite" className="sr-only">{announcement}</div>
     </>
   );
 }
