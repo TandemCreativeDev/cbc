@@ -56,7 +56,13 @@ export default function AboutClient() {
     <>
       <h1 className="text-4xl font-blanch mb-6">{pageContent.title}</h1>
       <p className="text-lg leading-relaxed mb-8">{pageContent.content}</p>
-      <Carousel images={carouselImages} altTexts={carouselAlts} />
+      <Carousel
+        images={carouselImages}
+        altTexts={carouselAlts}
+        caption={
+          isFrench ? "Galerie de photos du groupe" : "Band photo gallery"
+        }
+      />
     </>
   );
 }
