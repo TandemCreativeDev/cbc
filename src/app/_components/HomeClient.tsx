@@ -3,9 +3,9 @@
 import { useRef, useState, useEffect } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import { FaVolumeMute, FaVolumeUp, FaPause, FaPlay } from "react-icons/fa";
-import SpinningLogo from "@/app/_components/SpinningLogo";
+import SpinningLogo from "./SpinningLogo";
 import Image from "next/image";
-import StaticLogo from "@/app/_components/StaticLogo";
+import StaticLogo from "./StaticLogo";
 
 export default function HomeClient() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -41,7 +41,7 @@ export default function HomeClient() {
 
   return (
     <>
-      {/* Background video container */}
+      {/* Background video */}
       <div className="fixed inset-0 -z-10">
         <video
           ref={videoRef}
@@ -50,6 +50,9 @@ export default function HomeClient() {
           autoPlay
           loop
           muted={muted}
+          aria-label={
+            isFrench ? "Vidéo d'ambiance du groupe" : "Band ambient video"
+          }
         />
         <Image
           src="/images/home.png"
@@ -58,24 +61,42 @@ export default function HomeClient() {
           className={`${backgroundClasses} motion-reduce:block hidden`}
         />
       </div>
-      {/* Hologram */}
-      <SpinningLogo />
-      <StaticLogo />
-      {/* Mute button */}
+
+      {/* Logo elements - decorative */}
+      <div className="fixed top-[5rem] left-0 w-full h-[calc(100vh-11rem)] pointer-events-none z-50">
+        <SpinningLogo />
+        <StaticLogo />
+      </div>
+
+      {/* Video controls */}
       <button
         className="absolute top-5 left-16 md:top-auto md:left-auto md:bottom-5 md:right-5 z-20 text-white bg-transparent border-none cursor-pointer focus:outline-none focus-visible:ring-2 focus:ring-clarks-orange focus:ring-offset-2 focus:ring-offset-transparent rounded-full p-1 hover:text-clarks-orange motion-reduce:hidden"
         onClick={toggleMute}
-        aria-label={muted ? "Unmute" : "Mute"}
-        role="button"
+        aria-label={
+          muted
+            ? isFrench
+              ? "Activer le son de la vidéo"
+              : "Unmute background video"
+            : isFrench
+            ? "Couper le son de la vidéo"
+            : "Mute background video"
+        }
       >
         {muted ? <FaVolumeMute size={24} /> : <FaVolumeUp size={24} />}
       </button>
-      {/* Play button */}
+
       <button
         className="absolute top-5 left-5 md:top-auto md:left-auto md:bottom-5 md:right-16 z-20 text-white bg-transparent border-none cursor-pointer focus:outline-none focus-visible:ring-2 focus:ring-clarks-orange focus:ring-offset-2 focus:ring-offset-transparent rounded-full p-1 hover:text-clarks-orange motion-reduce:hidden"
         onClick={togglePlay}
-        aria-label={play ? "Pause" : "Play"}
-        role="button"
+        aria-label={
+          play
+            ? isFrench
+              ? "Mettre en pause la vidéo"
+              : "Pause background video"
+            : isFrench
+            ? "Reprendre la vidéo"
+            : "Play background video"
+        }
       >
         {play ? <FaPause size={24} /> : <FaPlay size={24} />}
       </button>

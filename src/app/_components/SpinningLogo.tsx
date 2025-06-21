@@ -1,5 +1,4 @@
 import * as THREE from "three";
-
 import { useEffect, useRef } from "react";
 
 export default function SpinningLogo() {
@@ -181,7 +180,9 @@ export default function SpinningLogo() {
   return (
     <div
       ref={refContainer}
-      className="fixed top-[5rem] left-0 w-full h-[calc(100vh-11rem)] overflow-hidden hidden md:block md:motion-reduce:hidden z-50"
-    ></div>
+      className="w-full h-full overflow-hidden motion-safe:block hidden md:motion-reduce:hidden"
+      role="presentation"
+      aria-hidden="true"
+    />
   );
 }
