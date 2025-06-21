@@ -9,7 +9,7 @@ import Checkbox from "./Checkbox";
 import { useLanguage } from "@/context/LanguageContext";
 
 import contact_form from "@/data/contact_form.json";
-import Button from "./Button";
+import Button from "../../../components/ui/Button";
 
 export default function ContactForm({ legend }: { legend: string }) {
   const contactForm = contact_form.reduce<{ [key: string]: string }>(

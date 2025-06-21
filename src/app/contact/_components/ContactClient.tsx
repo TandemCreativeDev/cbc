@@ -1,6 +1,6 @@
 "use client";
 
-import ContactForm from "@/components/ui/ContactForm";
+import ContactForm from "@/app/contact/_components/ContactForm";
 import { useLanguage } from "@/context/LanguageContext";
 import { Page } from "@/utils/types";
 import { useEffect } from "react";
@@ -20,7 +20,9 @@ export default function ContactClient() {
   const pageContent = isFrench ? french : english;
 
   useEffect(() => {
-    document.title = `${isFrench ? "Contact" : "Contact"} | Clark's Bowling Club`;
+    document.title = `${
+      isFrench ? "Contact" : "Contact"
+    } | Clark's Bowling Club`;
   }, [isFrench]);
 
   return (
