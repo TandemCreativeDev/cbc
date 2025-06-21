@@ -3,9 +3,9 @@
 import { useRef, useState, useEffect } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import { FaVolumeMute, FaVolumeUp, FaPause, FaPlay } from "react-icons/fa";
-import SpinningLogo from "@/components/Home/SpinningLogo";
+import SpinningLogo from "@/app/_components/SpinningLogo";
 import Image from "next/image";
-import StaticLogo from "@/components/Home/StaticLogo";
+import StaticLogo from "@/app/_components/StaticLogo";
 
 export default function HomeClient() {
   const videoRef = useRef<HTMLVideoElement>(null);
