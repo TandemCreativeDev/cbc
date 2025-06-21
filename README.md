@@ -19,9 +19,7 @@ A dynamic Next.js website for the 6-piece funk/pop band Clark's Bowling Club, fe
 - [Content Management](#content-management)
 - [Key Components](#key-components)
 - [Development](#development)
-- [Deployment](#deployment)
 - [Documentation](#documentation)
-- [Contributing](#contributing)
 - [License](#license)
 
 ## Features
