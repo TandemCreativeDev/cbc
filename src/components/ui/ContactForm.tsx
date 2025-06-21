@@ -33,9 +33,7 @@ export default function ContactForm({ legend }: { legend: string }) {
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    // Use browser validation - will show native bubbles
     if (formRef.current && !formRef.current.checkValidity()) {
-      // Let browser handle the validation display
       formRef.current.reportValidity();
       return;
     }
@@ -94,7 +92,21 @@ export default function ContactForm({ legend }: { legend: string }) {
   }
 
   return (
-    <form ref={formRef} onSubmit={handleSubmit} className="mt-10">
+    <form
+      ref={formRef}
+      onSubmit={handleSubmit}
+      aria-labelledby="contact-form-heading"
+      aria-describedby="contact-form-description"
+    >
+      <h2 id="contact-form-heading" className="sr-only">
+        {isFrench ? "Formulaire de contact" : "Contact Form"}
+      </h2>
+      <p id="contact-form-description" className="sr-only">
+        {isFrench
+          ? "Remplissez ce formulaire pour nous envoyer un message. Les champs obligatoires sont marqués."
+          : "Fill out this form to send us a message. Required fields are marked."}
+      </p>
+
       <fieldset className="grid gap-x-8 gap-y-6" disabled={isSubmitting}>
         <legend className="text-lg leading-relaxed mb-8">{legend}</legend>
         {contact_form.map((field) => (
@@ -124,10 +136,18 @@ export default function ContactForm({ legend }: { legend: string }) {
       <Button
         type="submit"
         disabled={isSubmitting}
-        aria-label={isFrench ? "Envoyer le formulaire" : "Submit form"}
-        className="block w-full font-blanch text-2xl p-1"
         label={isFrench ? "Faisons de la music!" : "Let's jam!"}
-      />
+        aria-label={
+          isFrench ? "Envoyer le formulaire de contact" : "Submit contact form"
+        }
+        aria-describedby="submit-help"
+        className="block w-full font-blanch text-2xl p-1"
+      ></Button>
+      <div id="submit-help" className="sr-only">
+        {isFrench
+          ? "Cliquez pour envoyer votre message à Clark's Bowling Club"
+          : "Click to send your message to Clark's Bowling Club"}
+      </div>
     </form>
   );
 }
