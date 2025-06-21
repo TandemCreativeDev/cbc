@@ -1,4 +1,4 @@
-import { IFrameProps } from "../../utils/types";
+import { IFrameProps } from "@/utils/types";
 
 export default function Spotify({ src, title }: IFrameProps) {
   return (

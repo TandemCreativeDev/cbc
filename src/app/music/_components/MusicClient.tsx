@@ -1,8 +1,8 @@
 "use client";
 
-import Bandcamp from "@/components/IFrame/Bandcamp";
-import Youtube from "@/components/IFrame/Youtube";
-import Spotify from "@/components/IFrame/Spotify";
+import Bandcamp from "./Bandcamp";
+import Youtube from "./Youtube";
+import Spotify from "./Spotify";
 import { useLanguage } from "@/context/LanguageContext";
 import { IFrameProps } from "@/utils/types";
 import fetchSheet from "@/utils/fetchSheet";

@@ -1,4 +1,4 @@
-import { IFrameProps } from "../../utils/types";
+import { IFrameProps } from "@/utils/types";
 
 export default function Youtube({ src, title }: IFrameProps) {
   return (
