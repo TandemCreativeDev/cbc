@@ -17,19 +17,23 @@ export default function Carousel({ images, altTexts, caption }: CarouselProps) {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (carouselRef.current?.contains(document.activeElement)) {
-        if (e.key === 'ArrowLeft') {
+        if (e.key === "ArrowLeft") {
           e.preventDefault();
-          prevSlide();
-        } else if (e.key === 'ArrowRight') {
+          setCurrentIndex((prev) =>
+            prev === 0 ? images.length - 1 : prev - 1
+          );
+        } else if (e.key === "ArrowRight") {
           e.preventDefault();
-          nextSlide();
+          setCurrentIndex((prev) =>
+            prev === images.length - 1 ? 0 : prev + 1
+          );
         }
       }
     };
 
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, []);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [images.length]);
 
   const nextSlide = () => {
     const newIndex = currentIndex === images.length - 1 ? 0 : currentIndex + 1;
