@@ -1,17 +1,24 @@
 import clsx from "clsx";
 import { ButtonHTMLAttributes } from "react";
 
-interface AlbumButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface FilterButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   filter: string;
   isSelected: boolean;
+  onToggle?: () => void;
 }
 
 export default function FilterButton({
   filter,
   isSelected,
+  onToggle,
   onClick,
   ...props
-}: AlbumButtonProps) {
+}: FilterButtonProps) {
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    onToggle?.();
+    onClick?.(e);
+  };
+
   return (
     <button
       className={clsx(
@@ -20,8 +27,11 @@ export default function FilterButton({
           ? "bg-clarks-orange text-black"
           : "bg-gray-200 text-gray-800 hover:bg-gray-300"
       )}
-      onClick={onClick}
+      onClick={handleClick}
       aria-pressed={isSelected}
+      aria-label={`Filter by ${filter}${
+        isSelected ? ", currently selected" : ", not selected"
+      }`}
       {...props}
     >
       {filter}
