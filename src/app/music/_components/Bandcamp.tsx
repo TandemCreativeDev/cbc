@@ -8,6 +8,7 @@ export default function Bandcamp({ src, href, title }: IFrameProps) {
       width="1000"
       height="120"
       className="w-full h-full rounded-lg"
+      title={`Bandcamp player for ${title}`}
     >
       <a href={href}>{title}</a>
     </iframe>

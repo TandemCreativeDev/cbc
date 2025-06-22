@@ -103,6 +103,15 @@ export default function Navbar({
                 )}
                 role="menuitem"
                 aria-current={pathname === route.path ? "page" : undefined}
+                onClick={() => {
+                  setTimeout(() => {
+                    const main = document.querySelector('main');
+                    if (main) {
+                      main.setAttribute('tabindex', '-1');
+                      main.focus();
+                    }
+                  }, 100);
+                }}
               >
                 {isFrench ? route.textFR : route.textEN}
               </Link>
@@ -145,6 +154,13 @@ export default function Navbar({
                     )}
                     onClick={() => {
                       setIsMenuOpen(false);
+                      setTimeout(() => {
+                        const main = document.querySelector('main');
+                        if (main) {
+                          main.setAttribute('tabindex', '-1');
+                          main.focus();
+                        }
+                      }, 100);
                     }}
                     role="menuitem"
                     aria-current={pathname === route.path ? "page" : undefined}

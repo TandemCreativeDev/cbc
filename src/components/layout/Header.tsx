@@ -45,6 +45,8 @@ export default function Header() {
         returnFocusOnDeactivate: true,
         allowOutsideClick: true,
         setReturnFocus: menuButtonRef.current,
+        clickOutsideDeactivates: true,
+        onDeactivate: () => setIsMenuOpen(false),
       }}
     >
       <header

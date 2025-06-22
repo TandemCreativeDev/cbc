@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import Image from "next/image";
 import clsx from "clsx";
@@ -12,6 +12,28 @@ interface CarouselProps {
 export default function Carousel({ images, altTexts, caption }: CarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [announcement, setAnnouncement] = useState("");
+  const carouselRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (carouselRef.current?.contains(document.activeElement)) {
+        if (e.key === "ArrowLeft") {
+          e.preventDefault();
+          setCurrentIndex((prev) =>
+            prev === 0 ? images.length - 1 : prev - 1
+          );
+        } else if (e.key === "ArrowRight") {
+          e.preventDefault();
+          setCurrentIndex((prev) =>
+            prev === images.length - 1 ? 0 : prev + 1
+          );
+        }
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [images.length]);
 
   const nextSlide = () => {
     const newIndex = currentIndex === images.length - 1 ? 0 : currentIndex + 1;
@@ -48,7 +70,7 @@ export default function Carousel({ images, altTexts, caption }: CarouselProps) {
   }, [currentIndex, altTexts, images.length]);
 
   return (
-    <figure className="relative w-full h-96 overflow-hidden rounded-lg">
+    <figure ref={carouselRef} className="relative w-full h-96 overflow-hidden rounded-lg">
       {/* Images container */}
       <ul
         className="flex transition-transform duration-500 ease-out h-full"
@@ -106,7 +128,7 @@ export default function Carousel({ images, altTexts, caption }: CarouselProps) {
               <button
                 onClick={() => goToSlide(index)}
                 className={clsx(
-                  "w-2 h-2 m-2 rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus:ring-clarks-orange",
+                  "w-6 h-6 m-1 rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus:ring-clarks-orange flex items-center justify-center",
                   index === currentIndex ? "bg-clarks-orange" : "bg-white/50"
                 )}
                 aria-label={`Go to image ${index + 1}${

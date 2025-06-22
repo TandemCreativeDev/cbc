@@ -2,17 +2,29 @@
 
 import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function PrivacyPolicy() {
   const email = "contact@clarksbowlingclub.com";
   const { isFrench } = useLanguage();
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     document.title = `${
       isFrench ? "Politique de Confidentialité" : "Privacy Policy"
     } | Clark's Bowling Club`;
+    setIsLoaded(true);
   }, [isFrench]);
+
+  if (!isLoaded)
+    return (
+      <div role="status" aria-live="polite">
+        <span className="sr-only">
+          {isFrench ? "Chargement du contenu..." : "Loading content..."}
+        </span>
+        <div aria-hidden="true">{isFrench ? "Chargement..." : "Loading..."}.</div>
+      </div>
+    );
 
   return (
     <article>
