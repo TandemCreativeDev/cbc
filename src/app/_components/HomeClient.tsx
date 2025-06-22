@@ -41,6 +41,9 @@ export default function HomeClient() {
 
   return (
     <>
+      <h1 className="sr-only">
+        {isFrench ? "Clark's Bowling Club - Accueil" : "Clark's Bowling Club - Home"}
+      </h1>
       {/* Background video */}
       <div className="fixed inset-0 -z-10">
         <video

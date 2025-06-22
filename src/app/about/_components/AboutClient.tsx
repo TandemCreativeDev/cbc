@@ -50,7 +50,15 @@ export default function AboutClient() {
     document.title = `${isFrench ? "Bio" : "About"} | Clark's Bowling Club`;
   }, [isFrench]);
 
-  if (!pageContent) return <div>Loading...</div>;
+  if (!pageContent)
+    return (
+      <div role="status" aria-live="polite">
+        <span className="sr-only">
+          {isFrench ? "Chargement du contenu..." : "Loading content..."}
+        </span>
+        <div aria-hidden="true">Loading...</div>
+      </div>
+    );
 
   return (
     <>
