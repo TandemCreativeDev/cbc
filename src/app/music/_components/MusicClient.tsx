@@ -81,6 +81,16 @@ export default function MusicClient() {
     setAnnouncement("");
   };
 
+  if (iFrames.length === 0)
+    return (
+      <div role="status" aria-live="polite">
+        <span className="sr-only">
+          {isFrench ? "Chargement du contenu..." : "Loading content..."}
+        </span>
+        <div aria-hidden="true">{isFrench ? "Chargement..." : "Loading..."}.</div>
+      </div>
+    );
+
   return (
     <>
       <h1 className="text-4xl font-blanch mb-6">

@@ -104,6 +104,16 @@ export default function LyricsClient() {
     setSongAnnouncement("");
   };
 
+  if (lyrics.length === 0)
+    return (
+      <div role="status" aria-live="polite">
+        <span className="sr-only">
+          {isFrench ? "Chargement du contenu..." : "Loading content..."}
+        </span>
+        <div aria-hidden="true">{isFrench ? "Chargement..." : "Loading..."}.</div>
+      </div>
+    );
+
   // Create section IDs
   const selectedAlbumId = selectedAlbum
     ? selectedAlbum

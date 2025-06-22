@@ -11,10 +11,12 @@ export default function HomeClient() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [muted, setMuted] = useState(true);
   const [play, setPlay] = useState(true);
+  const [isLoaded, setIsLoaded] = useState(false);
   const { isFrench } = useLanguage();
 
   useEffect(() => {
     document.title = `${isFrench ? "Accueil" : "Home"} | Clark's Bowling Club`;
+    setIsLoaded(true);
   }, [isFrench]);
 
   const backgroundClasses =
@@ -29,15 +31,25 @@ export default function HomeClient() {
 
   const togglePlay = () => {
     if (videoRef.current) {
-      if (videoRef.current.paused) {
-        videoRef.current.play();
-        setPlay(true);
-      } else {
-        videoRef.current.pause();
-        setPlay(false);
+        if (videoRef.current.paused) {
+          videoRef.current.play();
+          setPlay(true);
+        } else {
+          videoRef.current.pause();
+          setPlay(false);
+        }
       }
-    }
-  };
+    };
+
+  if (!isLoaded)
+    return (
+      <div role="status" aria-live="polite">
+        <span className="sr-only">
+          {isFrench ? "Chargement du contenu..." : "Loading content..."}
+        </span>
+        <div aria-hidden="true">{isFrench ? "Chargement..." : "Loading..."}.</div>
+      </div>
+    );
 
   return (
     <>
