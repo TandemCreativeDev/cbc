@@ -50,9 +50,7 @@ export default function HomeClient() {
           autoPlay
           loop
           muted={muted}
-          aria-label={
-            isFrench ? "Vidéo d'ambiance du groupe" : "Band ambient video"
-          }
+          aria-hidden="true"
         />
         <Image
           src="/images/home.png"

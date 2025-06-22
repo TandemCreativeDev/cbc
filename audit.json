@@ -1,0 +1,86 @@
+[
+  {
+    "issue": "missing-h1-homepage",
+    "wcag": ["2.4.6", "1.3.1"],
+    "severity": "Critical",
+    "location": "src/app/_components/HomeClient.tsx",
+    "description": "Home page missing h1 heading",
+    "fix": {
+      "before": "return (\n    <>\n      {/* Background video */}",
+      "after": "return (\n    <>\n      <h1 className=\"sr-only\">\n        {isFrench ? \"Clark's Bowling Club - Accueil\" : \"Clark's Bowling Club - Home\"}\n      </h1>\n      {/* Background video */}",
+      "effort": "Low"
+    }
+  },
+  {
+    "issue": "insufficient-touch-targets",
+    "wcag": ["2.5.5"],
+    "severity": "Serious",
+    "location": "src/components/ui/Carousel.tsx:85",
+    "description": "Carousel indicator buttons below 24px minimum",
+    "fix": {
+      "before": "className={clsx(\n  \"w-2 h-2 m-2 rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus:ring-clarks-orange\",",
+      "after": "className={clsx(\n  \"w-6 h-6 m-1 rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus:ring-clarks-orange flex items-center justify-center\",",
+      "effort": "Low"
+    }
+  },
+  {
+    "issue": "missing-route-focus-management",
+    "wcag": ["2.4.3"],
+    "severity": "Serious",
+    "location": "src/components/layout/Navbar.tsx:77",
+    "description": "Navigation links don't manage focus on route changes",
+    "fix": {
+      "before": "<Link\n  href={route.path}\n  className={clsx(\n    \"hover:text-clarks-orange font-blanch text-center px-4 py-2\",\n    \"focus:outline-none focus-visible:ring-2 focus-visible:ring-clarks-orange\",\n    \"focus:ring-offset-2 focus:ring-offset-transparent transition-colors\",\n    pathname === route.path && \"text-clarks-orange\"\n  )}\n  role=\"menuitem\"\n  aria-current={pathname === route.path ? \"page\" : undefined}\n>",
+      "after": "<Link\n  href={route.path}\n  className={clsx(\n    \"hover:text-clarks-orange font-blanch text-center px-4 py-2\",\n    \"focus:outline-none focus-visible:ring-2 focus-visible:ring-clarks-orange\",\n    \"focus:ring-offset-2 focus:ring-offset-transparent transition-colors\",\n    pathname === route.path && \"text-clarks-orange\"\n  )}\n  role=\"menuitem\"\n  aria-current={pathname === route.path ? \"page\" : undefined}\n  onClick={() => {\n    setTimeout(() => {\n      const main = document.querySelector('main');\n      if (main) {\n        main.setAttribute('tabindex', '-1');\n        main.focus();\n      }\n    }, 100);\n  }}\n>",
+      "effort": "Medium"
+    }
+  },
+  {
+    "issue": "focus-trap-missing-escape",
+    "wcag": ["2.1.2"],
+    "severity": "Moderate",
+    "location": "src/components/layout/Header.tsx:20",
+    "description": "Focus trap doesn't handle all edge cases",
+    "fix": {
+      "before": "focusTrapOptions={{\n  initialFocus: false,\n  escapeDeactivates: true,\n  returnFocusOnDeactivate: true,\n  allowOutsideClick: true,\n  setReturnFocus: menuButtonRef.current,\n}}",
+      "after": "focusTrapOptions={{\n  initialFocus: false,\n  escapeDeactivates: true,\n  returnFocusOnDeactivate: true,\n  allowOutsideClick: true,\n  setReturnFocus: menuButtonRef.current,\n  clickOutsideDeactivates: true,\n  onDeactivate: () => setIsMenuOpen(false),\n}}",
+      "effort": "Low"
+    }
+  },
+  {
+    "issue": "carousel-keyboard-navigation",
+    "wcag": ["2.1.1"],
+    "severity": "Moderate",
+    "location": "src/components/ui/Carousel.tsx:10",
+    "description": "Carousel missing keyboard navigation (arrow keys)",
+    "fix": {
+      "before": "export default function Carousel({ images, altTexts, caption }: CarouselProps) {\n  const [currentIndex, setCurrentIndex] = useState(0);",
+      "after": "export default function Carousel({ images, altTexts, caption }: CarouselProps) {\n  const [currentIndex, setCurrentIndex] = useState(0);\n  const carouselRef = useRef<HTMLElement>(null);\n  \n  useEffect(() => {\n    const handleKeyDown = (e: KeyboardEvent) => {\n      if (carouselRef.current?.contains(document.activeElement)) {\n        if (e.key === 'ArrowLeft') {\n          e.preventDefault();\n          prevSlide();\n        } else if (e.key === 'ArrowRight') {\n          e.preventDefault();\n          nextSlide();\n        }\n      }\n    };\n    \n    document.addEventListener('keydown', handleKeyDown);\n    return () => document.removeEventListener('keydown', handleKeyDown);\n  }, []);",
+      "effort": "Medium"
+    }
+  },
+  {
+    "issue": "missing-loading-states",
+    "wcag": ["4.1.3"],
+    "severity": "Minor",
+    "location": "src/app/about/_components/AboutClient.tsx:31",
+    "description": "Loading states lack proper ARIA announcements",
+    "fix": {
+      "before": "if (!pageContent) return <div>Loading...</div>;",
+      "after": "if (!pageContent) return (\n    <div role=\"status\" aria-live=\"polite\">\n      <span className=\"sr-only\">\n        {isFrench ? \"Chargement du contenu...\" : \"Loading content...\"}\n      </span>\n      <div aria-hidden=\"true\">Loading...</div>\n    </div>\n  );",
+      "effort": "Low"
+    }
+  },
+  {
+    "issue": "missing-iframe-titles",
+    "wcag": ["4.1.2"],
+    "severity": "Minor",
+    "location": "src/app/music/_components/Bandcamp.tsx:4",
+    "description": "Bandcamp iframe missing title attribute",
+    "fix": {
+      "before": "<iframe\n  src={src}\n  seamless\n  width=\"1000\"\n  height=\"120\"\n  className=\"w-full h-full rounded-lg\"\n>",
+      "after": "<iframe\n  src={src}\n  seamless\n  width=\"1000\"\n  height=\"120\"\n  className=\"w-full h-full rounded-lg\"\n  title={`Bandcamp player for ${title}`}\n>",
+      "effort": "Low"
+    }
+  }
+]
