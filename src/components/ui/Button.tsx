@@ -30,10 +30,8 @@ export default function Button({
         className
       )}
       onClick={onClick}
-      disabled={disabled}
-      aria-disabled={disabled}
-      aria-label={label}
-      role={isLink ? "link" : undefined}
+      {...(disabled && { disabled })}
+      {...(isLink && { role: "link" })}
       {...props}
     >
       {label}
