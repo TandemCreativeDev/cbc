@@ -85,7 +85,15 @@ export default function TourClient() {
     setFutureGigs(future);
   }, [gigs]);
 
-  if (!pageContent) return <div>Loading...</div>;
+  if (!pageContent)
+    return (
+      <div role="status" aria-live="polite">
+        <span className="sr-only">
+          {isFrench ? "Chargement du contenu..." : "Loading content..."}
+        </span>
+        <div aria-hidden="true">{isFrench ? "Chargement..." : "Loading..."}.</div>
+      </div>
+    );
 
   return (
     <>

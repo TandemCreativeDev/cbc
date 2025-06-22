@@ -56,7 +56,7 @@ export default function AboutClient() {
         <span className="sr-only">
           {isFrench ? "Chargement du contenu..." : "Loading content..."}
         </span>
-        <div aria-hidden="true">Loading...</div>
+        <div aria-hidden="true">{isFrench ? "Chargement..." : "Loading..."}.</div>
       </div>
     );
 
