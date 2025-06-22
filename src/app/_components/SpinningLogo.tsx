@@ -180,7 +180,7 @@ export default function SpinningLogo() {
   return (
     <div
       ref={refContainer}
-      className="w-full h-full overflow-hidden motion-safe:block hidden md:motion-reduce:hidden"
+      className="w-full h-full overflow-hidden md:motion-safe:block hidden md:motion-reduce:hidden"
       role="presentation"
       aria-hidden="true"
     />
