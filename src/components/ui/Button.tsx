@@ -33,7 +33,7 @@ export default function Button({
       disabled={disabled}
       aria-disabled={disabled}
       aria-label={label}
-      role={isLink ? "link" : "button"}
+      role={isLink ? "link" : undefined}
       {...props}
     >
       {label}
