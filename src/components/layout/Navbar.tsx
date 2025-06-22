@@ -47,8 +47,10 @@ export default function Navbar({
   };
 
   return (
-    <nav className="md:relative">
-      {/* Hamburger button (visible on small screens) */}
+    <nav
+      className="md:relative"
+      aria-label={isFrench ? "Navigation principale" : "Main navigation"}
+    >
       <div className="md:hidden absolute right-6 top-5">
         <button
           ref={menuButtonRef}
@@ -58,18 +60,29 @@ export default function Navbar({
             "focus:outline-none focus-visible:ring-2 focus-visible:ring-clarks-orange",
             "focus:ring-offset-2 focus:ring-offset-transparent"
           )}
-          aria-label="Toggle Menu"
+          aria-label={
+            isFrench
+              ? isMenuOpen
+                ? "Fermer le menu"
+                : "Ouvrir le menu"
+              : isMenuOpen
+              ? "Close menu"
+              : "Open menu"
+          }
           aria-expanded={isMenuOpen}
+          aria-controls="mobile-navigation"
+          aria-haspopup="true"
         >
           {isMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
         </button>
       </div>
 
       <div className="relative">
-        {/* Desktop navigation menu */}
         <ul
           ref={navRef}
           className="hidden md:flex md:h-full md:justify-between md:gap-[2vw] lg:gap-[8vw] md:static"
+          role="menubar"
+          aria-label={isFrench ? "Navigation du site" : "Site navigation"}
         >
           {menuRoutes.map((route, index) => (
             <li
@@ -78,6 +91,7 @@ export default function Navbar({
               ref={(el) => {
                 navItemRefs.current[index] = el;
               }}
+              role="none"
             >
               <Link
                 href={route.path}
@@ -87,6 +101,8 @@ export default function Navbar({
                   "focus:ring-offset-2 focus:ring-offset-transparent transition-colors",
                   pathname === route.path && "text-clarks-orange"
                 )}
+                role="menuitem"
+                aria-current={pathname === route.path ? "page" : undefined}
               >
                 {isFrench ? route.textFR : route.textEN}
               </Link>
@@ -94,13 +110,31 @@ export default function Navbar({
           ))}
         </ul>
 
-        {/* Mobile menu */}
-        <div className={clsx("md:hidden", isMenuOpen ? "block" : "hidden")}>
-          <div className="flex flex-col items-center justify-start h-screen w-screen">
-            {/* Mobile navigation links */}
-            <ul className="flex flex-col items-center my-12 gap-2">
+        <div
+          className={clsx("md:hidden", isMenuOpen ? "block" : "hidden")}
+          id="mobile-navigation"
+        >
+          <div
+            className="flex flex-col items-center justify-start h-screen w-screen"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="mobile-menu-title"
+          >
+            <h2 id="mobile-menu-title" className="sr-only">
+              {isFrench ? "Menu de navigation" : "Navigation menu"}
+            </h2>
+
+            <ul
+              className="flex flex-col items-center my-12 gap-2"
+              role="menu"
+              aria-label={isFrench ? "Liens de navigation" : "Navigation links"}
+            >
               {menuRoutes.map((route) => (
-                <li key={`mobile-${route.path}`} className="p-2 text-6xl">
+                <li
+                  key={`mobile-${route.path}`}
+                  className="p-2 text-6xl"
+                  role="none"
+                >
                   <Link
                     href={route.path}
                     className={clsx(
@@ -112,6 +146,8 @@ export default function Navbar({
                     onClick={() => {
                       setIsMenuOpen(false);
                     }}
+                    role="menuitem"
+                    aria-current={pathname === route.path ? "page" : undefined}
                   >
                     {isFrench ? route.textFR : route.textEN}
                   </Link>
@@ -119,14 +155,10 @@ export default function Navbar({
               ))}
             </ul>
 
-            {/* Social links for mobile only */}
-            <div>
-              <SocialLinks />
-            </div>
+            <SocialLinks />
           </div>
         </div>
 
-        {/* Bowling ball indicator (desktop only) */}
         {activeRouteIndex !== -1 && (
           <div
             className={clsx(
@@ -138,10 +170,11 @@ export default function Navbar({
             )}
             style={getBallStyles()}
             onAnimationEnd={handleAnimationEnd}
+            aria-hidden="true"
           >
             <Image
               src="/svg/bowling-ball-toggle.svg"
-              alt="Active page indicator"
+              alt=""
               width={24}
               height={24}
               className={clsx(
@@ -150,6 +183,7 @@ export default function Navbar({
                   ? "animate-bowling-spin"
                   : ""
               )}
+              aria-hidden="true"
             />
           </div>
         )}
