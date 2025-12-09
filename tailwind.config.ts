@@ -14,9 +14,9 @@ export default {
         "clarks-red": "#C14627",
       },
       fontFamily: {
-        jost: ["'Jost'", "sans-serif"],
+        jost: ["var(--font-jost)", "sans-serif"],
         blanch: ["var(--font-blanch)"],
-        damion: ["'Damion'", "cursive"],
+        damion: ["var(--font-damion)", "cursive"],
         goudy: ["var(--font-goudy)"],
       },
       animation: {

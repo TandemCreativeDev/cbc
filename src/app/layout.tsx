@@ -3,8 +3,24 @@ import "./globals.css";
 import Header from "@/components/layout/Header";
 import { LanguageProvider } from "@/context/LanguageContext";
 import localFont from "next/font/local";
+import { Damion, Jost } from "next/font/google";
 import Footer from "@/components/layout/Footer";
 import { Toaster } from "react-hot-toast";
+
+const damion = Damion({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-damion",
+  display: "swap",
+});
+
+const jost = Jost({
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  subsets: ["latin"],
+  variable: "--font-jost",
+  display: "swap",
+  style: ["normal", "italic"],
+});
 
 const blanchCaps = localFont({
   src: "../fonts/Blanch-Caps.woff2",
@@ -36,9 +52,11 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`
-          ${blanchCaps.variable} 
-          ${goudyStd.variable} 
-     
+          ${damion.variable}
+          ${jost.variable}
+          ${blanchCaps.variable}
+          ${goudyStd.variable}
+
           antialiased
         `}
       >
