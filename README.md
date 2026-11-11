@@ -2,10 +2,10 @@
 
 <!-- Badges -->
 
-[![Next.js](https://img.shields.io/badge/Next.js-15.1.5-black?style=flat-square&logo=next.js&logoColor=white)](https://nextjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4.1-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
-[![Three.js](https://img.shields.io/badge/Three.js-0.172.0-black?style=flat-square&logo=three.js&logoColor=white)](https://threejs.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-16-black?style=flat-square&logo=next.js&logoColor=white)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-6-blue?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![Three.js](https://img.shields.io/badge/Three.js-0.187-black?style=flat-square&logo=three.js&logoColor=white)](https://threejs.org/)
 
 A dynamic Next.js website for the 6-piece funk/pop band Clark's Bowling Club, featuring bilingual content, interactive 3D elements, and content management via Google Sheets.
 
@@ -37,21 +37,21 @@ A dynamic Next.js website for the 6-piece funk/pop band Clark's Bowling Club, fe
 
 ## Tech Stack
 
-- **Framework**: [Next.js 15](https://nextjs.org/) with TypeScript
+- **Framework**: [Next.js 16](https://nextjs.org/) with TypeScript
 - **Styling**: [Tailwind CSS](https://tailwindcss.com/) with custom fonts
 - **3D Graphics**: [Three.js](https://threejs.org/) for interactive elements
 - **Email**: [Nodemailer](https://nodemailer.com/) for contact forms
 - **Data**: Google Sheets as CMS via CSV exports
 - **Icons**: [React Icons](https://react-icons.github.io/react-icons/) (Font Awesome 6)
 - **State**: React Context for language switching
-- **Deployment**: Optimised for [Vercel](https://vercel.com/)
+- **Deployment**: [Netlify](https://www.netlify.com/)
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js 18.0 or higher
-- npm or yarn package manager
+- Node.js 22 or higher
+- pnpm
 
 ### Installation
 
@@ -74,7 +74,7 @@ cd cbc
 2. **Install dependencies**:
 
 ```bash
-npm install
+pnpm install
 ```
 
 3. **Set up environment variables** (see [Environment Setup](#environment-setup))
@@ -82,7 +82,7 @@ npm install
 4. **Run the development server**:
 
 ```bash
-npm run dev
+pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) to view the site.
@@ -167,23 +167,23 @@ Bilingual email templates with validation and toast notifications.
 
 ```bash
 # Start development server with Turbopack
-npm run dev
+pnpm dev
 
 # Build for production
-npm run build
+pnpm build
 
 # Start production server
-npm start
+pnpm start
 
 # Run linting
-npm run lint
+pnpm lint
 ```
 
 ### Development Features
 
 - **Hot Reload**: Instant updates during development
 - **TypeScript**: Full type safety and IntelliSense
-- **Turbopack**: Fast bundling with Next.js 15
+- **Turbopack**: Fast bundling with Next.js 16
 - **ESLint**: Code quality enforcement
 - **Tailwind CSS**: Utility-first styling with JIT compilation
 
