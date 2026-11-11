@@ -19,7 +19,6 @@ export default function MusicClient() {
   const [selectedCategory, setSelectedCategory] = useState<
     string | number | readonly string[] | undefined
   >("Live Performances");
-  const [announcement, setAnnouncement] = useState("");
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -67,18 +66,12 @@ export default function MusicClient() {
     document.title = `${isFrench ? "Musique" : "Music"} | Clark's Bowling Club`;
   }, [isFrench]);
 
-  useEffect(() => {
-    setAnnouncement(
-      isFrench
-        ? `${filteredIFrames.length} éléments dans la catégorie ${selectedCategory}`
-        : `${filteredIFrames.length} items in category ${selectedCategory}`
-    );
-  }, [filteredIFrames.length, selectedCategory, isFrench]);
+  const announcement = isFrench
+    ? `${filteredIFrames.length} éléments dans la catégorie ${selectedCategory}`
+    : `${filteredIFrames.length} items in category ${selectedCategory}`;
 
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category);
-    // Clear announcement briefly to ensure new one is read
-    setAnnouncement("");
   };
 
   if (iFrames.length === 0)

@@ -25,7 +25,6 @@ export default function AboutClient() {
   const { isFrench } = useLanguage();
   const [englishContent, setEnglishContent] = useState<Page | null>(null);
   const [frenchContent, setFrenchContent] = useState<Page | null>(null);
-  const [pageContent, setPageContent] = useState<Page | null>(null);
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -42,9 +41,7 @@ export default function AboutClient() {
     fetchContent();
   }, []);
 
-  useEffect(() => {
-    setPageContent(isFrench ? frenchContent : englishContent);
-  }, [isFrench, frenchContent, englishContent]);
+  const pageContent = isFrench ? frenchContent : englishContent;
 
   useEffect(() => {
     document.title = `${isFrench ? "Bio" : "About"} | Clark's Bowling Club`;

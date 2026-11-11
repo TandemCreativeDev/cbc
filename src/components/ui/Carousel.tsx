@@ -11,7 +11,6 @@ interface CarouselProps {
 
 export default function Carousel({ images, altTexts, caption }: CarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [announcement, setAnnouncement] = useState("");
   const carouselRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -38,36 +37,20 @@ export default function Carousel({ images, altTexts, caption }: CarouselProps) {
   const nextSlide = () => {
     const newIndex = currentIndex === images.length - 1 ? 0 : currentIndex + 1;
     setCurrentIndex(newIndex);
-    setAnnouncement(
-      `Image ${newIndex + 1} of ${images.length}: ${
-        altTexts?.[newIndex] || `Image ${newIndex + 1}`
-      }`
-    );
   };
 
   const prevSlide = () => {
     const newIndex = currentIndex === 0 ? images.length - 1 : currentIndex - 1;
     setCurrentIndex(newIndex);
-    setAnnouncement(
-      `Image ${newIndex + 1} of ${images.length}: ${
-        altTexts?.[newIndex] || `Image ${newIndex + 1}`
-      }`
-    );
   };
 
   const goToSlide = (index: number) => {
     setCurrentIndex(index);
-    setAnnouncement(
-      `Image ${index + 1} of ${images.length}: ${
-        altTexts?.[index] || `Image ${index + 1}`
-      }`
-    );
   };
 
-  useEffect(() => {
-    const alt = altTexts?.[currentIndex] || `Image ${currentIndex + 1}`;
-    setAnnouncement(`Image ${currentIndex + 1} of ${images.length}: ${alt}`);
-  }, [currentIndex, altTexts, images.length]);
+  const announcement = `Image ${currentIndex + 1} of ${images.length}: ${
+    altTexts?.[currentIndex] || `Image ${currentIndex + 1}`
+  }`;
 
   return (
     <figure ref={carouselRef} className="relative w-full h-96 overflow-hidden rounded-lg">
