@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@source not "../../audit.json";
+
 @theme {
   --color-clarks-orange: #febc12;
   --color-clarks-red: #c14627;
