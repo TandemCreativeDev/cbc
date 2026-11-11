@@ -6,17 +6,17 @@ import { FaVolumeMute, FaVolumeUp, FaPause, FaPlay } from "react-icons/fa";
 import SpinningLogo from "./SpinningLogo";
 import Image from "next/image";
 import StaticLogo from "./StaticLogo";
+import useIsMounted from "@/utils/useIsMounted";
 
 export default function HomeClient() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [muted, setMuted] = useState(true);
   const [play, setPlay] = useState(true);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const isLoaded = useIsMounted();
   const { isFrench } = useLanguage();
 
   useEffect(() => {
     document.title = `${isFrench ? "Accueil" : "Home"} | Clark's Bowling Club`;
-    setIsLoaded(true);
   }, [isFrench]);
 
   const backgroundClasses =
@@ -83,7 +83,7 @@ export default function HomeClient() {
 
       {/* Video controls */}
       <button
-        className="absolute top-5 left-16 md:top-auto md:left-auto md:bottom-5 md:right-5 z-20 text-white bg-transparent border-none cursor-pointer focus:outline-none focus-visible:ring-2 focus:ring-clarks-orange focus:ring-offset-2 focus:ring-offset-transparent rounded-full p-1 hover:text-clarks-orange motion-reduce:hidden"
+        className="absolute top-5 left-16 md:top-auto md:left-auto md:bottom-5 md:right-5 z-20 text-white bg-transparent border-none cursor-pointer focus:outline-hidden focus-visible:ring-2 focus:ring-clarks-orange focus:ring-offset-2 focus:ring-offset-transparent rounded-full p-1 hover:text-clarks-orange motion-reduce:hidden"
         onClick={toggleMute}
         aria-label={
           muted
@@ -99,7 +99,7 @@ export default function HomeClient() {
       </button>
 
       <button
-        className="absolute top-5 left-5 md:top-auto md:left-auto md:bottom-5 md:right-16 z-20 text-white bg-transparent border-none cursor-pointer focus:outline-none focus-visible:ring-2 focus:ring-clarks-orange focus:ring-offset-2 focus:ring-offset-transparent rounded-full p-1 hover:text-clarks-orange motion-reduce:hidden"
+        className="absolute top-5 left-5 md:top-auto md:left-auto md:bottom-5 md:right-16 z-20 text-white bg-transparent border-none cursor-pointer focus:outline-hidden focus-visible:ring-2 focus:ring-clarks-orange focus:ring-offset-2 focus:ring-offset-transparent rounded-full p-1 hover:text-clarks-orange motion-reduce:hidden"
         onClick={togglePlay}
         aria-label={
           play

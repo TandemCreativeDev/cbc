@@ -1,10 +1,5 @@
-import {
-  useState,
-  useRef,
-  useEffect,
-  useLayoutEffect,
-  useCallback,
-} from "react";
+import { useState, useRef, useLayoutEffect, useCallback } from "react";
+import usePrefersReducedMotion from "@/utils/usePrefersReducedMotion";
 
 export interface MenuRoute {
   path: string;
@@ -37,16 +32,31 @@ export function useNavAnimation({
   navRef,
   navItemRefs,
 }: UseNavAnimationProps): UseNavAnimationReturn {
+  const routeIndex = menuRoutes.findIndex((route) => route.path === pathname);
+  const prefersReducedMotion = usePrefersReducedMotion();
+
   const [activeRouteIndex, setActiveRouteIndex] = useState(-1);
   const [previousRouteIndex, setPreviousRouteIndex] = useState(-1);
   const [isAnimating, setIsAnimating] = useState(false);
   const [ballVisible, setBallVisible] = useState(false);
+  const [positionedLanguage, setPositionedLanguage] = useState(isFrench);
 
-  const isLanguageChange = useRef(false);
   const currentPosition = useRef({ x: 0 });
 
   const [, setForceUpdate] = useState({});
   const forceUpdate = () => setForceUpdate({});
+
+  if (routeIndex !== -1 && routeIndex !== activeRouteIndex) {
+    setPreviousRouteIndex(activeRouteIndex);
+    setActiveRouteIndex(routeIndex);
+    setIsAnimating(activeRouteIndex !== -1 && !prefersReducedMotion);
+    setBallVisible(false);
+  }
+
+  if (positionedLanguage !== isFrench) {
+    setPositionedLanguage(isFrench);
+    setBallVisible(false);
+  }
 
   // Find the center position of an active menu item
   const getItemCenterPosition = useCallback(
@@ -67,44 +77,12 @@ export function useNavAnimation({
     [navRef, navItemRefs]
   );
 
-  // Handle initial positioning and updates for route changes
-  useEffect(() => {
-    const index = menuRoutes.findIndex((route) => route.path === pathname);
-
-    if (index !== -1) {
-      if (activeRouteIndex === -1) {
-        setActiveRouteIndex(index);
-        setBallVisible(false);
-        setTimeout(() => {
-          currentPosition.current.x = getItemCenterPosition(index);
-          setBallVisible(true);
-        }, 100);
-      } else if (index !== activeRouteIndex) {
-        setPreviousRouteIndex(activeRouteIndex);
-        setActiveRouteIndex(index);
-        if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-          setIsAnimating(true);
-        } else {
-          setTimeout(() => {
-            currentPosition.current.x = getItemCenterPosition(index);
-            forceUpdate();
-          }, 50);
-        }
-      }
-    }
-  }, [pathname, activeRouteIndex, menuRoutes, getItemCenterPosition]);
-
-  // Update position when language changes
+  // Reposition the ball once the DOM has settled after a route or language change
   useLayoutEffect(() => {
     if (activeRouteIndex === -1) return;
-    isLanguageChange.current = true;
-    setBallVisible(false);
 
-    // Update position after a short delay to ensure DOM has updated
     const timer = setTimeout(() => {
-      const newPos = getItemCenterPosition(activeRouteIndex);
-      currentPosition.current.x = newPos;
-      forceUpdate();
+      currentPosition.current.x = getItemCenterPosition(activeRouteIndex);
       setBallVisible(true);
     }, 100);
 

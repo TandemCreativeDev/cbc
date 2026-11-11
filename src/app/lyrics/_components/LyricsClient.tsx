@@ -15,9 +15,7 @@ export default function LyricsClient() {
   const [lyrics, setLyrics] = useState<LyricsProps[]>([]);
   const [albums, setAlbums] = useState<string[]>([]);
   const [selectedAlbum, setSelectedAlbum] = useState<string | undefined>();
-  const [selectedSong, setSelectedSong] = useState<LyricsProps | undefined>();
-  const [albumAnnouncement, setAlbumAnnouncement] = useState("");
-  const [songAnnouncement, setSongAnnouncement] = useState("");
+  const [pickedSong, setPickedSong] = useState<LyricsProps | undefined>();
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -47,26 +45,11 @@ export default function LyricsClient() {
     fetchContent();
   }, [isFrench]);
 
-  useEffect(() => {
-    if (selectedAlbum) {
-      const filteredSongs = lyrics.filter(
-        (song) => song.album === selectedAlbum
-      );
-      if (filteredSongs.length > 0 && !selectedSong) {
-        setSelectedSong(filteredSongs[0]);
-      } else if (
-        filteredSongs.length > 0 &&
-        selectedSong &&
-        selectedSong.album !== selectedAlbum
-      ) {
-        setSelectedSong(filteredSongs[0]);
-      }
-    }
-  }, [selectedAlbum, lyrics, selectedSong]);
-
   const filteredSongs = selectedAlbum
     ? lyrics.filter((song) => song.album === selectedAlbum)
     : [];
+  const selectedSong =
+    pickedSong?.album === selectedAlbum ? pickedSong : filteredSongs[0];
 
   useEffect(() => {
     document.title = `${
@@ -74,34 +57,22 @@ export default function LyricsClient() {
     } | Clark's Bowling Club`;
   }, [isFrench]);
 
-  useEffect(() => {
-    setAlbumAnnouncement(
-      isFrench
-        ? `${filteredSongs.length} chansons dans l'album ${selectedAlbum}`
-        : `${filteredSongs.length} songs from album ${selectedAlbum}`
-    );
-  }, [filteredSongs.length, selectedAlbum, isFrench]);
+  const albumAnnouncement = isFrench
+    ? `${filteredSongs.length} chansons dans l'album ${selectedAlbum}`
+    : `${filteredSongs.length} songs from album ${selectedAlbum}`;
 
-  useEffect(() => {
-    if (selectedSong) {
-      setSongAnnouncement(
-        isFrench
-          ? `Paroles affichées pour ${selectedSong.title}`
-          : `Showing lyrics for ${selectedSong.title}`
-      );
-    }
-  }, [selectedSong, isFrench]);
+  const songAnnouncement = !selectedSong
+    ? ""
+    : isFrench
+    ? `Paroles affichées pour ${selectedSong.title}`
+    : `Showing lyrics for ${selectedSong.title}`;
 
   const handleAlbumChange = (album: string) => {
     setSelectedAlbum(album);
-    // Clear announcements briefly to ensure new ones are read
-    setAlbumAnnouncement("");
-    setSongAnnouncement("");
   };
 
   const handleSongSelect = (song: LyricsProps) => {
-    setSelectedSong(song);
-    setSongAnnouncement("");
+    setPickedSong(song);
   };
 
   if (lyrics.length === 0)
@@ -153,7 +124,7 @@ export default function LyricsClient() {
               <li key={song.title}>
                 <button
                   className={clsx(
-                    "p-4 border text-left transition-colors duration-200 w-full focus:ring-clarks-orange focus-visible:ring-2 focus:outline-none",
+                    "p-4 border text-left transition-colors duration-200 w-full focus:ring-clarks-orange focus-visible:ring-2 focus:outline-hidden",
                     selectedSong?.title === song.title
                       ? "bg-white text-black"
                       : "bg-transparent text-white hover:border-2 hover:border-clarks-orange"

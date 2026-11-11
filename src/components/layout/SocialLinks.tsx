@@ -90,7 +90,7 @@ export default function SocialLinks({ className }: SocialLinksProps) {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`Visit Clark's Bowling Club on ${link.platformName} (opens in new tab)`}
-              className="flex items-center justify-center rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-clarks-orange focus:ring-offset-2 focus:ring-offset-transparent motion-safe:transition-colors"
+              className="flex items-center justify-center rounded-full focus:outline-hidden focus-visible:ring-2 focus-visible:ring-clarks-orange focus:ring-offset-2 focus:ring-offset-transparent motion-safe:transition-colors"
             >
               <link.icon className="h-6 w-6 md:h-5 md:w-5" aria-hidden="true" />
               <span className="sr-only">{link.platformName}</span>

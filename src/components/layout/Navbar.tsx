@@ -57,7 +57,7 @@ export default function Navbar({
           onClick={toggleMenu}
           className={clsx(
             "text-white rounded-md p-1",
-            "focus:outline-none focus-visible:ring-2 focus-visible:ring-clarks-orange",
+            "focus:outline-hidden focus-visible:ring-2 focus-visible:ring-clarks-orange",
             "focus:ring-offset-2 focus:ring-offset-transparent"
           )}
           aria-label={
@@ -97,7 +97,7 @@ export default function Navbar({
                 href={route.path}
                 className={clsx(
                   "hover:text-clarks-orange font-blanch text-center px-4 py-2",
-                  "focus:outline-none focus-visible:ring-2 focus-visible:ring-clarks-orange",
+                  "focus:outline-hidden focus-visible:ring-2 focus-visible:ring-clarks-orange",
                   "focus:ring-offset-2 focus:ring-offset-transparent transition-colors",
                   pathname === route.path && "text-clarks-orange"
                 )}
@@ -148,7 +148,7 @@ export default function Navbar({
                     href={route.path}
                     className={clsx(
                       "hover:text-clarks-orange font-blanch text-center px-4 py-2",
-                      "focus:outline-none focus-visible:ring-2 focus-visible:ring-clarks-orange",
+                      "focus:outline-hidden focus-visible:ring-2 focus-visible:ring-clarks-orange",
                       "focus:ring-offset-2 focus:ring-offset-transparent transition-colors",
                       pathname === route.path && "text-clarks-orange"
                     )}

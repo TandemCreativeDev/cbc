@@ -44,22 +44,22 @@ export default function Header() {
         escapeDeactivates: true,
         returnFocusOnDeactivate: true,
         allowOutsideClick: true,
-        setReturnFocus: menuButtonRef.current,
+        setReturnFocus: () => menuButtonRef.current,
         clickOutsideDeactivates: true,
         onDeactivate: () => setIsMenuOpen(false),
       }}
     >
       <header
         className={clsx(
-          "absolute top-0 left-0 w-full md:bg-black md:bg-opacity-10 md:text-white z-20 md:motion-reduce:bg-opacity-30",
+          "absolute top-0 left-0 w-full md:bg-black/10 md:text-white z-20 md:motion-reduce:bg-black/30",
           "flex flex-col gap-2 md:flex-row items-center p-4 md:justify-between",
-          isMenuOpen && "backdrop-blur-sm bg-gray-950/80 h-screen w-screen"
+          isMenuOpen && "backdrop-blur-xs bg-gray-950/80 h-screen w-screen"
         )}
         role="banner"
       >
         <Link
           href="/"
-          className="flex flex-col items-center text-center md:items-start md:text-left group focus:outline-none focus-visible:ring-2 focus-visible:ring-clarks-orange focus:ring-offset-2 focus:ring-offset-transparent transition-colors"
+          className="flex flex-col items-center text-center md:items-start md:text-left group focus:outline-hidden focus-visible:ring-2 focus-visible:ring-clarks-orange focus:ring-offset-2 focus:ring-offset-transparent transition-colors"
           onClick={() => {
             if (isMenuOpen) {
               setIsMenuOpen(false);

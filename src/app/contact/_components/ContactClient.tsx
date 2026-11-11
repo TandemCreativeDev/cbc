@@ -3,7 +3,8 @@
 import ContactForm from "@/app/contact/_components/ContactForm";
 import { useLanguage } from "@/context/LanguageContext";
 import { Page } from "@/utils/types";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import useIsMounted from "@/utils/useIsMounted";
 
 const french: Page = {
   title: "Contact",
@@ -18,13 +19,12 @@ const english: Page = {
 export default function ContactClient() {
   const { isFrench } = useLanguage();
   const pageContent = isFrench ? french : english;
-  const [isLoaded, setIsLoaded] = useState(false);
+  const isLoaded = useIsMounted();
 
   useEffect(() => {
     document.title = `${
       isFrench ? "Contact" : "Contact"
     } | Clark's Bowling Club`;
-    setIsLoaded(true);
   }, [isFrench]);
 
   if (!isLoaded)

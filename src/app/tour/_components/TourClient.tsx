@@ -12,14 +12,16 @@ import TourDatesContainer from "./TourDatesContainer";
 const sheetTabGid = 127405583; // Main Tour page content
 const sheetTabGidTourDates = 572869052; // Tour dates
 
+function gigTime(gig: TourDateType): number {
+  const [day, month, year] = gig.eventDate.split("/").map(Number);
+  return new Date(year, month - 1, day).getTime();
+}
+
 export default function TourClient() {
   const { isFrench } = useLanguage();
   const [englishContent, setEnglishContent] = useState<Page | null>(null);
   const [frenchContent, setFrenchContent] = useState<Page | null>(null);
-  const [pageContent, setPageContent] = useState<Page | null>(null);
   const [gigs, setGigs] = useState<TourDateType[]>([]);
-  const [futureGigs, setFutureGigs] = useState<TourDateType[]>([]);
-  const [pastGigs, setPastGigs] = useState<TourDateType[]>([]);
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -43,47 +45,18 @@ export default function TourClient() {
     fetchContent();
   }, []);
 
-  useEffect(() => {
-    setPageContent(isFrench ? frenchContent : englishContent);
-  }, [isFrench, englishContent, frenchContent]);
+  const pageContent = isFrench ? frenchContent : englishContent;
 
   useEffect(() => {
     document.title = `${isFrench ? "Tournée" : "Tour"} | Clark's Bowling Club`;
   }, [isFrench]);
 
-  useEffect(() => {
-    const past: TourDateType[] = [];
-    const future: TourDateType[] = [];
-
-    gigs.forEach((gig) => {
-      if (dateInPast(gig.eventDate)) {
-        past.push(gig);
-      } else {
-        future.push(gig);
-      }
-    });
-
-    past.sort((b, a) => {
-      const [dayA, monthA, yearA] = a.eventDate.split("/").map(Number);
-      const [dayB, monthB, yearB] = b.eventDate.split("/").map(Number);
-      return (
-        new Date(yearA, monthA - 1, dayA).getTime() -
-        new Date(yearB, monthB - 1, dayB).getTime()
-      );
-    });
-
-    future.sort((a, b) => {
-      const [dayA, monthA, yearA] = a.eventDate.split("/").map(Number);
-      const [dayB, monthB, yearB] = b.eventDate.split("/").map(Number);
-      return (
-        new Date(yearA, monthA - 1, dayA).getTime() -
-        new Date(yearB, monthB - 1, dayB).getTime()
-      );
-    });
-
-    setPastGigs(past);
-    setFutureGigs(future);
-  }, [gigs]);
+  const pastGigs = gigs
+    .filter((gig) => dateInPast(gig.eventDate))
+    .sort((a, b) => gigTime(b) - gigTime(a));
+  const futureGigs = gigs
+    .filter((gig) => !dateInPast(gig.eventDate))
+    .sort((a, b) => gigTime(a) - gigTime(b));
 
   if (!pageContent)
     return (

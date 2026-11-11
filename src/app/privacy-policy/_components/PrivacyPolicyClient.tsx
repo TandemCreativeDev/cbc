@@ -2,18 +2,18 @@
 
 import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import useIsMounted from "@/utils/useIsMounted";
 
 export default function PrivacyPolicy() {
   const email = "contact@clarksbowlingclub.com";
   const { isFrench } = useLanguage();
-  const [isLoaded, setIsLoaded] = useState(false);
+  const isLoaded = useIsMounted();
 
   useEffect(() => {
     document.title = `${
       isFrench ? "Politique de Confidentialité" : "Privacy Policy"
     } | Clark's Bowling Club`;
-    setIsLoaded(true);
   }, [isFrench]);
 
   if (!isLoaded)
@@ -204,7 +204,7 @@ export default function PrivacyPolicy() {
                   ? "Envoyer un e-mail à l'adresse de contact de Clark's Bowling Club"
                   : "Send email to Clark's Bowling Club contact address"
               }
-              className="text-clarks-orange hover:underline focus:outline-none focus-visible:ring-2 focus:ring-clarks-orange"
+              className="text-clarks-orange hover:underline focus:outline-hidden focus-visible:ring-2 focus:ring-clarks-orange"
             >
               {email}
             </Link>
@@ -256,7 +256,7 @@ export default function PrivacyPolicy() {
                     ? "Envoyer un e-mail à l'adresse de contact de Clark's Bowling Club"
                     : "Send email to Clark's Bowling Club contact address"
                 }
-                className="text-clarks-orange hover:underline focus:outline-none focus-visible:ring-2 focus:ring-clarks-orange"
+                className="text-clarks-orange hover:underline focus:outline-hidden focus-visible:ring-2 focus:ring-clarks-orange"
               >
                 {email}
               </Link>

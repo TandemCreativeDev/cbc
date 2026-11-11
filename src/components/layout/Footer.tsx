@@ -27,7 +27,7 @@ export default function Footer() {
             href="https://runintandem.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-clarks-orange focus:outline-none focus-visible:ring-2 focus-visible:ring-clarks-orange focus:ring-offset-2 focus:ring-offset-transparent transition-colors"
+            className="hover:text-clarks-orange focus:outline-hidden focus-visible:ring-2 focus-visible:ring-clarks-orange focus:ring-offset-2 focus:ring-offset-transparent transition-colors"
             aria-label={
               isFrench
                 ? "Visiter le site web de Tandem Creative Dev (s'ouvre dans un nouvel onglet)"
