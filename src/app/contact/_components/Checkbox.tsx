@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
 import { twMerge } from "tailwind-merge";
 
 import { useLanguage } from "@/context/LanguageContext";
+import usePrefersReducedMotion from "@/utils/usePrefersReducedMotion";
 
 interface CheckboxProps {
   id: string;
@@ -25,7 +25,7 @@ export default function Checkbox({
   urlText,
   required = false,
 }: CheckboxProps) {
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const prefersReducedMotion = usePrefersReducedMotion();
   const { isFrench } = useLanguage();
 
   const handleInvalid = (e: React.FormEvent<HTMLInputElement>) => {
@@ -39,18 +39,6 @@ export default function Checkbox({
   const handleInput = (e: React.FormEvent<HTMLInputElement>) => {
     e.currentTarget.setCustomValidity("");
   };
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setPrefersReducedMotion(mediaQuery.matches);
-
-    const handleChange = (event: MediaQueryListEvent) => {
-      setPrefersReducedMotion(event.matches);
-    };
-
-    mediaQuery.addEventListener("change", handleChange);
-    return () => mediaQuery.removeEventListener("change", handleChange);
-  }, []);
 
   return (
     <div

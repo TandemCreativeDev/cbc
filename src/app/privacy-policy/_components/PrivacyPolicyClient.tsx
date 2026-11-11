@@ -2,18 +2,18 @@
 
 import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import useIsMounted from "@/utils/useIsMounted";
 
 export default function PrivacyPolicy() {
   const email = "contact@clarksbowlingclub.com";
   const { isFrench } = useLanguage();
-  const [isLoaded, setIsLoaded] = useState(false);
+  const isLoaded = useIsMounted();
 
   useEffect(() => {
     document.title = `${
       isFrench ? "Politique de Confidentialité" : "Privacy Policy"
     } | Clark's Bowling Club`;
-    setIsLoaded(true);
   }, [isFrench]);
 
   if (!isLoaded)

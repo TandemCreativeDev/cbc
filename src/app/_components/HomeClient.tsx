@@ -6,17 +6,17 @@ import { FaVolumeMute, FaVolumeUp, FaPause, FaPlay } from "react-icons/fa";
 import SpinningLogo from "./SpinningLogo";
 import Image from "next/image";
 import StaticLogo from "./StaticLogo";
+import useIsMounted from "@/utils/useIsMounted";
 
 export default function HomeClient() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [muted, setMuted] = useState(true);
   const [play, setPlay] = useState(true);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const isLoaded = useIsMounted();
   const { isFrench } = useLanguage();
 
   useEffect(() => {
     document.title = `${isFrench ? "Accueil" : "Home"} | Clark's Bowling Club`;
-    setIsLoaded(true);
   }, [isFrench]);
 
   const backgroundClasses =
