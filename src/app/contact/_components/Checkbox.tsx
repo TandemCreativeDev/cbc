@@ -64,7 +64,7 @@ export default function Checkbox({
           name={name}
           type="checkbox"
           required={required}
-          className="block focus:ring-2 focus:ring-clarks-orange focus:outline-none"
+          className="block focus:ring-2 focus:ring-clarks-orange focus:outline-hidden"
           onInvalid={handleInvalid}
           onInput={handleInput}
           aria-labelledby={`${id}-label`}
@@ -78,7 +78,7 @@ export default function Checkbox({
               name={name}
               type="checkbox"
               required={required}
-              className="block focus:ring-2 focus:ring-clarks-orange focus:outline-none"
+              className="block focus:ring-2 focus:ring-clarks-orange focus:outline-hidden"
               onInvalid={handleInvalid}
               onInput={handleInput}
               aria-labelledby={`${id}-label`}
@@ -117,7 +117,7 @@ export default function Checkbox({
                 ? "Voir la politique de confidentialité (s'ouvre dans un nouvel onglet)"
                 : "See our Privacy policy (opens in new tab)"
             }
-            className="text-clarks-orange focus:ring-clarks-orange focus-visible:ring-2 focus:outline-none hover:underline"
+            className="text-clarks-orange focus:ring-clarks-orange focus-visible:ring-2 focus:outline-hidden hover:underline"
           >
             {urlText}
           </Link>

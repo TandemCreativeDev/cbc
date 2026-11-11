@@ -34,7 +34,7 @@ export default function TextInput({
 }: InputProps) {
   const { isFrench } = useLanguage();
   const baseClasses =
-    "block w-full bg-slate-950 border-white px-3.5 py-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-clarks-orange sm:text-sm/6 mt-2.5 focus:outline-none";
+    "block w-full bg-slate-950 border-white px-3.5 py-2 shadow-xs ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-clarks-orange sm:text-sm/6 mt-2.5 focus:outline-hidden";
 
   // Set custom validation messages for better UX
   const handleInvalid = (

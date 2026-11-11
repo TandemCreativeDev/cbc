@@ -79,7 +79,7 @@ export default function Carousel({ images, altTexts, caption }: CarouselProps) {
         aria-label={`Image carousel with ${images.length} images`}
       >
         {images.map((image, index) => (
-          <li key={index} className="w-full h-full flex-shrink-0">
+          <li key={index} className="w-full h-full shrink-0">
             <Image
               width={5000}
               height={500}
@@ -98,7 +98,7 @@ export default function Carousel({ images, altTexts, caption }: CarouselProps) {
       >
         <button
           onClick={prevSlide}
-          className="ml-4 bg-black/50 text-white p-2 rounded-full hover:bg-black/75 focus:outline-none focus-visible:ring-2 focus:ring-clarks-orange pointer-events-auto"
+          className="ml-4 bg-black/50 text-white p-2 rounded-full hover:bg-black/75 focus:outline-hidden focus-visible:ring-2 focus:ring-clarks-orange pointer-events-auto"
           aria-label={`Previous image, currently showing image ${
             currentIndex + 1
           } of ${images.length}`}
@@ -108,7 +108,7 @@ export default function Carousel({ images, altTexts, caption }: CarouselProps) {
 
         <button
           onClick={nextSlide}
-          className="mr-4 bg-black/50 text-white p-2 rounded-full hover:bg-black/75 focus:outline-none focus-visible:ring-2 focus:ring-clarks-orange pointer-events-auto"
+          className="mr-4 bg-black/50 text-white p-2 rounded-full hover:bg-black/75 focus:outline-hidden focus-visible:ring-2 focus:ring-clarks-orange pointer-events-auto"
           aria-label={`Next image, currently showing image ${
             currentIndex + 1
           } of ${images.length}`}
@@ -128,7 +128,7 @@ export default function Carousel({ images, altTexts, caption }: CarouselProps) {
               <button
                 onClick={() => goToSlide(index)}
                 className={clsx(
-                  "w-6 h-6 m-1 rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus:ring-clarks-orange flex items-center justify-center",
+                  "w-6 h-6 m-1 rounded-full transition-colors focus:outline-hidden focus-visible:ring-2 focus:ring-clarks-orange flex items-center justify-center",
                   index === currentIndex ? "bg-clarks-orange" : "bg-white/50"
                 )}
                 aria-label={`Go to image ${index + 1}${

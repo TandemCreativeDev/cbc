@@ -153,7 +153,7 @@ export default function LyricsClient() {
               <li key={song.title}>
                 <button
                   className={clsx(
-                    "p-4 border text-left transition-colors duration-200 w-full focus:ring-clarks-orange focus-visible:ring-2 focus:outline-none",
+                    "p-4 border text-left transition-colors duration-200 w-full focus:ring-clarks-orange focus-visible:ring-2 focus:outline-hidden",
                     selectedSong?.title === song.title
                       ? "bg-white text-black"
                       : "bg-transparent text-white hover:border-2 hover:border-clarks-orange"
