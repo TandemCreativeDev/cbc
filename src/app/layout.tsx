@@ -10,27 +10,27 @@ import { Toaster } from "react-hot-toast";
 const damion = Damion({
   weight: "400",
   subsets: ["latin"],
-  variable: "--font-damion",
+  variable: "--next-font-damion",
   display: "swap",
 });
 
 const jost = Jost({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
   subsets: ["latin"],
-  variable: "--font-jost",
+  variable: "--next-font-jost",
   display: "swap",
   style: ["normal", "italic"],
 });
 
 const blanchCaps = localFont({
   src: "../fonts/Blanch-Caps.woff2",
-  variable: "--font-blanch",
+  variable: "--next-font-blanch",
   display: "swap",
 });
 
 const goudyStd = localFont({
   src: "../fonts/GoudyStd-Heavyface.woff2",
-  variable: "--font-goudy",
+  variable: "--next-font-goudy",
   display: "swap",
 });
 

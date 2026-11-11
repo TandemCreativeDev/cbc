@@ -1,19 +1,90 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --color-clarks-orange: #febc12;
+  --color-clarks-red: #c14627;
+
+  --animate-spin-pulse: spin-pulse 5s linear infinite;
+  --animate-flicker-1: flicker 1.5s steps(2) infinite;
+  --animate-flicker-2: flicker 2.1s steps(2) infinite 0.3s;
+  --animate-flicker-3: flicker 1.8s steps(2) infinite 0.7s;
+  --animate-bowling-roll: bowlingRoll 0.6s ease-in-out forwards;
+  --animate-bowling-spin: bowlingSpin 0.6s linear infinite;
+
+  @keyframes spin-pulse {
+    0% {
+      transform: rotateY(0deg) scale(1);
+    }
+    50% {
+      transform: rotateY(90deg) scale(0.9);
+    }
+    100% {
+      transform: rotateY(0deg) scale(1);
+    }
+  }
+  @keyframes flicker {
+    0%,
+    100% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+  @keyframes bowlingRoll {
+    0% {
+      transform: translateX(var(--prev-position));
+    }
+    100% {
+      transform: translateX(var(--next-position));
+    }
+  }
+  @keyframes bowlingSpin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+@theme inline {
+  --font-jost: var(--next-font-jost), sans-serif;
+  --font-blanch: var(--next-font-blanch);
+  --font-damion: var(--next-font-damion), cursive;
+  --font-goudy: var(--next-font-goudy);
+}
+
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+@utility transform-style-3d {
+  transform-style: preserve-3d;
+}
+
+@utility no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
 
 body {
   @apply bg-slate-950 font-jost text-white;
-}
-
-@layer utilities {
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-  .no-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
 }
 
 /* CHECKBOX STYLING - eventually would be nice to use tailwind */
