@@ -2,6 +2,8 @@
 
 @source not "../../audit.json";
 
+@custom-variant hover (&:hover);
+
 @theme {
   --color-clarks-orange: #febc12;
   --color-clarks-red: #c14627;
