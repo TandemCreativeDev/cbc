@@ -23,13 +23,13 @@ const jost = Jost({
 });
 
 const blanchCaps = localFont({
-  src: "../fonts/Blanch-Caps.woff2",
+  src: "../../fonts/Blanch-Caps.woff2",
   variable: "--next-font-blanch",
   display: "swap",
 });
 
 const goudyStd = localFont({
-  src: "../fonts/GoudyStd-Heavyface.woff2",
+  src: "../../fonts/GoudyStd-Heavyface.woff2",
   variable: "--next-font-goudy",
   display: "swap",
 });
