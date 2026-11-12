@@ -121,11 +121,11 @@ export default function SpinningLogo() {
     scene.add(tube);
 
     const textureLoader = new THREE.TextureLoader();
-    const baseTexture = textureLoader.load("/hologram/hologram_nolight.png");
+    const baseTexture = textureLoader.load("/hologram/hologram_nolight.webp");
     const lightTextures = [
-      textureLoader.load("/hologram/hologram_light1.png"),
-      textureLoader.load("/hologram/hologram_light2.png"),
-      textureLoader.load("/hologram/hologram_light3.png"),
+      textureLoader.load("/hologram/hologram_light1.webp"),
+      textureLoader.load("/hologram/hologram_light2.webp"),
+      textureLoader.load("/hologram/hologram_light3.webp"),
     ];
 
     const planeGeometry = new THREE.PlaneGeometry(radius * 2.5, radius * 1.5);
