@@ -1,9 +1,13 @@
-import fetchSheet from "@/utils/fetchSheet";
-import parsePageCsv from "@/utils/parsePageCsv";
-import parseCsv from "@/utils/parseCsv";
-import { IFrameProps, LyricsProps, TourDateType } from "@/utils/types";
+import { connection } from "next/server";
+import {
+  getAboutPage,
+  getLyrics,
+  getMusicItems,
+  getTourDates,
+} from "@/lib/data/content";
 
 export async function GET() {
+  await connection();
   try {
     const content = await generateLLMsTxt();
 
@@ -31,10 +35,9 @@ async function generateLLMsTxt(): Promise<string> {
   sections.push("## About");
 
   try {
-    const aboutData = await fetchSheet(0);
-    const aboutContent = parsePageCsv(aboutData);
-    if (aboutContent[1]?.content) {
-      sections.push(aboutContent[1].content);
+    const { english: aboutEnglish } = await getAboutPage();
+    if (aboutEnglish?.content) {
+      sections.push(aboutEnglish.content);
       sections.push("");
     }
   } catch (error) {
@@ -43,11 +46,7 @@ async function generateLLMsTxt(): Promise<string> {
 
   sections.push("## Music");
   try {
-    const musicData = await fetchSheet(1713768433);
-    const musicItems = parseCsv<IFrameProps>(
-      musicData,
-      (row) => !!row.title && !!row.type
-    );
+    const musicItems = await getMusicItems();
 
     const categories = [
       ...new Set(
@@ -73,11 +72,7 @@ async function generateLLMsTxt(): Promise<string> {
 
   sections.push("## Tour Dates");
   try {
-    const tourData = await fetchSheet(572869052);
-    const tourItems = parseCsv<TourDateType>(
-      tourData,
-      (row) => !!row.eventDate
-    );
+    const tourItems = await getTourDates();
 
     const now = new Date();
     const futureGigs = tourItems
@@ -115,11 +110,7 @@ async function generateLLMsTxt(): Promise<string> {
 
   sections.push("## Lyrics");
   try {
-    const lyricsData = await fetchSheet(145198726);
-    const lyricsItems = parseCsv<LyricsProps>(
-      lyricsData,
-      (row) => !!row.title && !!row.lyrics
-    );
+    const lyricsItems = await getLyrics();
 
     const albums = [
       ...new Set(lyricsItems.map((item) => item.album).filter(Boolean)),

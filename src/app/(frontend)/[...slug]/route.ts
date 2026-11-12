@@ -1,8 +1,11 @@
 import { NextRequest } from "next/server";
-import fetchSheet from "@/utils/fetchSheet";
-import parsePageCsv from "@/utils/parsePageCsv";
-import parseCsv from "@/utils/parseCsv";
-import { IFrameProps, LyricsProps, TourDateType } from "@/utils/types";
+import {
+  getAboutPage,
+  getLyrics,
+  getMusicItems,
+  getTourDates,
+  getTourPage,
+} from "@/lib/data/content";
 
 export async function GET(
   request: NextRequest,
@@ -50,12 +53,11 @@ async function generatePageMarkdown(page: string): Promise<string | null> {
 
     case "about":
       try {
-        const aboutData = await fetchSheet(0);
-        const aboutContent = parsePageCsv(aboutData);
-        if (aboutContent[1]) {
-          sections.push(`# ${aboutContent[1].title}`);
+        const { english: aboutEnglish } = await getAboutPage();
+        if (aboutEnglish) {
+          sections.push(`# ${aboutEnglish.title}`);
           sections.push("");
-          sections.push(aboutContent[1].content);
+          sections.push(aboutEnglish.content);
         }
       } catch {
         return null;
@@ -66,11 +68,7 @@ async function generatePageMarkdown(page: string): Promise<string | null> {
       sections.push("# Music");
       sections.push("");
       try {
-        const musicData = await fetchSheet(1713768433);
-        const musicItems = parseCsv<IFrameProps>(
-          musicData,
-          (row) => !!row.title && !!row.type
-        );
+        const musicItems = await getMusicItems();
 
         const categories = [
           ...new Set(
@@ -103,18 +101,13 @@ async function generatePageMarkdown(page: string): Promise<string | null> {
       sections.push("# Tour");
       sections.push("");
       try {
-        const tourPageData = await fetchSheet(127405583);
-        const tourPageContent = parsePageCsv(tourPageData);
-        if (tourPageContent[1]?.content) {
-          sections.push(tourPageContent[1].content);
+        const { english: tourEnglish } = await getTourPage();
+        if (tourEnglish?.content) {
+          sections.push(tourEnglish.content);
           sections.push("");
         }
 
-        const tourData = await fetchSheet(572869052);
-        const tourItems = parseCsv<TourDateType>(
-          tourData,
-          (row) => !!row.eventDate
-        );
+        const tourItems = await getTourDates();
 
         const now = new Date();
         const futureGigs = tourItems.filter((gig) => {
@@ -163,11 +156,7 @@ async function generatePageMarkdown(page: string): Promise<string | null> {
       sections.push("# Lyrics");
       sections.push("");
       try {
-        const lyricsData = await fetchSheet(145198726);
-        const lyricsItems = parseCsv<LyricsProps>(
-          lyricsData,
-          (row) => !!row.title && !!row.lyrics
-        );
+        const lyricsItems = await getLyrics();
 
         const albums = [
           ...new Set(lyricsItems.map((item) => item.album).filter(Boolean)),
