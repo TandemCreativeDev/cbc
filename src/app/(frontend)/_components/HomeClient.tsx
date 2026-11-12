@@ -3,10 +3,14 @@
 import { useRef, useState, useEffect } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import { FaVolumeMute, FaVolumeUp, FaPause, FaPlay } from "react-icons/fa";
-import SpinningLogo from "./SpinningLogo";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import StaticLogo from "./StaticLogo";
 import useIsMounted from "@/utils/useIsMounted";
+import useMediaQuery from "@/utils/useMediaQuery";
+import usePrefersReducedMotion from "@/utils/usePrefersReducedMotion";
+
+const SpinningLogo = dynamic(() => import("./SpinningLogo"), { ssr: false });
 
 export default function HomeClient() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -14,6 +18,8 @@ export default function HomeClient() {
   const [play, setPlay] = useState(true);
   const isLoaded = useIsMounted();
   const { isFrench } = useLanguage();
+  const prefersReducedMotion = usePrefersReducedMotion();
+  const isDesktop = useMediaQuery("(min-width: 48rem)");
 
   useEffect(() => {
     document.title = `${isFrench ? "Accueil" : "Home"} | Clark's Bowling Club`;
@@ -87,7 +93,7 @@ export default function HomeClient() {
 
       {/* Logo elements - decorative */}
       <div className="fixed top-[5rem] left-0 w-full h-[calc(100vh-11rem)] pointer-events-none z-50">
-        <SpinningLogo />
+        {isDesktop && !prefersReducedMotion && <SpinningLogo />}
         <StaticLogo />
       </div>
 
