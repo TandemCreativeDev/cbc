@@ -8,6 +8,12 @@ INPUT="$(cat)"
 CWD="$(jq -r '.cwd // empty' <<< "$INPUT" 2>/dev/null)"
 [ -z "$CWD" ] || cd "$CWD" 2>/dev/null || exit 0
 [ "$(jq -r '.stop_hook_active // false' <<< "$INPUT" 2>/dev/null)" = "true" ] && exit 0
+# As a subagent hook the cwd is the main checkout; a worktree-isolated agent's worktree is named after it
+AGENT="$(jq -r '.agent_id // empty' <<< "$INPUT" 2>/dev/null)"
+if [ -n "$AGENT" ]; then
+  MAIN="$(dirname "$(cd "$(git rev-parse --git-common-dir 2>/dev/null)" 2>/dev/null && pwd)")"
+  [ -d "$MAIN/.claude/worktrees/agent-$AGENT" ] && { cd "$MAIN/.claude/worktrees/agent-$AGENT" || exit 0; }
+fi
 
 . "$(dirname "$0")/lib.sh"
 CODE="$(current_code 2>/dev/null)" || exit 0
