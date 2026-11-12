@@ -17,7 +17,7 @@ export default function ContactForm({ legend }: { legend: string }) {
       acc[field.id] = "";
       return acc;
     },
-    {}
+    {},
   );
 
   const [formData, setFormData] = useState(contactForm);
@@ -43,6 +43,10 @@ export default function ContactForm({ legend }: { legend: string }) {
     for (const key in formData) {
       fd.append(key, formData[key]);
     }
+    fd.append(
+      "website",
+      new FormData(formRef.current ?? undefined).get("website") ?? "",
+    );
     fd.append("language", isFrench ? "fr" : "en");
 
     const loadingMessage = isFrench
@@ -123,6 +127,16 @@ export default function ContactForm({ legend }: { legend: string }) {
             className={field.className}
           />
         ))}
+        <div className="absolute -left-[9999px]" aria-hidden="true">
+          <label htmlFor="website">Website</label>
+          <input
+            type="text"
+            id="website"
+            name="website"
+            tabIndex={-1}
+            autoComplete="off"
+          />
+        </div>
         <Checkbox
           id={"privacyPolicy"}
           name={"privacyPolicy"}
