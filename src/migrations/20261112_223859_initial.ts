@@ -52,6 +52,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   
   CREATE TABLE "tour_dates" (
   	"id" serial PRIMARY KEY NOT NULL,
+  	"_order" varchar,
   	"event_date" timestamp(3) with time zone NOT NULL,
   	"venue" varchar NOT NULL,
   	"location" varchar NOT NULL,
@@ -198,6 +199,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE UNIQUE INDEX "media_filename_idx" ON "media" USING btree ("filename");
   CREATE UNIQUE INDEX "media_locales_locale_parent_id_unique" ON "media_locales" USING btree ("_locale","_parent_id");
   CREATE INDEX "media_locales_parent_id_idx" ON "media_locales" USING btree ("_parent_id");
+  CREATE INDEX "tour_dates__order_idx" ON "tour_dates" USING btree ("_order");
   CREATE INDEX "tour_dates_event_date_idx" ON "tour_dates" USING btree ("event_date");
   CREATE INDEX "tour_dates_updated_at_idx" ON "tour_dates" USING btree ("updated_at");
   CREATE INDEX "tour_dates_created_at_idx" ON "tour_dates" USING btree ("created_at");

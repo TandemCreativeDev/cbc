@@ -32,7 +32,7 @@ export async function getTourDates(): Promise<TourDateType[]> {
   const payload = await getPayload({ config });
   const { docs } = await payload.find({
     collection: "tour-dates",
-    sort: "-eventDate",
+    sort: "_order",
     ...read,
   });
   return docs.map((doc) => ({

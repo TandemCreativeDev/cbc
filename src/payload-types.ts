@@ -181,6 +181,7 @@ export interface Media {
  */
 export interface TourDate {
   id: number;
+  _order?: string | null;
   eventDate: string;
   venue: string;
   location: string;
@@ -352,6 +353,7 @@ export interface MediaSelect<T extends boolean = true> {
  * via the `definition` "tour-dates_select".
  */
 export interface TourDatesSelect<T extends boolean = true> {
+  _order?: T;
   eventDate?: T;
   venue?: T;
   location?: T;

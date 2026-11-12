@@ -5,8 +5,7 @@ import type { TourDateType } from "../utils/types";
 
 const normalise = {
   tourDates: (dates: TourDateType[]) =>
-    dates
-      .map((date) => {
+    dates.map((date) => {
         const [day, month, year] = date.eventDate.split("/").map(Number);
         return {
           eventDate: `${year}-${month}-${day}`,
@@ -15,10 +14,7 @@ const normalise = {
           locationUrl: date.locationUrl || "",
           ticketUrl: date.ticketUrl || "",
         };
-      })
-      .sort((a, b) =>
-        `${a.eventDate}${a.venue}`.localeCompare(`${b.eventDate}${b.venue}`)
-      ),
+    }),
   withEmpty: <T extends object>(items: T[]) =>
     items.map((item) =>
       Object.fromEntries(

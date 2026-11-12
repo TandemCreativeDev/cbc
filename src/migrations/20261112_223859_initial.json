@@ -456,6 +456,12 @@
           "primaryKey": true,
           "notNull": true
         },
+        "_order": {
+          "name": "_order",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
         "event_date": {
           "name": "event_date",
           "type": "timestamp(3) with time zone",
@@ -502,6 +508,21 @@
         }
       },
       "indexes": {
+        "tour_dates__order_idx": {
+          "name": "tour_dates__order_idx",
+          "columns": [
+            {
+              "expression": "_order",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
         "tour_dates_event_date_idx": {
           "name": "tour_dates_event_date_idx",
           "columns": [
@@ -1941,6 +1962,6 @@
     "tables": {},
     "columns": {}
   },
-  "id": "6aa73a7e-fdaf-41a8-80e6-dc4559616aab",
+  "id": "e61143dd-15a3-47ea-bf6d-1e4bd05e6b35",
   "prevId": "00000000-0000-0000-0000-000000000000"
 }

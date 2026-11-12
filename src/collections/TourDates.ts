@@ -11,7 +11,7 @@ export const TourDates: CollectionConfig = {
   access: {
     read: () => true,
   },
-  defaultSort: "-eventDate",
+  orderable: true,
   hooks: revalidateCollection("tour-dates"),
   fields: [
     {
