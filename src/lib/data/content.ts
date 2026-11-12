@@ -11,6 +11,9 @@ export interface BilingualPage {
 
 async function getPage(tabGid: number): Promise<BilingualPage> {
   const [french, english] = parsePageCsv(await fetchSheet(tabGid));
+  if (!french || !english) {
+    throw new Error(`Sheet tab ${tabGid} is missing a language column`);
+  }
   return { french, english };
 }
 
