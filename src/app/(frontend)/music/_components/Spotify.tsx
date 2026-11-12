@@ -1,10 +1,14 @@
 import { IFrameProps } from "@/utils/types";
+import { safeEmbedSrc } from "@/utils/safeUrl";
 
 export default function Spotify({ src, title }: IFrameProps) {
+  const safeSrc = safeEmbedSrc(src, "spotify");
+  if (!safeSrc) return null;
+
   return (
     <div className="aspect-video">
       <iframe
-        src={src}
+        src={safeSrc}
         title={title}
         width="1000"
         height="352"
