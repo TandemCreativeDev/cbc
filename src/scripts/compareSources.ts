@@ -1,7 +1,7 @@
 import { isDeepStrictEqual } from "node:util";
 import * as payloadSource from "../lib/data/payload";
 import * as sheetSource from "../lib/data/sheet";
-import type { TourDateType } from "../utils/types";
+import type { LyricsProps, TourDateType } from "../utils/types";
 
 const normalise = {
   tourDates: (dates: TourDateType[]) =>
@@ -21,6 +21,10 @@ const normalise = {
         Object.entries(item).map(([key, value]) => [key, value ?? ""])
       )
     ),
+  lyrics: (songs: LyricsProps[]) =>
+    normalise.withEmpty(
+      songs.map((song) => ({ ...song, paroles: song.paroles || song.lyrics }))
+    ),
 };
 
 const comparisons = [
@@ -38,8 +42,8 @@ const comparisons = [
   ],
   [
     "lyrics",
-    async () => normalise.withEmpty(await sheetSource.getLyrics()),
-    async () => normalise.withEmpty(await payloadSource.getLyrics()),
+    async () => normalise.lyrics(await sheetSource.getLyrics()),
+    async () => normalise.lyrics(await payloadSource.getLyrics()),
   ],
 ] as const;
 

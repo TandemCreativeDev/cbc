@@ -4,7 +4,7 @@ import type { IFrameProps, LyricsProps, TourDateType } from "../../utils/types";
 import type { BilingualPage } from "./sheet";
 
 const locales = ["en", "fr"] as const;
-const read = { depth: 0, fallbackLocale: false, limit: 0, pagination: false } as const;
+const read = { depth: 0, fallbackLocale: "en", limit: 0, pagination: false } as const;
 
 function formatDate(isoDate: string): string {
   const date = new Date(isoDate);
