@@ -49,6 +49,7 @@ function readField(formData: FormData, key: keyof typeof LIMITS) {
 export async function POST(request: Request) {
   try {
     const formData = await request.formData();
+    const isFrench = formData.get("language") === "fr";
 
     if (formData.get("website")) {
       return Response.json({ message: "Thanks, we will be in touch shortly." });
@@ -56,7 +57,11 @@ export async function POST(request: Request) {
 
     if (isRateLimited(getClientIp(request))) {
       return Response.json(
-        { error: "Too many requests, please try again later" },
+        {
+          error: isFrench
+            ? "Trop de messages, veuillez réessayer plus tard"
+            : "Too many requests, please try again later",
+        },
         { status: 429 },
       );
     }
@@ -66,7 +71,6 @@ export async function POST(request: Request) {
     const email = readField(formData, "email");
     const phoneNumber = readField(formData, "phoneNumber");
     const message = readField(formData, "message");
-    const isFrench = formData.get("language") === "fr";
 
     const fields = { name, company, email, phoneNumber, message };
     const tooLong = (Object.keys(LIMITS) as (keyof typeof LIMITS)[]).some(
@@ -79,7 +83,14 @@ export async function POST(request: Request) {
       /[\r\n]/.test(name + email) ||
       tooLong
     ) {
-      return Response.json({ error: "Invalid form data" }, { status: 400 });
+      return Response.json(
+        {
+          error: isFrench
+            ? "Veuillez vérifier les informations saisies"
+            : "Invalid form data",
+        },
+        { status: 400 },
+      );
     }
 
     const plainFirstName = name.split(" ")[0];
