@@ -82,7 +82,8 @@ export async function POST(request: Request) {
       return Response.json({ error: "Invalid form data" }, { status: 400 });
     }
 
-    const firstName = escapeHtml(name.split(" ")[0]);
+    const plainFirstName = name.split(" ")[0];
+    const firstName = escapeHtml(plainFirstName);
     const safeName = escapeHtml(name);
     const safeCompany = escapeHtml(company);
     const safeEmail = escapeHtml(email);
@@ -92,7 +93,7 @@ export async function POST(request: Request) {
     let clarksSubject, clarksEmailHtml, userSubject, userEmailHtml;
 
     if (isFrench) {
-      clarksSubject = `${firstName} souhaite entrer en contact`;
+      clarksSubject = `${plainFirstName} souhaite entrer en contact`;
       clarksEmailHtml = `
           <!DOCTYPE html>
           <html>
@@ -129,7 +130,7 @@ export async function POST(request: Request) {
           </body>
           </html>
          `;
-      userSubject = `Bonjour ${firstName}, merci de nous avoir contactés`;
+      userSubject = `Bonjour ${plainFirstName}, merci de nous avoir contactés`;
       userEmailHtml = `
           <!DOCTYPE html>
           <html>
@@ -169,7 +170,7 @@ export async function POST(request: Request) {
           </html>
          `;
     } else {
-      clarksSubject = `${firstName} wants to get in touch`;
+      clarksSubject = `${plainFirstName} wants to get in touch`;
       clarksEmailHtml = `
           <!DOCTYPE html>
           <html>
@@ -206,7 +207,7 @@ export async function POST(request: Request) {
           </body>
           </html>
          `;
-      userSubject = `Hi ${firstName}, thanks for getting in touch`;
+      userSubject = `Hi ${plainFirstName}, thanks for getting in touch`;
       userEmailHtml = `
           <!DOCTYPE html>
           <html>
@@ -248,7 +249,8 @@ export async function POST(request: Request) {
     }
 
     const clarksEmail = await transporter.sendMail({
-      from: `${safeName} <websiteform@clarksbowlingclub.com>`,
+      from: "Clarks Bowling Club Website <websiteform@clarksbowlingclub.com>",
+      replyTo: email,
       to: `Clarks Bowling Club <${process.env.EMAIL_USER}>`,
       cc: "Clarks Bowling Club <clarksbowlingclub@gmail.com>",
       subject: clarksSubject,
@@ -257,14 +259,14 @@ export async function POST(request: Request) {
 
     const userEmail = await transporter.sendMail({
       from: `Clarks Bowling Club <${process.env.EMAIL_USER}>`,
-      to: `${safeName} <${safeEmail}>`,
+      to: email,
       subject: userSubject,
       html: userEmailHtml,
     });
     console.log("Email sent to Clarks Bowling Club: %s", clarksEmail.messageId);
     console.log("Email sent to user: %s", userEmail.messageId);
     return Response.json(
-      { message: `Thanks ${firstName}, we will be in touch shortly.` },
+      { message: `Thanks ${plainFirstName}, we will be in touch shortly.` },
       { status: 200 },
     );
   } catch (error) {
