@@ -61,13 +61,18 @@ export default function HomeClient() {
         <video
           ref={videoRef}
           className={`${backgroundClasses} motion-reduce:hidden brightness-50`}
-          src="/videos/teaser.mp4"
           poster="/videos/teaser-poster.jpg"
           autoPlay
           loop
           muted={muted}
           aria-hidden="true"
-        />
+        >
+          <source
+            src="/videos/teaser-av1.mp4"
+            type='video/mp4; codecs="av01.0.08M.08, mp4a.40.2"'
+          />
+          <source src="/videos/teaser.mp4" type="video/mp4" />
+        </video>
         <Image
           src="/images/home.png"
           alt="Band performing on stage"
