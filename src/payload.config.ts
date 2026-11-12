@@ -1,0 +1,43 @@
+import path from "path";
+import { fileURLToPath } from "url";
+import { postgresAdapter } from "@payloadcms/db-postgres";
+import { buildConfig } from "payload";
+import sharp from "sharp";
+import { Lyrics } from "./collections/Lyrics";
+import { Media } from "./collections/Media";
+import { MusicItems } from "./collections/MusicItems";
+import { TourDates } from "./collections/TourDates";
+import { Users } from "./collections/Users";
+import { AboutPage, TourPage } from "./globals/pageCopy";
+import { storagePlugin } from "./lib/payload/storage";
+
+const dirname = path.dirname(fileURLToPath(import.meta.url));
+
+export default buildConfig({
+  admin: {
+    user: Users.slug,
+    importMap: {
+      baseDir: dirname,
+    },
+  },
+  collections: [Users, Media, TourDates, MusicItems, Lyrics],
+  globals: [AboutPage, TourPage],
+  localization: {
+    locales: ["en", "fr"],
+    defaultLocale: "en",
+    fallback: true,
+  },
+  graphQL: { disable: true },
+  secret: process.env.PAYLOAD_SECRET ?? "",
+  typescript: {
+    outputFile: path.resolve(dirname, "payload-types.ts"),
+  },
+  db: postgresAdapter({
+    pool: {
+      connectionString: process.env.DATABASE_URL,
+    },
+    migrationDir: path.resolve(dirname, "migrations"),
+  }),
+  sharp,
+  plugins: [storagePlugin],
+});
