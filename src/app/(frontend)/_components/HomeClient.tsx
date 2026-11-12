@@ -78,7 +78,7 @@ export default function HomeClient() {
           <source src="/videos/teaser.mp4" type="video/mp4" />
         </video>
         <Image
-          src="/images/home.png"
+          src="/images/home.jpg"
           alt="Band performing on stage"
           fill
           className={`${backgroundClasses} motion-reduce:block hidden`}
