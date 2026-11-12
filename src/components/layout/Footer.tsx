@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
 import SocialLinks from "./SocialLinks";
 
-export default function Footer() {
+export default function Footer({ year }: { year: number }) {
   const { isFrench } = useLanguage();
 
   return (
@@ -17,7 +17,7 @@ export default function Footer() {
       <div className="flex flex-col justify-center">
         <div className="flex justify-center">
           <span>
-            &copy; {new Date().getFullYear()} Clark&apos;s Bowling Club.{" "}
+            &copy; {year} Clark&apos;s Bowling Club.{" "}
             {isFrench ? "Tous droits réservés" : "All rights reserved"}.
           </span>
         </div>

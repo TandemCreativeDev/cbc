@@ -1,5 +1,5 @@
-import { Suspense } from "react";
 import type { Metadata } from "next";
+import { cacheLife } from "next/cache";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import { LanguageProvider } from "@/context/LanguageContext";
@@ -44,7 +44,13 @@ export const metadata: Metadata = {
     "Clark’s Bowling Club is a 6-piece funk/pop band based in Lyon, France. Inspired by the likes of Jungle and Deluxe, their music brings a modern twist to disco-funk, hip-hop, and jazz genres, breathing new life into the vibrant music scene.",
 };
 
-export default function RootLayout({
+async function currentYear() {
+  "use cache";
+  cacheLife("days");
+  return new Date().getFullYear();
+}
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -67,9 +73,7 @@ export default function RootLayout({
             <Toaster position="bottom-center" />
             {children}
           </main>
-          <Suspense>
-            <Footer />
-          </Suspense>
+          <Footer year={await currentYear()} />
         </LanguageProvider>
       </body>
     </html>
