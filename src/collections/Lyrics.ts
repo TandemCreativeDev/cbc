@@ -28,8 +28,10 @@ export const Lyrics: CollectionConfig = {
       name: "lyrics",
       type: "textarea",
       localized: true,
-      validate: (value, { siblingData }) =>
-        (siblingData as { status?: string }).status === "published" && !value
+      validate: (value, { req, siblingData }) =>
+        req.locale === "en" &&
+        (siblingData as { status?: string }).status === "published" &&
+        !value
           ? "Required to publish"
           : true,
     },
