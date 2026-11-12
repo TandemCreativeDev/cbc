@@ -27,7 +27,7 @@ If the block says `QUEUE FAIL`, show the reason and stop. Do nothing else.
 | `$Q/loop.sh round` | Opens a review round; fails at the cap (3, `TICKET_LOOP_ROUNDS`) |
 | `$Q/loop.sh verdict <ALL CLEAR\|NOT CLEAR> [titles]` | Records the verdict and open findings; fails when a finding repeats from the last round |
 | `$Q/loop.sh status` | Mode, phase, round, verdicts and findings so far |
-| `$S/ship.sh` | Pushes the reviewed branch and marks the draft PR ready (refuses on `NOT CLEAR`) |
+| `$S/ship.sh` | Pushes the reviewed branch and marks the draft PR ready on `ALL CLEAR` (after `NOT CLEAR` it pushes the fixes and the PR stays a draft) |
 
 State lives in `.git/ticket/`: `queue` for the run, and per ticket `<issue number>/loop`, `round-N.findings`, `title`, `pr.md`, `gates.ok` and `env`.
 

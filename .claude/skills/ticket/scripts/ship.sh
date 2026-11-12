@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Ships the ticket: refuses unless everything is committed, check.sh passed on this exact tree and the PR title
 # and body are clean, then pushes and opens or updates the PR. Run from /ticket, PRs open ready for review.
-# Inside /tickets, the implementer's first ship opens a draft, a NOT CLEAR verdict refuses to ship, and ALL CLEAR
+# Inside /tickets, the implementer's first ship opens a draft, fixes after a NOT CLEAR verdict push to the draft, and ALL CLEAR
 # pushes the reviewer's fixes and marks the PR ready.
 #
 # Usage: ship.sh   (reads .git/ticket/<issue number>/title and pr.md)
@@ -30,8 +30,7 @@ LOOP="$STATE/$CODE/loop"; VERDICT=""; DRAFT=()
 if [ -f "$LOOP" ]; then
   VERDICT="$(sed -n 's/^VERDICT=//p' "$LOOP" | tail -1)"
   case "$VERDICT" in
-    "") DRAFT=(--draft) ;;
-    "NOT CLEAR") die SHIP "the last review verdict is NOT CLEAR: /tickets ships only after ALL CLEAR" ;;
+    ""|"NOT CLEAR") DRAFT=(--draft) ;;
     "ALL CLEAR") grep -q 'Verdict: ALL CLEAR' "$BODY_FILE" || die SHIP "the PR body has no 'Verdict: ALL CLEAR' line in its ## Review section" ;;
   esac
 fi

@@ -25,7 +25,7 @@ If the block says `ORCH FAIL`, show the reason and stop. Do nothing else.
 | `$R loop <n> round` | Opens a review round; fails at the cap (3, `TICKET_LOOP_ROUNDS`) |
 | `$R loop <n> verdict <ALL CLEAR\|NOT CLEAR> [titles]` | Records the verdict and open findings; fails when a finding repeats from the last round |
 | `$R loop <n> phase build` | Records that the plan was approved (`--plan` runs only) |
-| `$R ship <n>` | `ship.sh` in the ticket's worktree: pushes the reviewed branch, updates the PR body and marks the draft ready (refuses on `NOT CLEAR`) |
+| `$R ship <n>` | `ship.sh` in the ticket's worktree: pushes the reviewed branch, updates the PR body and marks the draft ready on `ALL CLEAR` (after `NOT CLEAR` it pushes the fixes and the PR stays a draft) |
 | `$R merge <n>` | `--merge` runs only, after `ship`: refuses unless the verdict is `ALL CLEAR`, the PR targets `main`, is pushed and free of attribution and conflicts; waits for every check to pass, gets a 200 from the deploy preview's main pages (`ORCH_PREVIEW_PATHS`), squash-merges, deletes the branch, frees the worktree and fast-forwards `main` |
 | `$R done <n> <ready\|parked> [note]` | Records how a ticket ended, stops its dev server and frees its worktree once it is clean and pushed |
 | `$R status` | Every ticket in the run: state, worktree, branch, PR, phase, round and verdict |
