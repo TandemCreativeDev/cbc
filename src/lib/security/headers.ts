@@ -41,6 +41,7 @@ const routePolicies: { path: string; extra: Directives }[] = [
   {
     path: "admin",
     extra: {
+      "img-src": ["https://www.gravatar.com"],
       "connect-src": storage,
       "frame-src": ["'self'"],
     },
