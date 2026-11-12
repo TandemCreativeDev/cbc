@@ -1,6 +1,6 @@
 "use client";
 
-import ContactForm from "@/app/contact/_components/ContactForm";
+import ContactForm from "./ContactForm";
 import { useLanguage } from "@/context/LanguageContext";
 import { Page } from "@/utils/types";
 import { useEffect } from "react";
