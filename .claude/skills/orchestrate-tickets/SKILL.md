@@ -64,7 +64,7 @@ You drive; the agents do the work. Never implement, review, run `check.sh` or ed
 ## Rules
 
 - A dependent starts only once its parent's PR is ready for review, so the code it builds on has stopped moving; it stacks on the parent's branch. Two unmerged parents means it waits for the user to merge one. In a `merge on` run there is no stacking: a dependent waits until its parent has merged and starts from `main`. `$R ready` enforces all of this.
-- Only you merge, only with `$R merge`, and only in a run started with `--merge`. Agents never merge, and nobody pushes to `main`.
+- Only you merge, only with `$R merge`, and only in a run started with `--merge`. Agents never merge or push to `main`. You may commit and push your own fixes to the ticket tooling (`.claude/`, `docs/tickets/`) straight to `main` as you go, never site code.
 - When a parent changes or merges under a stacked child still in flight, send the child's reviewer (or implementer) to rebase with the `gh-stack` skill, then `check.sh` and `ship.sh`.
 - Every push costs a Netlify build on the free plan, and parallel agents multiply Google Sheet requests (INSTRUCTIONS.md §4). Keep `--parallel` at 3 or below unless the user asks.
 - The hard rules in `docs/tickets/INSTRUCTIONS.md` §5 apply to every agent; a reviewer that finds one broken reports it as critical and the loop fixes it like any other finding.

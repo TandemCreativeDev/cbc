@@ -90,7 +90,7 @@ Rules:
 
 Any one of these broken fails the ticket.
 
-- Never push to `main`, never force-push a branch someone else has pushed to.
+- Never push to `main`, never force-push a branch someone else has pushed to. The one exception is the `/tickets` or `/orchestrate-tickets` driver: it may commit and push its own fixes to the ticket tooling (`.claude/`, `docs/tickets/`) straight to `main` as it goes, never site code.
 - Agents never merge a PR. A driver may squash-merge one only when its review verdict is `ALL CLEAR`, every check on the PR is green and the deploy preview serves the site: `/orchestrate-tickets --merge` does this with `run.sh merge`. Otherwise the user merges.
 - No AI attribution anywhere: commit messages, PR titles, PR bodies, code comments.
 - Commits are single-line `<type>(<scope>): <summary>`, one concern each. PR titles have the same shape.
