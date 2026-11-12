@@ -20,13 +20,6 @@ export interface DoorColors {
   locked: string;
 }
 
-export const defaultDoorColors: DoorColors[] = [
-  { door: "#a54425", ink: "#fff3d8", locked: "#efbd8c" },
-  { door: "#ecaa53", ink: "#2b160f", locked: "#f1ca8e" },
-  { door: "#763a31", ink: "#fff3d8", locked: "#e8a98d" },
-  { door: "#573123", ink: "#fff3d8", locked: "#dcb497" },
-];
-
 export const locales = ["fr", "en"] as const;
 
 export type CalendarLocale = (typeof locales)[number];

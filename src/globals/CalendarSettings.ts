@@ -36,17 +36,21 @@ const doorColorField = (name: string, label: string): Field => ({
   admin: { components: colorComponent },
 });
 
-const textField = (name: TextName): Field => ({
-  name,
-  type: name === "intro" || name === "holding" ? "textarea" : "text",
-  localized: true,
-  admin: {
-    placeholder: { en: defaultTexts.en[name], fr: defaultTexts.fr[name] },
-    ...(name === "dateRange" || name === "footer"
-      ? { description: "{year} is replaced by the year below." }
-      : {}),
-  },
-});
+const textField = (name: TextName): Field => {
+  const base = {
+    name,
+    localized: true,
+    admin: {
+      placeholder: { en: defaultTexts.en[name], fr: defaultTexts.fr[name] },
+      ...(name === "dateRange" || name === "footer"
+        ? { description: "{year} is replaced by the year below." }
+        : {}),
+    },
+  };
+  return name === "intro" || name === "holding"
+    ? { ...base, type: "textarea" }
+    : { ...base, type: "text" };
+};
 
 const fontField = (
   name: string,
