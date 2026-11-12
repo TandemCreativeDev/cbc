@@ -1,57 +1,43 @@
-import { cacheLife } from "next/cache";
-import fetchSheet from "@/utils/fetchSheet";
-import parseCsv from "@/utils/parseCsv";
-import parsePageCsv from "@/utils/parsePageCsv";
-import { IFrameProps, LyricsProps, Page, TourDateType } from "@/utils/types";
+import { cacheLife, cacheTag } from "next/cache";
+import * as payloadSource from "./payload";
+import * as sheetSource from "./sheet";
 
-export interface BilingualPage {
-  french: Page;
-  english: Page;
-}
+export type { BilingualPage } from "./sheet";
 
-async function getPage(tabGid: number): Promise<BilingualPage> {
-  const [french, english] = parsePageCsv(await fetchSheet(tabGid));
-  if (!french || !english) {
-    throw new Error(`Sheet tab ${tabGid} is missing a language column`);
-  }
-  return { french, english };
-}
+// Production reads the sheet until DATABASE_URL is set there (switchover step 4).
+const source = process.env.DATABASE_URL ? payloadSource : sheetSource;
 
-export async function getAboutPage(): Promise<BilingualPage> {
+export async function getAboutPage() {
   "use cache";
   cacheLife("minutes");
-  return getPage(0);
+  cacheTag("about");
+  return source.getAboutPage();
 }
 
-export async function getTourPage(): Promise<BilingualPage> {
+export async function getTourPage() {
   "use cache";
   cacheLife("minutes");
-  return getPage(127405583);
+  cacheTag("tour");
+  return source.getTourPage();
 }
 
-export async function getTourDates(): Promise<TourDateType[]> {
+export async function getTourDates() {
   "use cache";
   cacheLife("minutes");
-  return parseCsv<TourDateType>(
-    await fetchSheet(572869052),
-    (row) => !!row.eventDate
-  );
+  cacheTag("tour-dates");
+  return source.getTourDates();
 }
 
-export async function getMusicItems(): Promise<IFrameProps[]> {
+export async function getMusicItems() {
   "use cache";
   cacheLife("minutes");
-  return parseCsv<IFrameProps>(
-    await fetchSheet(1713768433),
-    (row) => !!row.title && !!row.type
-  );
+  cacheTag("music");
+  return source.getMusicItems();
 }
 
-export async function getLyrics(): Promise<LyricsProps[]> {
+export async function getLyrics() {
   "use cache";
   cacheLife("minutes");
-  return parseCsv<LyricsProps>(
-    await fetchSheet(145198726),
-    (row) => !!row.title && !!row.lyrics
-  );
+  cacheTag("lyrics");
+  return source.getLyrics();
 }
