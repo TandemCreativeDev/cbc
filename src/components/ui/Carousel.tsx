@@ -62,13 +62,13 @@ export default function Carousel({ images, altTexts, caption }: CarouselProps) {
         aria-label={`Image carousel with ${images.length} images`}
       >
         {images.map((image, index) => (
-          <li key={index} className="w-full h-full shrink-0">
+          <li key={index} className="relative w-full h-full shrink-0">
             <Image
-              width={5000}
-              height={500}
+              fill
+              sizes="(min-width: 1280px) 1280px, 100vw"
               src={image}
               alt={altTexts?.[index] || `Band image ${index + 1}`}
-              className="w-full h-full object-cover"
+              className="object-cover"
             />
           </li>
         ))}
