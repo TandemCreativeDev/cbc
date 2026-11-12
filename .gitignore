@@ -47,3 +47,8 @@ next-env.d.ts
 
 # session handover log
 PROMPT.md
+
+# playwright
+.playwright-mcp/
+/test-results/
+/playwright-report/
