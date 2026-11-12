@@ -53,7 +53,7 @@ State lives in `.git/ticket/`, outside the working tree: per ticket, `env` (the 
 | `cli` | A command's result | Run it | The command, its output and exit code |
 | `code` | A structural rule ("no request to X", "no hard-coded Y") | `grep` or reading | The command and its output |
 | `deploy` | Anything that depends on Netlify: headers, caching, redirects, functions, environment variables, images, the adapter | The PR's deploy preview, `https://deploy-preview-<PR number>--clarksbowlingclub.netlify.app`, once `gh pr checks` shows it ready | The URL, the command and its output |
-| `db` | Payload and Postgres, once they exist | SQL on the local database or a Neon preview branch, never production | The SQL and its output |
+| `db` | Payload and Postgres | SQL on the Neon `dev` or `preview` branch (`neon psql <branch> -- -Atc "<query>"`), never `main` | The SQL and its output |
 | `mail` | The contact form | A local SMTP catcher in place of the real mailbox (§4) | The captured message's headers and body |
 
 Rules:
@@ -73,7 +73,7 @@ One checkout, one ticket in flight at a time.
 | Package manager | pnpm. Never npm or yarn |
 | Dev server | `pnpm dev --port <4000 + issue number>`, e.g. ticket 27 uses 4027. Run it in the background and stop it when you're done |
 | The user's own server | Port 3000 belongs to the user. Never use it, never stop it |
-| Env file | `.env.local` in the repo root. Read variable names only |
+| Env file | `.env.local` in the repo root. Read variable names only. Its `DATABASE_URL` must point at the Neon `dev` branch: `pnpm dev` pushes the Payload schema to it |
 | Content | The published Google Sheet, read as CSV by `src/utils/fetchSheet.ts`, until Payload replaces it |
 | Artefacts | Screenshots, logs and scratch scripts go in `.git/ticket/<issue number>/artefacts/`, never in the working tree |
 
@@ -128,10 +128,10 @@ The Netlify, Neon and GitHub tools are installed and signed in. Use them to find
 | Deploy previews | One per PR, at `https://deploy-preview-<PR number>--clarksbowlingclub.netlify.app`. `gh pr checks <branch>` shows when it is ready |
 | Build | `@netlify/plugin-nextjs`; settings are in the Netlify UI until `netlify.toml` lands (#26) |
 | Free plan limits | 100 GB bandwidth, 300 build minutes and 125,000 function calls a month. Each push to a PR costs a build, so push as few times as you can |
-| Environment variables | `EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_SECURE`, `EMAIL_USER`, `EMAIL_PASSWORD` (secret), `NEXT_PUBLIC_CSV_URL` |
+| Environment variables | All contexts: `EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_SECURE`, `EMAIL_USER`, `EMAIL_PASSWORD` (secret), `NEXT_PUBLIC_CSV_URL`. Deploy previews only, until the migration: `DATABASE_URL`, `PAYLOAD_SECRET`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY` (secrets), `S3_ENDPOINT`, `S3_REGION`, `S3_BUCKET`. Netlify reserves the `AWS_*` names, so Neon's storage credentials are stored as `S3_*` |
 | Database | Neon project `cbc` (`damp-truth-56586096`), Frankfurt, free plan, in the Tandem Neon account: run Neon commands with `NEON_PROFILE=tandem`. Branches: `main` (production, empty until the migration), `preview` (shared by every deploy preview), `dev` (local). Bucket `media` on each branch. Spiked in #32; migration in #33 |
 
-Reads are always fine: deploy logs (`netlify api getDeploy`, `listSiteDeploys`), variable names, DNS lookups. Anything that changes a hosted service needs the user's approval first; agents ask the `/tickets` driver, and the driver asks the user.
+Reads are always fine: deploy logs (`netlify api getDeploy`, `listSiteDeploys`), variable names, DNS lookups. Anything that changes a hosted service needs the user's approval first; agents ask the `/tickets` driver, and the driver asks the user. The one standing exception is the Neon `dev` and `preview` branches: a ticket may push schema to `dev`, run `payload migrate` on `preview` and create test content on either. Resetting or deleting a branch still needs approval, and `main` is never written.
 
 ## 8. The codebase in brief
 
