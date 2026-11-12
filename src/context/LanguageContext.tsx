@@ -4,10 +4,12 @@ import {
   createContext,
   useContext,
   useState,
+  useSyncExternalStore,
   useEffect,
   ReactNode,
   useCallback,
 } from "react";
+import useIsMounted from "@/utils/useIsMounted";
 
 interface LanguageContextType {
   isFrench: boolean;
@@ -19,52 +21,22 @@ export const LanguageContext = createContext<LanguageContextType | undefined>(
   undefined
 );
 
+const subscribe = () => () => {};
+
+function detectIsFrench() {
+  const lang = new URLSearchParams(window.location.search).get("isFrench");
+  if (lang === "true" || lang === "false") return lang === "true";
+  return navigator.language.toLowerCase().startsWith("fr");
+}
+
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [isFrench, setIsFrench] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const detectLanguage = async () => {
-      const lang = new URLSearchParams(window.location.search).get("isFrench");
-      if (lang === "true" || lang === "false") {
-        console.log("Setting language from URL param:", lang);
-        setIsFrench(lang === "true");
-        setIsLoading(false);
-        return;
-      }
-
-      try {
-        const response = await fetch("https://geolocation-db.com/json/");
-        const data = await response.json();
-
-        const isInFrance = data.country_code === "FR";
-        console.log(
-          "User location detected:",
-          data.country_name,
-          data.country_code
-        );
-
-        if (isInFrance) {
-          console.log("User is in France, setting language to French");
-          setIsFrench(true);
-        } else {
-          console.log("User is not in France, setting language to English");
-          setIsFrench(false);
-        }
-      } catch (error) {
-        console.error("Error detecting user location:", error);
-        setIsFrench(false);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    detectLanguage();
-  }, []);
+  const [chosen, setChosen] = useState<boolean | null>(null);
+  const detected = useSyncExternalStore(subscribe, detectIsFrench, () => false);
+  const isMounted = useIsMounted();
+  const isFrench = chosen ?? detected;
 
   const handleSetIsFrench = useCallback((value: boolean) => {
-    console.log("Setting language to:", value ? "French" : "English");
-    setIsFrench(value);
+    setChosen(value);
   }, []);
 
   useEffect(() => {
@@ -74,7 +46,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const value = {
     isFrench,
     setIsFrench: handleSetIsFrench,
-    isLoading,
+    isLoading: !isMounted,
   };
 
   return (
