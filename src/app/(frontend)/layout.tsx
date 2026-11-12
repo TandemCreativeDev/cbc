@@ -36,6 +36,7 @@ const goudyStd = localFont({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://clarksbowlingclub.com"),
   title: {
     default: "Clark's Bowling Club",
     template: "%s | Clark's Bowling Club",
