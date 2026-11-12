@@ -6,10 +6,12 @@ import { FaVolumeMute, FaVolumeUp, FaPause, FaPlay } from "react-icons/fa";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import StaticLogo from "./StaticLogo";
+import useHlsVideo, { HLS_SRC, HLS_TYPE } from "./useHlsVideo";
 import useIsMounted from "@/utils/useIsMounted";
 import useMediaQuery from "@/utils/useMediaQuery";
 import usePrefersReducedMotion from "@/utils/usePrefersReducedMotion";
 
+const LOGO_DELAY_MS = 6000;
 const SpinningLogo = dynamic(() => import("./SpinningLogo"), { ssr: false });
 
 export default function HomeClient() {
@@ -18,8 +20,16 @@ export default function HomeClient() {
   const [play, setPlay] = useState(true);
   const isLoaded = useIsMounted();
   const { isFrench } = useLanguage();
+  const playback = useHlsVideo(videoRef, isLoaded);
   const prefersReducedMotion = usePrefersReducedMotion();
   const isDesktop = useMediaQuery("(min-width: 48rem)");
+  const [logoReady, setLogoReady] = useState(false);
+
+  // The logo waits for the video so its code and textures don't compete for bandwidth.
+  useEffect(() => {
+    const timer = window.setTimeout(() => setLogoReady(true), LOGO_DELAY_MS);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     document.title = `${isFrench ? "Accueil" : "Home"} | Clark's Bowling Club`;
@@ -65,7 +75,9 @@ export default function HomeClient() {
       {/* Background video */}
       <div className="fixed inset-0 -z-10">
         <video
+          key={playback}
           ref={videoRef}
+          onPlaying={() => setLogoReady(true)}
           className={`${backgroundClasses} motion-reduce:hidden brightness-50`}
           poster="/videos/teaser-poster.jpg"
           autoPlay
@@ -73,15 +85,22 @@ export default function HomeClient() {
           muted={muted}
           aria-hidden="true"
         >
-          <source
-            src="/videos/teaser-av1.mp4"
-            type='video/mp4; codecs="av01.0.08M.08, mp4a.40.2"'
-          />
-          <source
-            src="/videos/teaser-hevc.mp4"
-            type='video/mp4; codecs="hvc1.1.6.L120.90, mp4a.40.2"'
-          />
-          <source src="/videos/teaser.mp4" type="video/mp4" />
+          {playback === "native" && (
+            <source src={HLS_SRC} type={HLS_TYPE} />
+          )}
+          {playback !== "hlsjs" && (
+            <>
+              <source
+                src="/videos/teaser-av1.mp4"
+                type='video/mp4; codecs="av01.0.08M.08, mp4a.40.2"'
+              />
+              <source
+                src="/videos/teaser-hevc.mp4"
+                type='video/mp4; codecs="hvc1.1.6.L120.90, mp4a.40.2"'
+              />
+              <source src="/videos/teaser.mp4" type="video/mp4" />
+            </>
+          )}
         </video>
         <Image
           src="/images/home.jpg"
@@ -93,7 +112,7 @@ export default function HomeClient() {
 
       {/* Logo elements - decorative */}
       <div className="fixed top-[5rem] left-0 w-full h-[calc(100vh-11rem)] pointer-events-none z-50">
-        {isDesktop && !prefersReducedMotion && <SpinningLogo />}
+        {logoReady && isDesktop && !prefersReducedMotion && <SpinningLogo />}
         <StaticLogo />
       </div>
 
