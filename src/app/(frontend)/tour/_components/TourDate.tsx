@@ -15,19 +15,20 @@ export default function TourDate({ tourDate, inPast }: TourDateProps) {
   const { isFrench } = useLanguage();
   const unavailable = isFrench ? "Indisponible" : "Unavailable";
 
-  const formattedDate = new Date(
-    eventDate.split("/").reverse().join("-")
-  ).toLocaleDateString(isFrench ? "fr-FR" : "en-GB", {
+  const [day, month, year] = eventDate.split("/").map(Number);
+  const date = new Date(Date.UTC(year, month - 1, day));
+  const formattedDate = date.toLocaleDateString(isFrench ? "fr-FR" : "en-GB", {
     day: "2-digit",
     month: "short",
     year: "numeric",
+    timeZone: "UTC",
   });
 
   return (
     <li className="border-b-4 border-gray-300 pb-6">
       <article className="flex flex-col md:flex-row md:items-center md:justify-between w-full gap-4">
         <time
-          dateTime={eventDate.split("/").reverse().join("-")}
+          dateTime={date.toISOString().slice(0, 10)}
           className="font-bold text-lg md:w-1/4"
         >
           {formattedDate}
