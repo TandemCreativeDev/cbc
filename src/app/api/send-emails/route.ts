@@ -1,20 +1,110 @@
 import { transporter } from "@/utils/nodemailer";
 
+const LIMITS = {
+  name: 100,
+  company: 100,
+  email: 254,
+  phoneNumber: 30,
+  message: 5000,
+};
+const EMAIL_PATTERN = /^[^\s@<>"]+@[^\s@<>"]+\.[^\s@<>"]+$/;
+const RATE_LIMIT = { max: 5, windowMs: 10 * 60 * 1000 };
+const requestLog = new Map<string, number[]>();
+
+function escapeHtml(value: string) {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function getClientIp(request: Request) {
+  return (
+    request.headers.get("x-nf-client-connection-ip") ??
+    request.headers.get("x-forwarded-for")?.split(",")[0].trim() ??
+    "unknown"
+  );
+}
+
+function isRateLimited(ip: string) {
+  const now = Date.now();
+  const recent = (requestLog.get(ip) ?? []).filter(
+    (time) => now - time < RATE_LIMIT.windowMs,
+  );
+  if (recent.length >= RATE_LIMIT.max) {
+    requestLog.set(ip, recent);
+    return true;
+  }
+  requestLog.set(ip, [...recent, now]);
+  return false;
+}
+
+function readField(formData: FormData, key: keyof typeof LIMITS) {
+  const value = formData.get(key);
+  return typeof value === "string" ? value.trim() : "";
+}
+
 export async function POST(request: Request) {
-  const formData = await request.formData();
   try {
-    const name = formData.get("name") as string;
-    const firstName = name.trim().split(" ")[0];
-    const company = formData.get("company");
-    const email = formData.get("email");
-    const phoneNumber = formData.get("phoneNumber");
-    const message = formData.get("message");
+    const formData = await request.formData();
     const isFrench = formData.get("language") === "fr";
+
+    if (formData.get("website")) {
+      return Response.json({ message: "Thanks, we will be in touch shortly." });
+    }
+
+    if (isRateLimited(getClientIp(request))) {
+      return Response.json(
+        {
+          error: isFrench
+            ? "Trop de messages, veuillez réessayer plus tard"
+            : "Too many requests, please try again later",
+        },
+        { status: 429 },
+      );
+    }
+
+    const name = readField(formData, "name");
+    const company = readField(formData, "company");
+    const email = readField(formData, "email");
+    const phoneNumber = readField(formData, "phoneNumber");
+    const message = readField(formData, "message");
+
+    const fields = { name, company, email, phoneNumber, message };
+    const tooLong = (Object.keys(LIMITS) as (keyof typeof LIMITS)[]).some(
+      (key) => fields[key].length > LIMITS[key],
+    );
+    if (
+      !name ||
+      !message ||
+      !EMAIL_PATTERN.test(email) ||
+      /[\r\n]/.test(name + email) ||
+      tooLong
+    ) {
+      return Response.json(
+        {
+          error: isFrench
+            ? "Veuillez vérifier les informations saisies"
+            : "Invalid form data",
+        },
+        { status: 400 },
+      );
+    }
+
+    const plainFirstName = name.split(" ")[0];
+    const firstName = escapeHtml(plainFirstName);
+    const safeName = escapeHtml(name);
+    const safeCompany = escapeHtml(company);
+    const safeEmail = escapeHtml(email);
+    const safePhoneNumber = escapeHtml(phoneNumber);
+    const safeMessage = escapeHtml(message);
 
     let clarksSubject, clarksEmailHtml, userSubject, userEmailHtml;
 
     if (isFrench) {
-      clarksSubject = `${firstName} souhaite entrer en contact`;
+      clarksSubject = `${plainFirstName} souhaite entrer en contact`;
       clarksEmailHtml = `
           <!DOCTYPE html>
           <html>
@@ -36,11 +126,11 @@ export async function POST(request: Request) {
               <h2>Nouvelle soumission du formulaire de contact</h2>
               <p>Quelqu'un a soumis un formulaire de contact sur le site Clarks Bowling Club. Voici les détails :</p>
               <div class="details">
-                <p><strong>Nom :</strong> ${name}</p>
-                <p><strong>Entreprise :</strong> ${company}</p>
-                <p><strong>E-mail :</strong> <a href="mailto:${email}">${email}</a></p>
-                <p><strong>Téléphone :</strong> ${phoneNumber}</p>
-                <p><strong>Message :</strong><br> ${message}</p>
+                <p><strong>Nom :</strong> ${safeName}</p>
+                <p><strong>Entreprise :</strong> ${safeCompany}</p>
+                <p><strong>E-mail :</strong> <a href="mailto:${safeEmail}">${safeEmail}</a></p>
+                <p><strong>Téléphone :</strong> ${safePhoneNumber}</p>
+                <p><strong>Message :</strong><br> ${safeMessage}</p>
               </div>
               <p>Merci de le contacter dans les 2 jours ouvrables.</p>
               <p><strong>- Notification du site Clarks Bowling Club</strong></p>
@@ -51,7 +141,7 @@ export async function POST(request: Request) {
           </body>
           </html>
          `;
-      userSubject = `Bonjour ${firstName}, merci de nous avoir contactés`;
+      userSubject = `Bonjour ${plainFirstName}, merci de nous avoir contactés`;
       userEmailHtml = `
           <!DOCTYPE html>
           <html>
@@ -74,11 +164,11 @@ export async function POST(request: Request) {
               <p>Nous avons bien reçu votre message et nous vous remercions de nous avoir contactés. Nous reviendrons vers vous dans les 2 jours ouvrables.</p>
               <p>Pour vos archives, voici les détails que vous avez soumis :</p>
               <div class="details">
-                <p><strong>Nom :</strong> ${name}</p>
-                <p><strong>Entreprise :</strong> ${company}</p>
-                <p><strong>Email :</strong> ${email}</p>
-                <p><strong>Téléphone :</strong> ${phoneNumber}</p>
-                <p><strong>Message :</strong><br> ${message}</p>
+                <p><strong>Nom :</strong> ${safeName}</p>
+                <p><strong>Entreprise :</strong> ${safeCompany}</p>
+                <p><strong>Email :</strong> ${safeEmail}</p>
+                <p><strong>Téléphone :</strong> ${safePhoneNumber}</p>
+                <p><strong>Message :</strong><br> ${safeMessage}</p>
               </div>
               <p>Si vous avez besoin de nous contacter plus rapidement, n'hésitez pas à répondre à cet e-mail.</p>
               <p>Au plaisir de vous parler !</p>
@@ -91,7 +181,7 @@ export async function POST(request: Request) {
           </html>
          `;
     } else {
-      clarksSubject = `${firstName} wants to get in touch`;
+      clarksSubject = `${plainFirstName} wants to get in touch`;
       clarksEmailHtml = `
           <!DOCTYPE html>
           <html>
@@ -113,11 +203,11 @@ export async function POST(request: Request) {
               <h2>New Contact Form Submission</h2>
               <p>Someone has submitted a contact form on the Clarks Bowling Club website. Here are the details:</p>
               <div class="details">
-                <p><strong>Name:</strong> ${name}</p>
-                <p><strong>Company:</strong> ${company}</p>
-                <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
-                <p><strong>Phone Number:</strong> ${phoneNumber}</p>
-                <p><strong>Message:</strong><br> ${message}</p>
+                <p><strong>Name:</strong> ${safeName}</p>
+                <p><strong>Company:</strong> ${safeCompany}</p>
+                <p><strong>Email:</strong> <a href="mailto:${safeEmail}">${safeEmail}</a></p>
+                <p><strong>Phone Number:</strong> ${safePhoneNumber}</p>
+                <p><strong>Message:</strong><br> ${safeMessage}</p>
               </div>
               <p>Please reach out to them within 2 working days.</p>
               <p><strong>- Clarks Bowling Club Website Notification</strong></p>
@@ -128,7 +218,7 @@ export async function POST(request: Request) {
           </body>
           </html>
          `;
-      userSubject = `Hi ${firstName}, thanks for getting in touch`;
+      userSubject = `Hi ${plainFirstName}, thanks for getting in touch`;
       userEmailHtml = `
           <!DOCTYPE html>
           <html>
@@ -151,11 +241,11 @@ export async function POST(request: Request) {
               <p>We’ve received your message and appreciate you reaching out. We will be in touch within 2 working days.</p>
               <p>For your records, here are the details you submitted:</p>
               <div class="details">
-                <p><strong>Name:</strong> ${name}</p>
-                <p><strong>Company:</strong> ${company}</p>
-                <p><strong>Email:</strong> ${email}</p>
-                <p><strong>Phone Number:</strong> ${phoneNumber}</p>
-                <p><strong>Message:</strong><br> ${message}</p>
+                <p><strong>Name:</strong> ${safeName}</p>
+                <p><strong>Company:</strong> ${safeCompany}</p>
+                <p><strong>Email:</strong> ${safeEmail}</p>
+                <p><strong>Phone Number:</strong> ${safePhoneNumber}</p>
+                <p><strong>Message:</strong><br> ${safeMessage}</p>
               </div>
               <p>If you need to reach us sooner, feel free to reply to this email.</p>
               <p>Looking forward to speaking with you!</p>
@@ -170,7 +260,8 @@ export async function POST(request: Request) {
     }
 
     const clarksEmail = await transporter.sendMail({
-      from: `${name} <websiteform@clarksbowlingclub.com>`,
+      from: "Clarks Bowling Club Website <websiteform@clarksbowlingclub.com>",
+      replyTo: email,
       to: `Clarks Bowling Club <${process.env.EMAIL_USER}>`,
       cc: "Clarks Bowling Club <clarksbowlingclub@gmail.com>",
       subject: clarksSubject,
@@ -179,21 +270,21 @@ export async function POST(request: Request) {
 
     const userEmail = await transporter.sendMail({
       from: `Clarks Bowling Club <${process.env.EMAIL_USER}>`,
-      to: `${name} <${email}>`,
+      to: email,
       subject: userSubject,
       html: userEmailHtml,
     });
-    return Response.json(
-      { message: `Thanks ${firstName}, we will be in touch shortly.` },
-      { status: 200 }
-    );
     console.log("Email sent to Clarks Bowling Club: %s", clarksEmail.messageId);
     console.log("Email sent to user: %s", userEmail.messageId);
+    return Response.json(
+      { message: `Thanks ${plainFirstName}, we will be in touch shortly.` },
+      { status: 200 },
+    );
   } catch (error) {
     console.error(error);
     return Response.json(
       { error: "An error occurred while sending the email" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
