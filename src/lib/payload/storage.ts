@@ -25,8 +25,13 @@ export const storagePlugin = s3Storage({
   config,
 });
 
-/** Private bucket: files are only served by Payload's access-checked handler. */
+/**
+ * Private bucket: files are only served by Payload's access-checked handler.
+ * Demos upload straight from the browser, because Netlify refuses request bodies over about 4.6 MB;
+ * the bucket needs a CORS rule allowing PUT from the site's origin.
+ */
 export const demosStoragePlugin = s3Storage({
+  clientUploads: true,
   collections: { "calendar-doors": true },
   bucket: process.env.S3_DEMOS_BUCKET ?? "demos",
   config,
