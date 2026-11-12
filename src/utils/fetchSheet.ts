@@ -1,12 +1,7 @@
 export default async function fetchSheet(tabGid: number): Promise<string> {
-  try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_CSV_URL}&gid=${tabGid}`
-    );
-    const csvData = await response.text();
-    return csvData;
-  } catch (error) {
-    console.error("Error fetching data: ", error);
-    throw error;
+  const response = await fetch(`${process.env.SHEET_CSV_URL}&gid=${tabGid}`);
+  if (!response.ok) {
+    throw new Error(`Sheet tab ${tabGid} responded ${response.status}`);
   }
+  return response.text();
 }

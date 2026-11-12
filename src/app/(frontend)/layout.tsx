@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/layout/Header";
@@ -66,7 +67,9 @@ export default function RootLayout({
             <Toaster position="bottom-center" />
             {children}
           </main>
-          <Footer />
+          <Suspense>
+            <Footer />
+          </Suspense>
         </LanguageProvider>
       </body>
     </html>
