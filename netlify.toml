@@ -1,5 +1,5 @@
 [build]
-  command = "pnpm build"
+  command = "if [ -n \"$DATABASE_URL\" ]; then pnpm exec payload migrate; fi && pnpm build"
   publish = ".next"
 
 [build.environment]
