@@ -62,6 +62,7 @@ export default function HomeClient() {
           ref={videoRef}
           className={`${backgroundClasses} motion-reduce:hidden brightness-50`}
           src="/videos/teaser.mp4"
+          poster="/videos/teaser-poster.jpg"
           autoPlay
           loop
           muted={muted}
