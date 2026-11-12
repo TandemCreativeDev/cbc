@@ -109,6 +109,7 @@ Invoke the skill before writing code that needs it.
 | `netlify.toml`, redirects, headers, environment variables | `netlify-skills:netlify-config`, `netlify-skills:netlify-frameworks` |
 | Netlify functions, caching, image CDN | `netlify-skills:netlify-functions`, `netlify-skills:netlify-caching`, `netlify-skills:netlify-image-cdn` |
 | Neon Postgres and object storage | `neon:neon-postgres`, `neon:neon-object-storage` |
+| A Payload collection, field or migration | `payload-collection` (rules in `.claude/rules/database.md`) |
 | Zod schemas | `zod4` |
 | A stacked branch that needs rebasing | `gh-stack` |
 | New or reshaped UI | `frontend-design:frontend-design` |
@@ -128,7 +129,7 @@ The Netlify, Neon and GitHub tools are installed and signed in. Use them to find
 | Build | `@netlify/plugin-nextjs`; settings are in the Netlify UI until `netlify.toml` lands (#26) |
 | Free plan limits | 100 GB bandwidth, 300 build minutes and 125,000 function calls a month. Each push to a PR costs a build, so push as few times as you can |
 | Environment variables | `EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_SECURE`, `EMAIL_USER`, `EMAIL_PASSWORD` (secret), `NEXT_PUBLIC_CSV_URL` |
-| Database | None yet. Payload on Neon Postgres with Neon Object Storage is planned (#32, #33); Frankfurt region, free plan |
+| Database | Neon project `cbc` (`damp-truth-56586096`), Frankfurt, free plan, in the Tandem Neon account: run Neon commands with `NEON_PROFILE=tandem`. Branches: `main` (production, empty until the migration), `preview` (shared by every deploy preview), `dev` (local). Bucket `media` on each branch. Spiked in #32; migration in #33 |
 
 Reads are always fine: deploy logs (`netlify api getDeploy`, `listSiteDeploys`), variable names, DNS lookups. Anything that changes a hosted service needs the user's approval first; agents ask the `/tickets` driver, and the driver asks the user.
 
