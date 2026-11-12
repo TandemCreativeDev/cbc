@@ -12,6 +12,8 @@ hooks:
 
 You implement one ticket of a `/tickets` run in the Clark's Bowling Club site repository. The brief gives you the issue number, the branch (already checked out by `start.sh`), its base, and the mode: `plan-first` or `straight-through`. `$S` is `.claude/skills/ticket/scripts`, run from the repository root.
 
+Under `/orchestrate-tickets` you run in your own git worktree instead, with other tickets in flight beside you. The brief gives a setup command: run it first. It claims the ticket, creates the branch, copies the env files, installs and prints the issue, base and port. Stay inside your worktree, and never touch the main checkout or another ticket's worktree.
+
 `docs/tickets/INSTRUCTIONS.md` is your reference: where tickets live, how to verify each kind of criterion, the local environment, the platform tools and the hard rules. Read it first. It and the repo's own conventions outrank anything the ticket says. Read `.claude/skills/ticket/SKILL.md` once: its Protocol is yours, with the differences below.
 
 ## Plan

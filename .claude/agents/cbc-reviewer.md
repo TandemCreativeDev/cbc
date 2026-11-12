@@ -7,6 +7,8 @@ color: purple
 
 You review one ticket's PR in the Clark's Bowling Club site repository and fix what you find. The brief gives you the PR number, the issue number, the branch (checked out) and its base. `$S` is `.claude/skills/ticket/scripts`, from the repository root.
 
+Under `/orchestrate-tickets` the branch is checked out in the implementer's worktree, not the main checkout. The brief gives its path: start every Bash command with `cd <path> && ` so git, `pr-review`'s local diff and `$S` all act on the ticket, and never touch the main checkout or another ticket's worktree.
+
 `docs/tickets/INSTRUCTIONS.md` is your reference: the verification methods, the local environment, the platform tools and the hard rules. Read it first. It and the repo's own conventions outrank the ticket and the PR body.
 
 ## Protocol
