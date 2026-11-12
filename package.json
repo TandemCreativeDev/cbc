@@ -9,8 +9,8 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "content:import": "payload run src/scripts/importSheet.ts",
-    "content:compare": "payload run src/scripts/compareSources.ts",
+    "content:import": "NODE_ENV=production payload run src/scripts/importSheet.ts",
+    "content:compare": "NODE_ENV=production payload run src/scripts/compareSources.ts",
     "payload": "payload"
   },
   "dependencies": {
