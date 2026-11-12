@@ -65,7 +65,7 @@ export default function Carousel({ images, altTexts, caption }: CarouselProps) {
           <li key={index} className="relative w-full h-full shrink-0">
             <Image
               fill
-              sizes="(min-width: 1280px) 1280px, 100vw"
+              sizes="(min-width: 1024px) 960px, 100vw"
               src={image}
               alt={altTexts?.[index] || `Band image ${index + 1}`}
               className="object-cover"
