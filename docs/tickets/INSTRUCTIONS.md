@@ -75,7 +75,7 @@ One checkout, one ticket in flight at a time, except under `/orchestrate-tickets
 | Dev server | `pnpm dev --port <4000 + issue number>`, e.g. ticket 27 uses 4027. Run it in the background and stop it when you're done |
 | The user's own server | Port 3000 belongs to the user. Never use it, never stop it |
 | Env file | `.env.local` in the repo root. Read variable names only. Once Payload lands (#33), its `DATABASE_URL` must point at the Neon `dev` branch, because `pnpm dev` will push the Payload schema to it |
-| Content | The published Google Sheet, read as CSV by `src/utils/fetchSheet.ts`, until Payload replaces it |
+| Content | Payload when `DATABASE_URL` is set (`src/lib/data/payload.ts`), otherwise the published Google Sheet (`src/lib/data/sheet.ts`). Production reads the sheet until the switchover in #33. Local storage variables are `S3_ENDPOINT`, `S3_REGION`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY` and `S3_BUCKET`; `neon checkout` writes Neon's `AWS_*` names, so copy them across. `pnpm content:import` and `pnpm content:compare` run against whatever `DATABASE_URL` points at |
 | Artefacts | Screenshots, logs and scratch scripts go in `.git/ticket/<issue number>/artefacts/`, never in the working tree |
 
 Rules:
