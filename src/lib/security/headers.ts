@@ -6,8 +6,7 @@ type HeaderRule = Awaited<
   ReturnType<NonNullable<NextConfig["headers"]>>
 >[number];
 
-// Switch to "Content-Security-Policy" to enforce.
-const CSP_HEADER = "Content-Security-Policy-Report-Only";
+const CSP_HEADER = "Content-Security-Policy";
 
 const storage = process.env.S3_ENDPOINT
   ? [new URL(process.env.S3_ENDPOINT).origin]
