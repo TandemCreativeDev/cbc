@@ -110,7 +110,7 @@ Create a `.env.local` file in the root directory:
 
 ```bash
 # Google Sheets Configuration
-NEXT_PUBLIC_CSV_URL=https://docs.google.com/spreadsheets/d/[SHEET_ID]/export?format=csv
+SHEET_CSV_URL=https://docs.google.com/spreadsheets/d/[SHEET_ID]/export?format=csv
 
 # Site Configuration
 NEXT_PUBLIC_SITE_URL=https://clarksbowlingclub.com

@@ -1,12 +1,12 @@
 import { MetadataRoute } from "next";
-import fetchSheet from "@/utils/fetchSheet";
-import parseCsv from "@/utils/parseCsv";
-import { IFrameProps, LyricsProps, TourDateType } from "@/utils/types";
+import { connection } from "next/server";
+import { getLyrics, getMusicItems, getTourDates } from "@/lib/data/content";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || "https://clarksbowlingclub.com";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  await connection();
   const staticPages = [
     {
       url: SITE_URL,
@@ -55,11 +55,7 @@ async function getDynamicPages(): Promise<MetadataRoute.Sitemap> {
   const pages: MetadataRoute.Sitemap = [];
 
   try {
-    const musicData = await fetchSheet(1713768433);
-    const musicItems = parseCsv<IFrameProps>(
-      musicData,
-      (row) => !!row.title && !!row.type
-    );
+    const musicItems = await getMusicItems();
     if (musicItems.length > 0) {
       pages.push({
         url: `${SITE_URL}/music`,
@@ -69,11 +65,7 @@ async function getDynamicPages(): Promise<MetadataRoute.Sitemap> {
       });
     }
 
-    const lyricsData = await fetchSheet(145198726);
-    const lyricsItems = parseCsv<LyricsProps>(
-      lyricsData,
-      (row) => !!row.title && !!row.lyrics
-    );
+    const lyricsItems = await getLyrics();
     if (lyricsItems.length > 0) {
       pages.push({
         url: `${SITE_URL}/lyrics`,
@@ -83,11 +75,7 @@ async function getDynamicPages(): Promise<MetadataRoute.Sitemap> {
       });
     }
 
-    const tourData = await fetchSheet(572869052);
-    const tourItems = parseCsv<TourDateType>(
-      tourData,
-      (row) => !!row.eventDate
-    );
+    const tourItems = await getTourDates();
     if (tourItems.length > 0) {
       pages.push({
         url: `${SITE_URL}/tour`,
