@@ -71,6 +71,10 @@ export default function HomeClient() {
             src="/videos/teaser-av1.mp4"
             type='video/mp4; codecs="av01.0.08M.08, mp4a.40.2"'
           />
+          <source
+            src="/videos/teaser-hevc.mp4"
+            type='video/mp4; codecs="hvc1.1.6.L120.90, mp4a.40.2"'
+          />
           <source src="/videos/teaser.mp4" type="video/mp4" />
         </video>
         <Image
