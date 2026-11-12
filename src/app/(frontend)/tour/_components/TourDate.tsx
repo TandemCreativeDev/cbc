@@ -4,6 +4,7 @@ import { TourDateType } from "@/utils/types";
 import { useLanguage } from "@/context/LanguageContext";
 import Button from "@/components/ui/Button";
 import clsx from "clsx";
+import { safeHttpsUrl } from "@/utils/safeUrl";
 
 interface TourDateProps {
   tourDate: TourDateType;
@@ -11,7 +12,9 @@ interface TourDateProps {
 }
 
 export default function TourDate({ tourDate, inPast }: TourDateProps) {
-  const { eventDate, venue, location, locationUrl, ticketUrl } = tourDate;
+  const { eventDate, venue, location } = tourDate;
+  const locationUrl = safeHttpsUrl(tourDate.locationUrl);
+  const ticketUrl = safeHttpsUrl(tourDate.ticketUrl);
   const { isFrench } = useLanguage();
   const unavailable = isFrench ? "Indisponible" : "Unavailable";
 
