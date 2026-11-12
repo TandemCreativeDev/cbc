@@ -35,7 +35,6 @@ const baseDirectives: Directives = {
   "base-uri": ["'self'"],
   "form-action": ["'self'"],
   "frame-ancestors": ["'none'"],
-  "upgrade-insecure-requests": [],
 };
 
 /** Extra allowances for one top-level path; every other path gets the base policy. */
