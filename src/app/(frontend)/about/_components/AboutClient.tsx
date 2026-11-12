@@ -1,11 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useLanguage } from "@/context/LanguageContext";
-import { Page } from "@/utils/types";
 import Carousel from "@/components/ui/Carousel";
-import parsePageCsv from "@/utils/parsePageCsv";
-import fetchSheet from "@/utils/fetchSheet";
+import { BilingualPage } from "@/lib/data/content";
 
 const carouselImages = [
   "/images/carousel/argentic.jpg",
@@ -19,29 +17,9 @@ const carouselAlts = [
   "Band leaving the warehouse after rehearsal and shoot",
   "Still of the band in Yes Day music video shoot",
 ];
-const sheetTabGid = 0;
-
-export default function AboutClient() {
+export default function AboutClient({ french, english }: BilingualPage) {
   const { isFrench } = useLanguage();
-  const [englishContent, setEnglishContent] = useState<Page | null>(null);
-  const [frenchContent, setFrenchContent] = useState<Page | null>(null);
-
-  useEffect(() => {
-    const fetchContent = async () => {
-      try {
-        const csvData = await fetchSheet(sheetTabGid);
-        const parsedContent = parsePageCsv(csvData);
-        setEnglishContent(parsedContent[1]);
-        setFrenchContent(parsedContent[0]);
-      } catch (error) {
-        console.error("Error fetching or parsing page content:", error);
-      }
-    };
-
-    fetchContent();
-  }, []);
-
-  const pageContent = isFrench ? frenchContent : englishContent;
+  const pageContent = isFrench ? french : english;
 
   useEffect(() => {
     document.title = `${isFrench ? "Bio" : "About"} | Clark's Bowling Club`;

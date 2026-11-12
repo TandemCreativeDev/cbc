@@ -1,49 +1,20 @@
 "use client";
 
 import { useLanguage } from "@/context/LanguageContext";
-import fetchSheet from "@/utils/fetchSheet";
-import parseCsv from "@/utils/parseCsv";
 import { useEffect, useState } from "react";
 import clsx from "clsx";
 import { LyricsProps } from "@/utils/types";
 import FilterNavigation from "@/components/layout/FilterNavigation";
 
-const sheetTabGid = 145198726;
-
-export default function LyricsClient() {
+export default function LyricsClient({ lyrics }: { lyrics: LyricsProps[] }) {
   const { isFrench } = useLanguage();
-  const [lyrics, setLyrics] = useState<LyricsProps[]>([]);
-  const [albums, setAlbums] = useState<string[]>([]);
-  const [selectedAlbum, setSelectedAlbum] = useState<string | undefined>();
+  const [pickedAlbum, setPickedAlbum] = useState<string>();
   const [pickedSong, setPickedSong] = useState<LyricsProps | undefined>();
 
-  useEffect(() => {
-    const fetchContent = async () => {
-      try {
-        const csvData = await fetchSheet(sheetTabGid);
-        const parsedData: LyricsProps[] = parseCsv<LyricsProps>(
-          csvData,
-          (row) => !!row.title && !!row.lyrics
-        );
-
-        console.log("Parsed Lyrics Content:", parsedData);
-        setLyrics(parsedData);
-
-        const uniqueAlbums = Array.from(
-          new Set(parsedData.map((item) => item.album || ""))
-        ).filter(Boolean);
-
-        setAlbums(uniqueAlbums);
-        if (uniqueAlbums.length > 0) {
-          setSelectedAlbum(uniqueAlbums[0]);
-        }
-      } catch (error) {
-        console.error("Error fetching or parsing music content:", error);
-      }
-    };
-
-    fetchContent();
-  }, [isFrench]);
+  const albums = Array.from(
+    new Set(lyrics.map((item) => item.album || ""))
+  ).filter(Boolean);
+  const selectedAlbum = pickedAlbum ?? albums[0];
 
   const filteredSongs = selectedAlbum
     ? lyrics.filter((song) => song.album === selectedAlbum)
@@ -68,7 +39,7 @@ export default function LyricsClient() {
     : `Showing lyrics for ${selectedSong.title}`;
 
   const handleAlbumChange = (album: string) => {
-    setSelectedAlbum(album);
+    setPickedAlbum(album);
   };
 
   const handleSongSelect = (song: LyricsProps) => {
