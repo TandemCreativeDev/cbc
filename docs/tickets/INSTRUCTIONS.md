@@ -4,6 +4,7 @@ The shared reference for anyone, person or agent, taking a ticket in this repo. 
 
 - `/ticket` (`.claude/skills/ticket/SKILL.md`): one ticket, in your own session, with a plan checkpoint.
 - `/tickets` (`.claude/skills/tickets/SKILL.md`): one ticket or a queue of them, each through an implementer and a reviewer agent.
+- `/orchestrate-tickets` (`.claude/skills/orchestrate-tickets/SKILL.md`): the same loop with several tickets in flight at once, each in its own worktree under `.claude/worktrees/`.
 - Implementer: `.claude/agents/cbc-implementer.md` (Sonnet). Reviewer: `.claude/agents/cbc-reviewer.md` (Opus, reviews with the `pr-review` skill).
 
 What to build is in the ticket. How the code should look is in the code that is already here: follow the nearest similar file. Don't restate either in PR bodies or code comments.
@@ -66,7 +67,7 @@ Rules:
 
 ## 4. Local environment
 
-One checkout, one ticket in flight at a time.
+One checkout, one ticket in flight at a time, except under `/orchestrate-tickets`: there each ticket has its own worktree, with its own `node_modules` and a copy of `.env.local`, and the per-ticket port keeps dev servers apart.
 
 | Item | Value |
 | --- | --- |
@@ -89,7 +90,8 @@ Rules:
 
 Any one of these broken fails the ticket.
 
-- Never merge a PR, never push to `main`, never force-push a branch someone else has pushed to.
+- Never push to `main`, never force-push a branch someone else has pushed to.
+- Agents never merge a PR. A driver may squash-merge one only when its review verdict is `ALL CLEAR`, every check on the PR is green and the deploy preview serves the site: `/orchestrate-tickets --merge` does this with `run.sh merge`. Otherwise the user merges.
 - No AI attribution anywhere: commit messages, PR titles, PR bodies, code comments.
 - Commits are single-line `<type>(<scope>): <summary>`, one concern each. PR titles have the same shape.
 - No `any` types. Derive types from existing ones or from a schema.
