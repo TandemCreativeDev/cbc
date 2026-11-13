@@ -109,7 +109,7 @@ function remember(day){
     return;
   }
   opened|=1<<(day-1);
-  document.cookie=cookieName+'='+opened+'; Max-Age=34560000; Path=/calendrier; SameSite=Lax'+(location.protocol==='https:'?'; Secure':'');
+  document.cookie=cookieName+'='+opened+'; Max-Age=34560000; Path=/; SameSite=Lax'+(location.protocol==='https:'?'; Secure':'');
 }
 const portraitHoldMs=2000;
 const clampProgress=value=>Math.max(0,Math.min(1,value));
