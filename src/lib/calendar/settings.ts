@@ -78,7 +78,7 @@ export async function getCalendarSettings(): Promise<CalendarSettings> {
   );
 
   return {
-    visible: en.behaviour?.visible ?? false,
+    visible: en.behaviour?.visible ?? true,
     year: en.behaviour?.year ?? defaultYear,
     opensAtHour: en.behaviour?.opensAtHour ?? defaultHour,
     afterEnd: en.behaviour?.afterEnd ?? "open",
