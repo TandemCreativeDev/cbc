@@ -1,7 +1,7 @@
 import { getPayload } from "payload";
 import config from "../../payload.config";
 import type { IFrameProps, LyricsProps, TourDateType } from "../../utils/types";
-import type { BilingualPage } from "./sheet";
+import type { BilingualPage, CarouselPhoto } from "./sheet";
 
 const locales = ["en", "fr"] as const;
 const read = { depth: 0, fallbackLocale: "en", limit: 0, pagination: false } as const;
@@ -22,6 +22,30 @@ async function getPageCopy(
   );
   const copy = ({ title, content }: typeof english) => ({ title, content });
   return { french: copy(french), english: copy(english) };
+}
+
+export async function getCarousel(): Promise<CarouselPhoto[]> {
+  const payload = await getPayload({ config });
+  const [english, french] = await Promise.all(
+    locales.map((locale) =>
+      payload.findGlobal({
+        slug: "about-page",
+        locale,
+        depth: 1,
+        fallbackLocale: "en",
+      })
+    )
+  );
+  return (english.carousel ?? []).flatMap(({ photo, alt }, index) =>
+    typeof photo === "object" && photo.url
+      ? [
+          {
+            src: photo.url,
+            alt: { english: alt, french: french.carousel?.[index]?.alt ?? alt },
+          },
+        ]
+      : []
+  );
 }
 
 export const getAboutPage = () => getPageCopy("about-page");
