@@ -29,4 +29,16 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default withPayload(nextConfig);
+const payloadConfig = withPayload(nextConfig);
+const payloadHeaders = payloadConfig.headers;
+
+// Payload asks every page for the Sec-CH-Prefers-Color-Scheme hint, and Critical-CH makes
+// Chrome repeat a first visit's document request. Only the admin reads the hint.
+payloadConfig.headers = async () =>
+  ((await payloadHeaders?.()) ?? []).map((rule) =>
+    rule.headers.some(({ key }) => key === "Critical-CH")
+      ? { ...rule, source: "/admin/:path*" }
+      : rule,
+  );
+
+export default payloadConfig;
