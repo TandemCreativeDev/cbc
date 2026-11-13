@@ -8,7 +8,7 @@ export const Logo = () => (
       width={64}
       height={64}
       unoptimized
-      priority
+      preload
     />
     <span className="clarks-logo__name">Clark&rsquo;s Bowling Club</span>
   </div>
