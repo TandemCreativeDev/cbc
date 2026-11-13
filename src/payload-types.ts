@@ -529,7 +529,7 @@ export interface CalendarSetting {
   id: number;
   behaviour: {
     /**
-     * Off: visitors get a holding page. Signed-in members still see the preview.
+     * The calendar opens to visitors by itself on 1 December. Untick to take it down (visitors get a holding page); tick again to bring it back. Signed-in members always see the preview.
      */
     visible?: boolean | null;
     year: number;

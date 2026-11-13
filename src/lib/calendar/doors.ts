@@ -51,11 +51,14 @@ export async function findDoors(
   });
 }
 
-/** The settings and the open doors as a visitor, who sees nothing when the calendar is hidden. */
+/** The settings and the open doors as a visitor, who sees nothing before 1 December (midnight Paris) or when the calendar is switched off. */
 export async function getPublicState(now = new Date()) {
   const settings = await getCalendarSettings();
   const { today, ended } = getCalendarDay(now, settings);
+  const { today: started } = getCalendarDay(now, { ...settings, opensAtHour: 0 });
   const open =
-    settings.visible && !(ended && settings.afterEnd === "holding");
+    settings.visible &&
+    started > 0 &&
+    !(ended && settings.afterEnd === "holding");
   return { settings, today, open };
 }

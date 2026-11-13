@@ -5,6 +5,7 @@ import { useLanguage } from "@/context/LanguageContext";
 import { FaVolumeMute, FaVolumeUp, FaPause, FaPlay } from "react-icons/fa";
 import dynamic from "next/dynamic";
 import Image from "next/image";
+import CalendarButton from "./CalendarButton";
 import StaticLogo from "./StaticLogo";
 import useHlsVideo, { HLS_SRC, HLS_TYPE } from "./useHlsVideo";
 import useIsMounted from "@/utils/useIsMounted";
@@ -115,6 +116,8 @@ export default function HomeClient() {
         {logoReady && isDesktop && !prefersReducedMotion && <SpinningLogo />}
         <StaticLogo />
       </div>
+
+      <CalendarButton />
 
       {/* Video controls */}
       <button
