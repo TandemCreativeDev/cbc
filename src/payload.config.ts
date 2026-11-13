@@ -18,6 +18,19 @@ const dirname = path.dirname(fileURLToPath(import.meta.url));
 export default buildConfig({
   admin: {
     user: Users.slug,
+    meta: {
+      titleSuffix: " - Clark's Bowling Club",
+      icons: [{ rel: "icon", url: "/favicon.ico" }],
+    },
+    components: {
+      graphics: {
+        Logo: "/components/payload/Logo#Logo",
+        Icon: "/components/payload/Icon#Icon",
+      },
+      beforeDashboard: [
+        "/components/payload/DashboardWelcome#DashboardWelcome",
+      ],
+    },
     importMap: {
       baseDir: dirname,
     },
