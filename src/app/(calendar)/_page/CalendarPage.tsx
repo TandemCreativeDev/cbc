@@ -88,9 +88,13 @@ async function Calendar({ locale }: PageProps) {
   return (
     <>
       <title>{title}</title>
-      <link rel="canonical" href={`${SITE_URL}${paths[locale]}`} />
-      <link rel="alternate" hrefLang="fr" href={`${SITE_URL}${paths.fr}`} />
-      <link rel="alternate" hrefLang="en" href={`${SITE_URL}${paths.en}`} />
+      {holding ? null : (
+        <>
+          <link rel="canonical" href={`${SITE_URL}${paths[locale]}`} />
+          <link rel="alternate" hrefLang="fr" href={`${SITE_URL}${paths.fr}`} />
+          <link rel="alternate" hrefLang="en" href={`${SITE_URL}${paths.en}`} />
+        </>
+      )}
       <meta name="description" content={messages.intro} />
       <meta name="theme-color" content={sandColor(settings.colors)} />
       <meta property="og:title" content={title} />
