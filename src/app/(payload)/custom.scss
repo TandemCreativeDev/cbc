@@ -1,0 +1,95 @@
+@font-face {
+  font-family: "Blanch Caps";
+  src: url("../../fonts/Blanch-Caps.woff2") format("woff2");
+  font-display: swap;
+}
+
+:root {
+  --clarks-orange: #febc12;
+  --clarks-orange-hover: #e5a800;
+  --clarks-red: #c14627;
+  --clarks-ink: #020618;
+  --font-heading: "Blanch Caps", var(--font-body);
+
+  --theme-error-400: #d9573a;
+  --theme-error-500: var(--clarks-red);
+  --theme-error-600: #a63a20;
+  --accessibility-outline: 2px solid var(--clarks-red);
+
+  // Payload's mid greys carry muted text (hints, labels); darken them to pass AA on white and on the grey panels.
+  --theme-elevation-350: #5c5c5c;
+  --theme-elevation-400: #5c5c5c;
+  --theme-elevation-450: #5c5c5c;
+  --theme-elevation-500: #5c5c5c;
+  --theme-elevation-550: #555555;
+}
+
+html[data-theme="dark"] {
+  --theme-elevation-0: #020618;
+  --theme-elevation-50: #0f172b;
+  --theme-elevation-100: #1d293d;
+  --theme-elevation-150: #314158;
+
+  --theme-elevation-350: #b0b0b0;
+  --theme-elevation-400: #b0b0b0;
+  --theme-elevation-450: #b0b0b0;
+  --theme-elevation-500: #b0b0b0;
+  --theme-elevation-550: #b8b8b8;
+
+  --theme-error-400: #f08a73;
+  --theme-error-500: #ee7a60;
+  --theme-error-600: #f4a08e;
+  --accessibility-outline: 2px solid var(--clarks-orange);
+}
+
+h1,
+h2 {
+  font-family: var(--font-heading);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+.btn--style-primary {
+  --color: var(--clarks-ink);
+  --bg-color: var(--clarks-orange);
+  --hover-color: var(--clarks-ink);
+  --hover-bg: var(--clarks-orange-hover);
+}
+
+.clarks-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+
+  &__name {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    letter-spacing: 0.04em;
+    color: var(--theme-text);
+  }
+}
+
+.clarks-welcome {
+  margin-block: calc(var(--base) * 1.5);
+  padding: calc(var(--base) * 1.25);
+  border: 1px solid var(--theme-border-color);
+  border-left: 6px solid var(--clarks-orange);
+  background: var(--theme-elevation-50);
+  border-radius: var(--style-radius-m);
+
+  h2 {
+    margin-top: 0;
+    font-size: 2rem;
+  }
+
+  ul {
+    padding-left: 1.25rem;
+  }
+
+  a {
+    color: var(--theme-text);
+    text-decoration-color: var(--clarks-red);
+    text-underline-offset: 3px;
+  }
+}
