@@ -29,12 +29,6 @@ const blanchCaps = localFont({
   display: "swap",
 });
 
-const goudyStd = localFont({
-  src: "../../fonts/GoudyStd-Heavyface.woff2",
-  variable: "--next-font-goudy",
-  display: "swap",
-});
-
 export const metadata: Metadata = {
   metadataBase: new URL("https://clarksbowlingclub.com"),
   title: {
@@ -63,7 +57,6 @@ export default async function RootLayout({
           ${damion.variable}
           ${jost.variable}
           ${blanchCaps.variable}
-          ${goudyStd.variable}
 
           antialiased
         `}

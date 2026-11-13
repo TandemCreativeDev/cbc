@@ -33,7 +33,6 @@
   --font-jost: var(--next-font-jost), sans-serif;
   --font-blanch: var(--next-font-blanch);
   --font-damion: var(--next-font-damion), cursive;
-  --font-goudy: var(--next-font-goudy);
 }
 
 @layer base {
