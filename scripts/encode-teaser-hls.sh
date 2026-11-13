@@ -1,9 +1,14 @@
 #!/usr/bin/env bash
-# Encodes public/videos/teaser.mp4 into an HLS ladder (480p, 720p, 1080p) in public/videos/hls.
+# Encodes the teaser master into an HLS ladder (480p, 720p, 1080p) in public/videos/hls.
+# The 34 MB master is no longer in the tree: #45 (b7ba479) replaced public/videos/teaser.mp4
+# with the H.264 fallback, so the master is read from the commit before it to avoid a second
+# generation of compression.
 set -euo pipefail
 
 cd "$(dirname "$0")/.."
-src=public/videos/teaser.mp4
+src=$(mktemp)
+trap 'rm -f "$src"' EXIT
+git show b7ba479^:public/videos/teaser.mp4 >"$src"
 out=public/videos/hls
 
 rm -rf "$out"
@@ -11,7 +16,7 @@ mkdir -p "$out"
 
 # 24 fps with a keyframe every 2 s, so every rung switches on segment boundaries.
 ffmpeg -hide_banner -y -i "$src" \
-  -filter_complex "[0:v]split=3[v1][v2][v3];[v1]scale=-2:480[o1];[v2]scale=-2:720[o2];[v3]copy[o3]" \
+  -filter_complex "[0:v]setparams=color_primaries=bt709:color_trc=bt709:colorspace=bt709,split=3[v1][v2][v3];[v1]scale=-2:480[o1];[v2]scale=-2:720[o2];[v3]copy[o3]" \
   -map "[o1]" -map 0:a -map "[o2]" -map 0:a -map "[o3]" -map 0:a \
   -c:v libx264 -preset slow -profile:v high -pix_fmt yuv420p \
   -r 24 -g 48 -keyint_min 48 -sc_threshold 0 \
