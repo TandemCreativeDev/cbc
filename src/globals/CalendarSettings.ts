@@ -80,7 +80,7 @@ export const CalendarSettings: GlobalConfig = {
         {
           name: "visible",
           type: "checkbox",
-          defaultValue: true,
+          defaultValue: false,
           admin: {
             description:
               "Off: visitors get a holding page. Signed-in members still see the preview.",

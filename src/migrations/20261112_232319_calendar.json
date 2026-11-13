@@ -2351,7 +2351,7 @@
           "type": "boolean",
           "primaryKey": false,
           "notNull": false,
-          "default": true
+          "default": false
         },
         "behaviour_year": {
           "name": "behaviour_year",

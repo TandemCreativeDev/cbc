@@ -42,7 +42,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   
   CREATE TABLE "calendar_settings" (
   	"id" serial PRIMARY KEY NOT NULL,
-  	"behaviour_visible" boolean DEFAULT true,
+  	"behaviour_visible" boolean DEFAULT false,
   	"behaviour_year" numeric DEFAULT 2026 NOT NULL,
   	"behaviour_opens_at_hour" numeric DEFAULT 0 NOT NULL,
   	"behaviour_after_end" "enum_calendar_settings_behaviour_after_end" DEFAULT 'open' NOT NULL,
