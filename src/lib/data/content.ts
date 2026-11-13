@@ -1,8 +1,9 @@
 import { cacheLife, cacheTag } from "next/cache";
+import { fallbackCarousel } from "./carouselFallback";
 import * as payloadSource from "./payload";
 import * as sheetSource from "./sheet";
 
-export type { BilingualPage } from "./sheet";
+export type { BilingualPage, CarouselPhoto } from "./sheet";
 
 // Production reads the sheet until DATABASE_URL is set there (switchover step 4).
 const source = process.env.DATABASE_URL ? payloadSource : sheetSource;
@@ -11,7 +12,13 @@ export async function getAboutPage() {
   "use cache";
   cacheLife("minutes");
   cacheTag("about");
-  return source.getAboutPage();
+  const carousel = process.env.DATABASE_URL
+    ? await payloadSource.getCarousel()
+    : [];
+  return {
+    ...(await source.getAboutPage()),
+    carousel: carousel.length ? carousel : fallbackCarousel,
+  };
 }
 
 export async function getTourPage() {

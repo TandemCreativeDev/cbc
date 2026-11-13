@@ -1,6 +1,8 @@
 import { getPayload } from "payload";
+import path from "path";
 import Papa from "papaparse";
 import config from "../payload.config";
+import { fallbackCarousel } from "../lib/data/carouselFallback";
 import fetchSheet from "../utils/fetchSheet";
 import parsePageCsv from "../utils/parsePageCsv";
 import type { IFrameProps, LyricsProps, TourDateType } from "../utils/types";
@@ -36,6 +38,54 @@ async function importPages() {
     }
     console.log(`${slug}: updated`);
   }
+}
+
+async function importCarousel() {
+  const about = await payload.findGlobal({ slug: "about-page", depth: 0 });
+  if (about.carousel?.length) {
+    console.log(`carousel: ${about.carousel.length} photos already there, skipped`);
+    return;
+  }
+  const photos: number[] = [];
+  for (const { src, alt } of fallbackCarousel) {
+    const filename = path.basename(src);
+    const { docs } = await payload.find({
+      collection: "media",
+      where: { filename: { equals: filename } },
+      limit: 1,
+      depth: 0,
+    });
+    const id =
+      docs[0]?.id ??
+      (
+        await payload.create({
+          collection: "media",
+          data: { alt: alt.english },
+          filePath: path.resolve("public", src.slice(1)),
+          context: { ...context },
+        })
+      ).id;
+    photos.push(id);
+  }
+  for (const [locale, key] of [
+    ["en", "english"],
+    ["fr", "french"],
+  ] as const) {
+    const current = await payload.findGlobal({ slug: "about-page", depth: 0 });
+    await payload.updateGlobal({
+      slug: "about-page",
+      locale,
+      data: {
+        carousel: photos.map((photo, index) => ({
+          id: current.carousel?.[index]?.id,
+          photo,
+          alt: fallbackCarousel[index].alt[key],
+        })),
+      },
+      context,
+    });
+  }
+  console.log("carousel:", photos.length, "photos imported");
 }
 
 async function importTourDates() {
@@ -181,6 +231,7 @@ async function importLyrics() {
 }
 
 await importPages();
+await importCarousel();
 await importTourDates();
 await importMusicItems();
 await importLyrics();

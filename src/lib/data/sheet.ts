@@ -13,6 +13,11 @@ export interface BilingualPage {
   english: Page;
 }
 
+export interface CarouselPhoto {
+  src: string;
+  alt: { english: string; french: string };
+}
+
 async function getPage(tabGid: number): Promise<BilingualPage> {
   const [french, english] = parsePageCsv(await fetchSheet(tabGid));
   if (!french || !english) {

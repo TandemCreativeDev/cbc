@@ -497,6 +497,16 @@ export interface AboutPage {
   id: number;
   title: string;
   content: string;
+  /**
+   * Photos in the About page carousel, in order.
+   */
+  carousel?:
+    | {
+        photo: number | Media;
+        alt: string;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -617,6 +627,13 @@ export interface CalendarSetting {
 export interface AboutPageSelect<T extends boolean = true> {
   title?: T;
   content?: T;
+  carousel?:
+    | T
+    | {
+        photo?: T;
+        alt?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

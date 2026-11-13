@@ -1,4 +1,9 @@
 import type { CollectionConfig } from "payload";
+import {
+  imageMimeTypes,
+  jpegQuality,
+  maxImageSide,
+} from "../lib/payload/imageLimits";
 
 export const Media: CollectionConfig = {
   slug: "media",
@@ -15,8 +20,27 @@ export const Media: CollectionConfig = {
       required: true,
       localized: true,
     },
+    {
+      name: "compression",
+      type: "ui",
+      admin: {
+        components: {
+          Field: "/components/payload/ImageCompressor#ImageCompressor",
+        },
+      },
+    },
   ],
   upload: {
-    mimeTypes: ["image/*"],
+    mimeTypes: imageMimeTypes,
+    resizeOptions: {
+      width: maxImageSide,
+      height: maxImageSide,
+      fit: "inside",
+      withoutEnlargement: true,
+    },
+    formatOptions: {
+      format: "jpeg",
+      options: { quality: jpegQuality, progressive: true },
+    },
   },
 };

@@ -41,6 +41,8 @@ const routePolicies: { path: string; extra: Directives }[] = [
   {
     path: "admin",
     extra: {
+      // jSquash's WebAssembly codecs compress photos in the browser before upload.
+      "script-src": ["'wasm-unsafe-eval'"],
       "img-src": ["https://www.gravatar.com"],
       "connect-src": storage,
       "frame-src": ["'self'"],
