@@ -106,15 +106,14 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   ALTER TABLE "calendar_settings_door_colors" DISABLE ROW LEVEL SECURITY;
   ALTER TABLE "calendar_settings" DISABLE ROW LEVEL SECURITY;
   ALTER TABLE "calendar_settings_locales" DISABLE ROW LEVEL SECURITY;
+  ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT "payload_locked_documents_rels_calendar_doors_fk";
+  DROP INDEX "payload_locked_documents_rels_calendar_doors_id_idx";
+  ALTER TABLE "payload_locked_documents_rels" DROP COLUMN "calendar_doors_id";
   DROP TABLE "calendar_doors" CASCADE;
   DROP TABLE "calendar_doors_locales" CASCADE;
   DROP TABLE "calendar_settings_door_colors" CASCADE;
   DROP TABLE "calendar_settings" CASCADE;
   DROP TABLE "calendar_settings_locales" CASCADE;
-  ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT "payload_locked_documents_rels_calendar_doors_fk";
-  
-  DROP INDEX "payload_locked_documents_rels_calendar_doors_id_idx";
-  ALTER TABLE "payload_locked_documents_rels" DROP COLUMN "calendar_doors_id";
   DROP TYPE "public"."enum_calendar_settings_behaviour_after_end";
   DROP TYPE "public"."enum_calendar_settings_fonts_title";
   DROP TYPE "public"."enum_calendar_settings_fonts_accent";
