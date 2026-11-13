@@ -14,6 +14,7 @@ main{width:min(1120px,100% - 40px);margin:auto;padding:42px 0 48px}
 .brand,.label,.month{letter-spacing:.16em;text-transform:uppercase;font-size:.69rem;font-weight:700}
 .brand{color:var(--ink);font-size:.78rem;letter-spacing:.14em}
 button{font:inherit;color:inherit;cursor:pointer}
+.language{margin-left:auto;font-size:.78rem;color:var(--ink)}
 .sound{border:1px solid var(--ink);border-radius:30px;background:var(--paper);padding:7px 14px;font-size:.78rem}
 .preview-tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:0 0 14px}
 .preview-tools[hidden]{display:none}

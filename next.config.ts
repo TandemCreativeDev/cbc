@@ -11,6 +11,22 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: storageEndpoint ? [new URL(`${storageEndpoint}/**`)] : [],
   },
+  async redirects() {
+    return [
+      {
+        source: "/calendrier",
+        has: [{ type: "query", key: "isFrench", value: "false" }],
+        destination: "/calendar?",
+        permanent: false,
+      },
+      {
+        source: "/calendar",
+        has: [{ type: "query", key: "isFrench", value: "true" }],
+        destination: "/calendrier?",
+        permanent: false,
+      },
+    ];
+  },
   // Without a database the admin and Payload API stay hidden, as before Payload.
   async rewrites() {
     if (process.env.DATABASE_URL) return [];
@@ -18,6 +34,7 @@ const nextConfig: NextConfig = {
       beforeFiles: [
         { source: "/admin/:path*", destination: "/nope" },
         { source: "/calendrier", destination: "/nope" },
+        { source: "/calendar", destination: "/nope" },
         {
           source: "/api/:path((?!send-emails$).*)",
           destination: "/nope",

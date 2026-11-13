@@ -7,26 +7,30 @@ const escapeHtml = (value: string) =>
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
 
-const masthead = (m: Messages) => `
+const languageLink = (m: Messages, href: string) =>
+  `<a class="language" href="${href}" hreflang="${m.switchLang}" lang="${m.switchLang}">${escapeHtml(m.switchLabel)}</a>`;
+
+const masthead = (m: Messages, switchHref: string) => `
   <header class="masthead">
     <span class="brand">Clark’s Bowling Club</span>
+    ${languageLink(m, switchHref)}
     <button type="button" id="sound" class="sound" aria-pressed="true">${escapeHtml(m.soundOn)}</button>
   </header>`;
 
 const heading = (m: Messages) => `
     <h1 id="title">${escapeHtml(m.title)} <em>${escapeHtml(m.accentLine)}</em></h1>`;
 
-export const holdingMarkup = (m: Messages) => `
+export const holdingMarkup = (m: Messages, switchHref: string) => `
 <main>
-  <header class="masthead"><span class="brand">Clark’s Bowling Club</span></header>
+  <header class="masthead"><span class="brand">Clark’s Bowling Club</span>${languageLink(m, switchHref)}</header>
   <section class="hero" aria-labelledby="title">${heading(m)}
     <p class="intro">${escapeHtml(m.holding)}</p>
   </section>
   <footer>${escapeHtml(m.footer)}</footer>
 </main>`;
 
-export const calendarMarkup = (m: Messages) => `
-<main>${masthead(m)}
+export const calendarMarkup = (m: Messages, switchHref: string) => `
+<main>${masthead(m, switchHref)}
   <section class="hero" aria-labelledby="title">
     <p class="label">${escapeHtml(m.dateRange)}</p>${heading(m)}
     <p class="intro">${escapeHtml(m.intro)}</p>
