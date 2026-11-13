@@ -6,9 +6,7 @@
 
 :root {
   --clarks-orange: #febc12;
-  --clarks-orange-hover: #e5a800;
   --clarks-red: #c14627;
-  --clarks-ink: #020618;
   --font-heading: "Blanch Caps", var(--font-body);
 
   --theme-error-400: #d9573a;
@@ -47,13 +45,6 @@ h2 {
   font-family: var(--font-heading);
   font-weight: 400;
   letter-spacing: 0.02em;
-}
-
-.btn--style-primary {
-  --color: var(--clarks-ink);
-  --bg-color: var(--clarks-orange);
-  --hover-color: var(--clarks-ink);
-  --hover-bg: var(--clarks-orange-hover);
 }
 
 .clarks-logo {
