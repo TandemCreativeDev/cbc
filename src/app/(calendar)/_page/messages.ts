@@ -3,6 +3,8 @@ import type { CalendarLocale, TextName } from "@/lib/calendar/defaults";
 /** Page text that is not editable in the admin. {braces} are filled in by the page script. */
 const fixed = {
   fr: {
+    switchLabel: "English",
+    switchLang: "en",
     portraitDay: "{day} décembre · Calendrier de Clark’s",
     portraitClose: "Quitter le mode portrait",
     portraitPlay: "Écouter le morceau",
@@ -39,6 +41,8 @@ const fixed = {
     noscript: "Activez JavaScript pour ouvrir les cases et écouter les morceaux.",
   },
   en: {
+    switchLabel: "Français",
+    switchLang: "fr",
     portraitDay: "December {day} · Clark’s Advent calendar",
     portraitClose: "Leave portrait mode",
     portraitPlay: "Play the track",

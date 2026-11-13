@@ -54,6 +54,7 @@ const routePolicies: { path: string; extra: Directives }[] = [
     path: "calendrier",
     extra: {},
   },
+  { path: "calendar", extra: {} },
 ];
 
 const buildPolicy = (extra: Directives = {}): string =>

@@ -25,7 +25,7 @@ export default function CalendarButton() {
 
   return (
     <Link
-      href={`/calendrier?isFrench=${isFrench}`}
+      href={isFrench ? "/calendrier" : "/calendar"}
       className="absolute bottom-32 left-1/2 z-20 -translate-x-1/2 rounded-full bg-clarks-orange px-6 py-3 text-center font-bold text-black whitespace-nowrap hover:bg-white focus:outline-hidden focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
     >
       {isFrench ? "Le calendrier de l’Avent" : "The advent calendar"}
