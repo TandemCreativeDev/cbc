@@ -27,7 +27,7 @@ const baseDirectives: Directives = {
   "style-src": ["'self'", "'unsafe-inline'"],
   "img-src": ["'self'", "data:", "blob:", ...storage],
   "font-src": ["'self'", "data:"],
-  "media-src": ["'self'", ...storage],
+  "media-src": ["'self'", "blob:", ...storage],
   "connect-src": ["'self'"],
   "frame-src": embedOrigins,
   "object-src": ["'none'"],

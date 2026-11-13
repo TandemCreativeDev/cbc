@@ -2,10 +2,10 @@ import Image from "next/image";
 
 export default function StaticLogo() {
   const imgUrls = [
-    "/hologram/hologram_light1.png",
-    "/hologram/hologram_light2.png",
-    "/hologram/hologram_light3.png",
-    "/hologram/hologram_nolight.png",
+    "/hologram/hologram_light1.webp",
+    "/hologram/hologram_light2.webp",
+    "/hologram/hologram_light3.webp",
+    "/hologram/hologram_nolight.webp",
   ];
 
   return (

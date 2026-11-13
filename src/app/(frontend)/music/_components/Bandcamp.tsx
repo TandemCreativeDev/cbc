@@ -9,6 +9,7 @@ export default function Bandcamp({ src, href, title }: IFrameProps) {
     <iframe
       src={safeSrc}
       seamless
+      loading="lazy"
       width="1000"
       height="120"
       className="w-full h-full rounded-lg"

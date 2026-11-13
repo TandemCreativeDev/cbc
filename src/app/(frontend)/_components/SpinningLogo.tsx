@@ -12,14 +12,15 @@ export default function SpinningLogo() {
     let height = window.innerHeight - headerHeight - footerHeight;
     let width = window.innerWidth;
 
-    window.addEventListener("resize", () => {
+    const handleResize = () => {
       width = window.innerWidth;
       height = window.innerHeight - headerHeight - footerHeight;
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
       renderer.setSize(width, height);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    });
+    };
+    window.addEventListener("resize", handleResize);
 
     const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
     camera.position.set(0, 0, 5);
@@ -50,11 +51,12 @@ export default function SpinningLogo() {
       x: 0,
       y: 0,
     };
-    window.addEventListener("mousemove", (event) => {
+    const handleMouseMove = (event: MouseEvent) => {
       const { clientX, clientY } = event;
       cursor.x = -(clientX / width - 0.5);
       cursor.y = clientY / height - 0.5;
-    });
+    };
+    window.addEventListener("mousemove", handleMouseMove);
 
     const ambientLight = new THREE.AmbientLight(0xfebc12, 0.5);
     scene.add(ambientLight);
@@ -121,11 +123,11 @@ export default function SpinningLogo() {
     scene.add(tube);
 
     const textureLoader = new THREE.TextureLoader();
-    const baseTexture = textureLoader.load("/hologram/hologram_nolight.png");
+    const baseTexture = textureLoader.load("/hologram/hologram_nolight.webp");
     const lightTextures = [
-      textureLoader.load("/hologram/hologram_light1.png"),
-      textureLoader.load("/hologram/hologram_light2.png"),
-      textureLoader.load("/hologram/hologram_light3.png"),
+      textureLoader.load("/hologram/hologram_light1.webp"),
+      textureLoader.load("/hologram/hologram_light2.webp"),
+      textureLoader.load("/hologram/hologram_light3.webp"),
     ];
 
     const planeGeometry = new THREE.PlaneGeometry(radius * 2.5, radius * 1.5);
@@ -154,16 +156,16 @@ export default function SpinningLogo() {
       scene.add(mesh);
     });
 
+    let flickerTimeout: number | undefined;
     function flickerLights() {
       logoMaterials.slice(1).forEach((material) => {
         material.opacity = Math.random() > 0.5 ? 1 : 0;
       });
 
-      setTimeout(flickerLights, Math.random() * 500);
+      flickerTimeout = window.setTimeout(flickerLights, Math.random() * 500);
     }
 
-    flickerLights();
-
+    let frame = 0;
     const animate = function () {
       camera.position.x = cursor.x * 2;
       camera.position.y = cursor.y * 2;
@@ -171,10 +173,30 @@ export default function SpinningLogo() {
 
       tubeMaterial.opacity = 0.5 + Math.random() * 0.25;
       renderer.render(scene, camera);
-      requestAnimationFrame(animate);
+      frame = requestAnimationFrame(animate);
     };
 
-    animate();
+    const start = () => {
+      flickerLights();
+      animate();
+    };
+    const stop = () => {
+      cancelAnimationFrame(frame);
+      clearTimeout(flickerTimeout);
+    };
+    const handleVisibility = () => (document.hidden ? stop() : start());
+    document.addEventListener("visibilitychange", handleVisibility);
+    handleVisibility();
+
+    return () => {
+      stop();
+      document.removeEventListener("visibilitychange", handleVisibility);
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("resize", setRendererSize);
+      window.removeEventListener("mousemove", handleMouseMove);
+      renderer.domElement.remove();
+      renderer.dispose();
+    };
   }, []);
 
   return (
