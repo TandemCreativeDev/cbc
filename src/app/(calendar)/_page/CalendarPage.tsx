@@ -79,7 +79,6 @@ async function Calendar({ locale }: PageProps) {
 
   const script = [
     `const M=${scriptJson(messages)},LANG=${scriptJson(locale)},YEAR=${settings.year};`,
-    "document.documentElement.lang=LANG;",
     "const fill=(text,values)=>text.replace(/\\{(\\w+)\\}/g,(_,key)=>values[key]);",
     calendarScript.replace("__OPENING_SOUND__", () => scriptJson(openingSoundUrl)),
   ].join("\n");
