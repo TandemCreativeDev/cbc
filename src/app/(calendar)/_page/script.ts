@@ -1,7 +1,6 @@
 export const calendarScript = String.raw`
 const days=24, cookieName='clarks_advent_'+YEAR;
-const cookie=document.cookie.split(';').map(part=>part.trim()).find(part=>part.startsWith(cookieName+'='));
-let opened=Number(cookie?.split('=')[1])||0, soundOn=true;
+let opened=document.cookie.split(';').map(part=>part.trim()).filter(part=>part.startsWith(cookieName+'=')).reduce((all,part)=>all|(Number(part.split('=')[1])||0),0), soundOn=true;
 let preview=false,previewOpened=0,loadRevision=0;
 const cards=[];
 const sound=document.getElementById('sound');
@@ -110,6 +109,7 @@ function remember(day){
   }
   opened|=1<<(day-1);
   document.cookie=cookieName+'='+opened+'; Max-Age=34560000; Path=/; SameSite=Lax'+(location.protocol==='https:'?'; Secure':'');
+  document.cookie=cookieName+'=; Max-Age=0; Path=/calendrier';
 }
 const portraitHoldMs=2000;
 const clampProgress=value=>Math.max(0,Math.min(1,value));
