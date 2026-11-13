@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const guideUrl =
   "https://github.com/TandemCreativeDev/cbc/blob/main/docs/admin-guide.md";
 
@@ -23,9 +25,9 @@ export const DashboardWelcome = () => (
     <ul>
       {links.map(({ href, en, fr }) => (
         <li key={href}>
-          <a href={href}>
+          <Link href={href}>
             {en} <span lang="fr">/ {fr}</span>
-          </a>
+          </Link>
         </li>
       ))}
     </ul>
