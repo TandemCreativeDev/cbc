@@ -18,7 +18,7 @@ type Outcome =
 
 export const ImageCompressor: UIFieldClientComponent = () => {
   const { value: file, setValue } = useField<File | null>({ path: "file" });
-  const { setProcessing } = useForm();
+  const { getField, setProcessing } = useForm();
   const [outcome, setOutcome] = useState<Outcome | null>(null);
 
   useEffect(() => {
@@ -26,19 +26,26 @@ export const ImageCompressor: UIFieldClientComponent = () => {
     handled.add(file);
     setProcessing(true);
     compressImage(file)
+      .catch(() => null)
       .then((compressed) => {
-        handled.add(compressed);
-        if (compressed === file) return;
-        setValue(compressed);
-        setOutcome({
-          status: "done",
-          original: file.size,
-          compressed: compressed.size,
-        });
-      })
-      .catch(() => setOutcome({ status: "failed" }))
-      .finally(() => setProcessing(false));
-  }, [file, setValue, setProcessing]);
+        if (compressed) handled.add(compressed);
+        const current = getField("file")?.value;
+        // A file picked while this one was compressing owns the form now.
+        if (current instanceof File && current !== file) return;
+        setProcessing(false);
+        if (current !== file) return;
+        if (!compressed) {
+          setOutcome({ status: "failed" });
+        } else if (compressed !== file) {
+          setValue(compressed);
+          setOutcome({
+            status: "done",
+            original: file.size,
+            compressed: compressed.size,
+          });
+        }
+      });
+  }, [file, getField, setValue, setProcessing]);
 
   if (!outcome) return null;
 
