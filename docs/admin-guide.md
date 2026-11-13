@@ -42,7 +42,7 @@ Open **Calendar settings**, go to **Texts**, switch to `fr` or `en` and type. A 
 
 ### Hide the calendar, change the year or the hour
 
-Under **Behaviour**: **Visible** starts unticked, so visitors get a holding page until you tick it and save; you stay able to see everything either way. **Year** and **Opens at hour** (Paris time) decide when each door opens. **After 24 December** chooses between keeping every door open and showing the holding page.
+Under **Behaviour**: **Visible** is ticked: the calendar opens to visitors by itself at midnight (Paris time) on 1 December of the **Year**, and a button on the home page links to it from 1 to 24 December. Before 1 December visitors get a holding page whatever the box says. Untick it and save to take the calendar down (visitors get the holding page); tick it again to bring it back. You stay able to see everything either way. **Year** and **Opens at hour** (Paris time) decide when each door opens. **After 24 December** chooses between keeping every door open and showing the holding page.
 
 ### Check the preview
 
