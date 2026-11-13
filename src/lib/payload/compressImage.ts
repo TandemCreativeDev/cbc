@@ -1,10 +1,8 @@
-import { jpegQuality, maxImageSide } from "./imageLimits";
-
-const compressible = ["image/jpeg", "image/png", "image/webp"];
+import { imageMimeTypes, jpegQuality, maxImageSide } from "./imageLimits";
 
 /** Resizes to at most maxImageSide on the long side (never enlarged) and re-encodes as JPEG with jSquash. */
 export async function compressImage(file: File): Promise<File> {
-  if (!compressible.includes(file.type)) return file;
+  if (!imageMimeTypes.includes(file.type)) return file;
   const [{ default: encode }, { default: resize }] = await Promise.all([
     import("@jsquash/jpeg/encode"),
     import("@jsquash/resize"),

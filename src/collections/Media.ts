@@ -1,5 +1,9 @@
 import type { CollectionConfig } from "payload";
-import { jpegQuality, maxImageSide } from "../lib/payload/imageLimits";
+import {
+  imageMimeTypes,
+  jpegQuality,
+  maxImageSide,
+} from "../lib/payload/imageLimits";
 
 export const Media: CollectionConfig = {
   slug: "media",
@@ -27,7 +31,7 @@ export const Media: CollectionConfig = {
     },
   ],
   upload: {
-    mimeTypes: ["image/*"],
+    mimeTypes: imageMimeTypes,
     resizeOptions: {
       width: maxImageSide,
       height: maxImageSide,
