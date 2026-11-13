@@ -8,7 +8,7 @@ const escapeHtml = (value: string) =>
     .replace(/"/g, "&quot;");
 
 const languageLink = (m: Messages, href: string) =>
-  `<a class="language" href="${href}" hreflang="${m.switchLang}" lang="${m.switchLang}">${escapeHtml(m.switchLabel)}</a>`;
+  `<a class="language" href="${href}" hreflang="${m.switchLang}" lang="${m.switchLang}" aria-label="${escapeHtml(m.switchLabel)}">${m.switchLang.toUpperCase()}</a>`;
 
 const masthead = (m: Messages, switchHref: string) => `
   <header class="masthead">
