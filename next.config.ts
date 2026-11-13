@@ -17,6 +17,7 @@ const nextConfig: NextConfig = {
     return {
       beforeFiles: [
         { source: "/admin/:path*", destination: "/nope" },
+        { source: "/calendrier", destination: "/nope" },
         {
           source: "/api/:path((?!send-emails$).*)",
           destination: "/nope",

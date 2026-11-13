@@ -87,4 +87,5 @@ Every denormalisation, banned field type used anyway, and hand-written database 
 
 | Object | Kind | Reason | Migration |
 | --- | --- | --- | --- |
-| None yet | | | |
+| `calendar_doors_day_range_check` | CHECK constraint | A door's day is 1 to 24 for direct SQL too | `20261112_232323_calendar_checks` |
+| `calendar_settings_opens_at_hour_range_check` | CHECK constraint | The opening hour is 0 to 23 for direct SQL too | `20261112_232323_calendar_checks` |

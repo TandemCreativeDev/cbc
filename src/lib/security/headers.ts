@@ -46,6 +46,12 @@ const routePolicies: { path: string; extra: Directives }[] = [
       "frame-src": ["'self'"],
     },
   },
+  {
+    // Loïc's page needs inline <style> and <script>, fonts and demos from 'self', and door
+    // and background images from storage: the base policy already allows all of these.
+    path: "calendrier",
+    extra: {},
+  },
 ];
 
 const buildPolicy = (extra: Directives = {}): string =>

@@ -3,13 +3,15 @@ import { fileURLToPath } from "url";
 import { postgresAdapter } from "@payloadcms/db-postgres";
 import { buildConfig } from "payload";
 import sharp from "sharp";
+import { CalendarDoors } from "./collections/CalendarDoors";
 import { Lyrics } from "./collections/Lyrics";
 import { Media } from "./collections/Media";
 import { MusicItems } from "./collections/MusicItems";
 import { TourDates } from "./collections/TourDates";
 import { Users } from "./collections/Users";
+import { CalendarSettings } from "./globals/CalendarSettings";
 import { AboutPage, TourPage } from "./globals/pageCopy";
-import { storagePlugin } from "./lib/payload/storage";
+import { demosStoragePlugin, storagePlugin } from "./lib/payload/storage";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -20,8 +22,8 @@ export default buildConfig({
       baseDir: dirname,
     },
   },
-  collections: [Users, Media, TourDates, MusicItems, Lyrics],
-  globals: [AboutPage, TourPage],
+  collections: [Users, Media, TourDates, MusicItems, Lyrics, CalendarDoors],
+  globals: [AboutPage, TourPage, CalendarSettings],
   localization: {
     locales: ["en", "fr"],
     defaultLocale: "en",
@@ -39,5 +41,5 @@ export default buildConfig({
     migrationDir: path.resolve(dirname, "migrations"),
   }),
   sharp,
-  plugins: [storagePlugin],
+  plugins: [storagePlugin, demosStoragePlugin],
 });

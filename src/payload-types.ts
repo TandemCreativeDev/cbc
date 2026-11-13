@@ -72,6 +72,7 @@ export interface Config {
     'tour-dates': TourDate;
     'music-items': MusicItem;
     lyrics: Lyric;
+    'calendar-doors': CalendarDoor;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -84,6 +85,7 @@ export interface Config {
     'tour-dates': TourDatesSelect<false> | TourDatesSelect<true>;
     'music-items': MusicItemsSelect<false> | MusicItemsSelect<true>;
     lyrics: LyricsSelect<false> | LyricsSelect<true>;
+    'calendar-doors': CalendarDoorsSelect<false> | CalendarDoorsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -96,10 +98,12 @@ export interface Config {
   globals: {
     'about-page': AboutPage;
     'tour-page': TourPage;
+    'calendar-settings': CalendarSetting;
   };
   globalsSelect: {
     'about-page': AboutPageSelect<false> | AboutPageSelect<true>;
     'tour-page': TourPageSelect<false> | TourPageSelect<true>;
+    'calendar-settings': CalendarSettingsSelect<false> | CalendarSettingsSelect<true>;
   };
   locale: 'en' | 'fr';
   widgets: {
@@ -221,6 +225,36 @@ export interface Lyric {
   createdAt: string;
 }
 /**
+ * One door of the advent calendar. The MP3 is private: visitors only hear it on or after its day.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "calendar-doors".
+ */
+export interface CalendarDoor {
+  id: number;
+  day: number;
+  title: string;
+  note?: string | null;
+  /**
+   * Optional. Replaces this door's colour, for example #a54425.
+   */
+  color?: string | null;
+  /**
+   * Optional picture shown behind the opened door.
+   */
+  image?: (number | null) | Media;
+  _objectKey?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -263,6 +297,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'lyrics';
         value: number | Lyric;
+      } | null)
+    | ({
+        relationTo: 'calendar-doors';
+        value: number | CalendarDoor;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -392,6 +430,27 @@ export interface LyricsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "calendar-doors_select".
+ */
+export interface CalendarDoorsSelect<T extends boolean = true> {
+  day?: T;
+  title?: T;
+  note?: T;
+  color?: T;
+  image?: T;
+  _objectKey?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
@@ -454,6 +513,105 @@ export interface TourPage {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "calendar-settings".
+ */
+export interface CalendarSetting {
+  id: number;
+  behaviour: {
+    /**
+     * Off: visitors get a holding page. Signed-in members still see the preview.
+     */
+    visible?: boolean | null;
+    year: number;
+    /**
+     * Hour (0 to 23, Paris time) when each day's door opens.
+     */
+    opensAtHour: number;
+    /**
+     * What visitors get after 24 December.
+     */
+    afterEnd: 'open' | 'holding';
+  };
+  /**
+   * Leave a field empty to use the default shown in grey. Write both languages.
+   */
+  texts?: {
+    title?: string | null;
+    accentLine?: string | null;
+    intro?: string | null;
+    /**
+     * {year} is replaced by the year below.
+     */
+    dateRange?: string | null;
+    /**
+     * {year} is replaced by the year below.
+     */
+    footer?: string | null;
+    soundOn?: string | null;
+    soundOff?: string | null;
+    download?: string | null;
+    holding?: string | null;
+  };
+  colors?: {
+    paper?: string | null;
+    ink?: string | null;
+    orange?: string | null;
+    quiet?: string | null;
+    border?: string | null;
+  };
+  /**
+   * Door colours repeat in this order across the grid. Leave empty for the defaults.
+   */
+  doorColors?:
+    | {
+        door: string;
+        ink: string;
+        locked: string;
+        id?: string | null;
+      }[]
+    | null;
+  fonts: {
+    /**
+     * Title, door numbers and song titles.
+     */
+    title:
+      | 'georgia'
+      | 'fraunces'
+      | 'goudy-heavyface'
+      | 'caprasimo'
+      | 'abril-fatface'
+      | 'dm-serif-display'
+      | 'playfair-display'
+      | 'shrikhand'
+      | 'alfa-slab-one'
+      | 'righteous'
+      | 'monoton'
+      | 'blanch-caps'
+      | 'bebas-neue';
+    /**
+     * The second title line. Only fonts with a true italic, or a script, are offered.
+     */
+    accent: 'georgia' | 'fraunces' | 'dm-serif-display' | 'playfair-display' | 'damion' | 'yellowtail' | 'lobster';
+    /**
+     * All other text.
+     */
+    body: 'system' | 'jost' | 'dm-sans' | 'outfit' | 'fraunces';
+  };
+  images?: {
+    /**
+     * Optional page background.
+     */
+    background?: (number | null) | Media;
+    /**
+     * Optional picture shown when the link is shared.
+     */
+    share?: (number | null) | Media;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "about-page_select".
  */
 export interface AboutPageSelect<T extends boolean = true> {
@@ -470,6 +628,66 @@ export interface AboutPageSelect<T extends boolean = true> {
 export interface TourPageSelect<T extends boolean = true> {
   title?: T;
   content?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "calendar-settings_select".
+ */
+export interface CalendarSettingsSelect<T extends boolean = true> {
+  behaviour?:
+    | T
+    | {
+        visible?: T;
+        year?: T;
+        opensAtHour?: T;
+        afterEnd?: T;
+      };
+  texts?:
+    | T
+    | {
+        title?: T;
+        accentLine?: T;
+        intro?: T;
+        dateRange?: T;
+        footer?: T;
+        soundOn?: T;
+        soundOff?: T;
+        download?: T;
+        holding?: T;
+      };
+  colors?:
+    | T
+    | {
+        paper?: T;
+        ink?: T;
+        orange?: T;
+        quiet?: T;
+        border?: T;
+      };
+  doorColors?:
+    | T
+    | {
+        door?: T;
+        ink?: T;
+        locked?: T;
+        id?: T;
+      };
+  fonts?:
+    | T
+    | {
+        title?: T;
+        accent?: T;
+        body?: T;
+      };
+  images?:
+    | T
+    | {
+        background?: T;
+        share?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
