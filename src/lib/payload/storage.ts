@@ -13,14 +13,14 @@ const config = {
   },
 };
 
+const publicFile = {
+  disablePayloadAccessControl: true as const,
+  generateFileURL: ({ filename, prefix }: { filename: string; prefix?: string }) =>
+    `${endpoint}/${bucket}/${prefix ? `${prefix}/` : ""}${filename}`,
+};
+
 export const storagePlugin = s3Storage({
-  collections: {
-    media: {
-      disablePayloadAccessControl: true,
-      generateFileURL: ({ filename, prefix }) =>
-        `${endpoint}/${bucket}/${prefix ? `${prefix}/` : ""}${filename}`,
-    },
-  },
+  collections: { media: publicFile, audio: publicFile },
   bucket,
   config,
 });

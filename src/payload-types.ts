@@ -69,6 +69,7 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    audio: Audio;
     'tour-dates': TourDate;
     'music-items': MusicItem;
     lyrics: Lyric;
@@ -82,6 +83,7 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    audio: AudioSelect<false> | AudioSelect<true>;
     'tour-dates': TourDatesSelect<false> | TourDatesSelect<true>;
     'music-items': MusicItemsSelect<false> | MusicItemsSelect<true>;
     lyrics: LyricsSelect<false> | LyricsSelect<true>;
@@ -180,6 +182,25 @@ export interface Media {
   focalY?: number | null;
 }
 /**
+ * Public sound files, such as the advent calendar's opening sound.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "audio".
+ */
+export interface Audio {
+  id: number;
+  _objectKey?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "tour-dates".
  */
@@ -236,10 +257,6 @@ export interface CalendarDoor {
   title: string;
   note?: string | null;
   /**
-   * Optional. Replaces this door's colour, for example #a54425.
-   */
-  color?: string | null;
-  /**
    * Optional picture shown behind the opened door.
    */
   image?: (number | null) | Media;
@@ -285,6 +302,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'audio';
+        value: number | Audio;
       } | null)
     | ({
         relationTo: 'tour-dates';
@@ -388,6 +409,22 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "audio_select".
+ */
+export interface AudioSelect<T extends boolean = true> {
+  _objectKey?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "tour-dates_select".
  */
 export interface TourDatesSelect<T extends boolean = true> {
@@ -436,7 +473,6 @@ export interface CalendarDoorsSelect<T extends boolean = true> {
   day?: T;
   title?: T;
   note?: T;
-  color?: T;
   image?: T;
   _objectKey?: T;
   updatedAt?: T;
@@ -559,7 +595,6 @@ export interface CalendarSetting {
     footer?: string | null;
     soundOn?: string | null;
     soundOff?: string | null;
-    download?: string | null;
     holding?: string | null;
   };
   colors?: {
@@ -580,6 +615,10 @@ export interface CalendarSetting {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Optional MP3 played when a door opens. Leave empty for Clark's default sound.
+   */
+  openingSound?: (number | null) | Audio;
   fonts: {
     /**
      * Title, door numbers and song titles.
@@ -672,7 +711,6 @@ export interface CalendarSettingsSelect<T extends boolean = true> {
         footer?: T;
         soundOn?: T;
         soundOff?: T;
-        download?: T;
         holding?: T;
       };
   colors?:
@@ -692,6 +730,7 @@ export interface CalendarSettingsSelect<T extends boolean = true> {
         locked?: T;
         id?: T;
       };
+  openingSound?: T;
   fonts?:
     | T
     | {

@@ -148,6 +148,15 @@ export const CalendarSettings: GlobalConfig = {
       ],
     },
     {
+      name: "openingSound",
+      type: "upload",
+      relationTo: "audio",
+      admin: {
+        description:
+          "Optional MP3 played when a door opens. Leave empty for Clark's default sound.",
+      },
+    },
+    {
       name: "fonts",
       type: "group",
       fields: [

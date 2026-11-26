@@ -10,18 +10,20 @@ import { accentFontOptions } from "@/lib/calendar/fontOptions";
 import {
   accentFamilies,
   bodyFamilies,
+  logoFamilies,
   titleFamilies,
 } from "@/lib/calendar/fonts";
 import { isMember } from "@/lib/calendar/member";
+import { defaultOpeningSoundUrl } from "@/lib/calendar/settings";
 import {
   defaultDoorRows,
   doorRowsCss,
   sandColor,
   themeVariables,
 } from "@/lib/calendar/theme";
-import { calendarMarkup, holdingMarkup } from "./markup";
+import { Masthead } from "./Masthead";
+import { calendarMarkup, holdingMarkup, portraitMarkup } from "./markup";
 import { getMessages } from "./messages";
-import { openingSoundUrl } from "./openingSound";
 import { calendarScript } from "./script";
 import { calendarCss } from "./styles";
 
@@ -59,6 +61,7 @@ async function Calendar({ locale }: PageProps) {
     ])
   ) as Record<TextName, string>;
   const other = locale === "fr" ? "en" : "fr";
+  const home = `/?isFrench=${locale === "fr"}`;
   const messages = getMessages(locale, texts);
 
   const accent = settings.fonts.accent;
@@ -67,6 +70,9 @@ async function Calendar({ locale }: PageProps) {
     `--font-title:${pick(titleFamilies, settings.fonts.title, titleFamilies.georgia)}`,
     `--font-accent:${pick(accentFamilies, accent, accentFamilies.georgia)}`,
     `--font-body:${pick(bodyFamilies, settings.fonts.body, bodyFamilies.system)}`,
+    `--font-logo-script:${logoFamilies.script}`,
+    `--font-logo-caps:${logoFamilies.caps}`,
+    `--next-font-blanch:${logoFamilies.caps}`,
   ].join(";");
   const css = calendarCss({
     vars: `${themeVariables(settings.colors)};${fonts}`,
@@ -80,7 +86,9 @@ async function Calendar({ locale }: PageProps) {
   const script = [
     `const M=${scriptJson(messages)},LANG=${scriptJson(locale)},YEAR=${settings.year};`,
     "const fill=(text,values)=>text.replace(/\\{(\\w+)\\}/g,(_,key)=>values[key]);",
-    calendarScript.replace("__OPENING_SOUND__", () => scriptJson(openingSoundUrl)),
+    calendarScript
+      .replace("__OPENING_SOUND__", () => scriptJson(settings.openingSoundUrl))
+      .replace("__FALLBACK_SOUND__", () => scriptJson(defaultOpeningSoundUrl)),
   ].join("\n");
 
   const title = `${messages.title} ${messages.accentLine}`;
@@ -107,15 +115,23 @@ async function Calendar({ locale }: PageProps) {
       ) : null}
       {holding ? <meta name="robots" content="noindex" /> : null}
       <style dangerouslySetInnerHTML={{ __html: css }} />
-      <div
-        id="calendar-root"
-        data-preview={String(member)}
-        data-start-preview={String(member && !open)}
-        suppressHydrationWarning
-        dangerouslySetInnerHTML={{
-          __html: holding ? holdingMarkup(messages, paths[other]) : calendarMarkup(messages, paths[other]),
-        }}
-      />
+      <main>
+        <Masthead
+          messages={messages}
+          isFrench={locale === "fr"}
+          homeHref={home}
+          switchHref={paths[other]}
+          withSound={!holding}
+        />
+        <div
+          id="calendar-root"
+          data-preview={String(member)}
+          data-start-preview={String(member && !open)}
+          suppressHydrationWarning
+          dangerouslySetInnerHTML={{ __html: holding ? holdingMarkup(messages) : calendarMarkup(messages) }}
+        />
+      </main>
+      {holding ? null : <div dangerouslySetInnerHTML={{ __html: portraitMarkup(messages) }} />}
       {holding ? null : <script dangerouslySetInnerHTML={{ __html: script }} />}
     </>
   );

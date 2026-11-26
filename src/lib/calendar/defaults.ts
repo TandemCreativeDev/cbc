@@ -32,7 +32,6 @@ export const textNames = [
   "footer",
   "soundOn",
   "soundOff",
-  "download",
   "holding",
 ] as const;
 
@@ -43,24 +42,22 @@ export const defaultTexts: Record<CalendarLocale, Record<TextName, string>> = {
     title: "Calendrier",
     accentLine: "de Clark's",
     intro:
-      "Un morceau inédit par jour, parfois super, parfois marrant, parfois très nul. C'est la surprise, bébé.",
+      "Une maquette de morceau inédite, tous les jours jusqu'au 24 décembre. Joyeux Noël !",
     dateRange: "1–24 décembre {year}",
     footer: "Clark’s Bowling Club · Décembre {year}",
     soundOn: "Son des cases activé",
     soundOff: "Son des cases désactivé",
-    download: "↓ Télécharger",
     holding: "Le calendrier de l’Avent revient bientôt.",
   },
   en: {
-    title: "Advent calendar",
+    title: "Calendar",
     accentLine: "by Clark's",
     intro:
-      "One unreleased track a day, sometimes great, sometimes funny, sometimes really bad. That's the surprise, baby.",
+      "An unreleased song demo every day until 24 December. Merry Christmas!",
     dateRange: "1–24 December {year}",
     footer: "Clark’s Bowling Club · December {year}",
     soundOn: "Door sound on",
     soundOff: "Door sound off",
-    download: "↓ Download",
     holding: "The advent calendar will be back soon.",
   },
 };

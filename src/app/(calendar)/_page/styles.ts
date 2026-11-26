@@ -11,17 +11,22 @@ export const calendarCss = ({ vars, background, doorRows, accentStyle }: CssInpu
 body{margin:0;background:${background}radial-gradient(ellipse at 94% 0%,var(--glow-soft),transparent 52%),var(--sand);color:var(--ink);font:16px/1.5 var(--font-body)}
 main{width:min(1120px,100% - 40px);margin:auto;padding:42px 0 48px}
 .masthead{display:flex;align-items:center;justify-content:space-between;gap:14px;border-bottom:2px solid var(--ink);padding-bottom:16px}
-.brand,.label,.month{letter-spacing:.16em;text-transform:uppercase;font-size:.69rem;font-weight:700}
-.brand{color:var(--ink);font-size:.78rem;letter-spacing:.14em}
+.label,.month{letter-spacing:.16em;text-transform:uppercase;font-size:.69rem;font-weight:700}
+.brand{display:flex;flex-direction:column;align-items:center;color:var(--ink);font-size:3.25rem;text-decoration:none}
+.brand-script{color:var(--color-clarks-orange);text-shadow:.03em .03em 0 var(--color-clarks-red);font:normal 1.35em/1 var(--font-logo-script)}
+.brand-caps{display:flex;align-items:center;gap:.06em;margin-top:-.44em;transform:translateX(.092em);font:normal 1em/1 var(--font-logo-caps)}
+.brand-caps img{width:.19em;height:.19em;display:block;transform:translateY(.06em);filter:drop-shadow(.02em .02em 0 var(--color-clarks-red))}
+.brand:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
 button{font:inherit;color:inherit;cursor:pointer}
-.language{margin-left:auto;font-size:.78rem;color:var(--ink)}
+.masthead-tools{display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.calendar-language .text-clarks-orange{color:var(--color-clarks-red)}
 .sound{border:1px solid var(--ink);border-radius:30px;background:var(--paper);padding:7px 14px;font-size:.78rem}
 .preview-tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:0 0 14px}
 .preview-tools[hidden]{display:none}
 .preview-tools button{border:1px solid var(--ink);background:var(--paper);border-radius:20px;padding:7px 12px;font-size:.83rem}
 .preview-tools button[aria-pressed=true]{background:var(--orange);color:var(--paper)}
 .preview-tools span{color:var(--quiet);font-size:.82rem}
-button:focus-visible,.case-download:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
+button:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
 .hero{position:relative;isolation:isolate;overflow:hidden;padding:44px 0 30px}
 .hero::after,.portrait-vinyl{border-radius:50%;background:radial-gradient(circle,var(--vinyl-core) 0 2%,var(--gold) 2.5% 17%,var(--ring) 17.5% 25%,transparent 25.5%),repeating-radial-gradient(circle,var(--groove-a) 0 4px,var(--groove-b) 5px 6px,var(--groove-a) 7px 11px);box-shadow:0 0 0 8px var(--rim-a),0 0 0 19px var(--rim-b)}
 .hero::after{content:"";position:absolute;z-index:-1;width:clamp(210px,42vw,520px);aspect-ratio:1;right:-2%;top:14px;transform:rotate(-12deg);opacity:.93}
@@ -29,6 +34,10 @@ button:focus-visible,.case-download:focus-visible{outline:2px solid var(--ink);o
 h1{font:bold clamp(3.25rem,8vw,7rem)/.87 var(--font-title);letter-spacing:-.075em;margin:0;max-width:68%;text-wrap:balance}
 h1 em{display:block;color:var(--orange);font-weight:normal;font-family:var(--font-accent);font-style:${accentStyle}}
 .intro{color:var(--quiet);margin:22px 0 0;max-width:min(52%,32rem)}
+.instagram-follow{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-top:20px;font-size:.9rem;font-weight:600}
+.instagram-button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:9px 16px;border:1px solid var(--ink);border-radius:24px;background:var(--orange);color:var(--paper);text-decoration:none}
+.instagram-button:hover{filter:brightness(1.12)}
+.instagram-button:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
 #status{color:var(--quiet);min-height:1.5em;margin:0 0 14px;font-size:.88rem}
 .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;align-items:start}
 .day{position:relative;isolation:isolate;border:1px solid var(--ink);border-radius:7px;background:var(--locked-color);overflow:hidden;perspective:950px;box-shadow:2px 3px 0 var(--card-shadow-soft)}
@@ -62,9 +71,6 @@ ${doorRows}
 .gift h2{padding-right:28px}
 .gift p{margin:8px 0 0;font-size:.85rem;white-space:pre-wrap;overflow-wrap:anywhere}
 .case-time{display:block;margin:8px 0 9px;font-size:.75rem;font-variant-numeric:tabular-nums;text-align:right}
-.case-download{display:inline-flex;align-self:flex-start;align-items:center;gap:5px;margin-top:auto;padding:6px 10px;border:1px solid currentColor;border-radius:20px;color:inherit;font-size:.75rem;font-weight:600;text-decoration:none}
-.case-download:hover{background:var(--shade-soft)}
-.case-download:focus-visible{outline-color:currentColor;outline-offset:2px}
 .case-audio{display:none}
 .portrait-dialog{position:fixed;inset:0;width:100%;height:100%;height:100dvh;max-width:none;max-height:none;margin:0;padding:0;border:0;background:var(--ink);color:var(--ink);overflow:hidden}
 .portrait-dialog::backdrop{background:var(--ink)}
@@ -86,7 +92,12 @@ html:has(.portrait-dialog[open]){overflow:hidden}
 @media(orientation:portrait){.portrait-stage{width:100%}}
 footer{border-top:2px solid var(--ink);margin-top:28px;padding-top:14px;color:var(--quiet);font-size:.75rem}
 @media(max-width:720px){.hero::after{right:-12%;opacity:.77}.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.door{padding:9px 12px}.gift{padding:10px}}
-@media(max-width:460px){main{width:calc(100% - 26px);padding-top:22px}.hero{padding:33px 0 24px}.hero::after{right:-34%;top:37px;opacity:.28}h1{max-width:100%}.intro{max-width:31ch}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.brand{max-width:18ch}}
+@media(max-width:460px){main{width:calc(100% - 26px);padding-top:22px}.hero{padding:33px 0 24px}.hero::after{right:-34%;top:37px;opacity:.28}h1{max-width:100%}.intro{max-width:31ch}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}}
+.snow-burst{position:fixed;inset:0;z-index:80;overflow:hidden;pointer-events:none}
+.snow-flake{position:absolute;width:12px;height:12px;color:#fff;filter:drop-shadow(0 1px 1px #351c1633);animation:snow-fall var(--snow-duration) ease-out both}
+.snow-flake svg{display:block;width:100%;height:100%}
+@keyframes snow-fall{0%{opacity:0;transform:translate(0,0) rotate(0deg) scale(.4)}16%{opacity:.95;transform:translate(var(--snow-lift-x),var(--snow-lift-y)) rotate(15deg) scale(1)}68%{opacity:.8}100%{opacity:0;transform:translate(var(--snow-drift),var(--snow-drop)) rotate(var(--snow-turn)) scale(.8)}}
+@media(prefers-reduced-motion:reduce){.snow-burst{display:none}}
 @media(prefers-reduced-motion:reduce){.door.revealing,.gift.revealing,.portrait-vinyl{animation:none}.case-progress{transition:none}}
 :is(h1,h1 em,.number,.gift h2,.portrait-label,.portrait-info h2){font-synthesis:none}
 .day.has-image .gift{background:linear-gradient(color-mix(in srgb,var(--door-color) 78%,transparent),color-mix(in srgb,var(--door-color) 78%,transparent)),var(--door-image) center/cover}
