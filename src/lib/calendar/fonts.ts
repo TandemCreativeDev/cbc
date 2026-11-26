@@ -178,6 +178,12 @@ export const titleFamilies: Record<TitleFont, string> = {
   "bebas-neue": stack("bebas-neue", "sans-serif"),
 };
 
+/** The logo's own fonts, the same two as the site header, whatever fonts the admin picks. */
+export const logoFamilies = {
+  script: stack("damion", "cursive"),
+  caps: stack("blanch-caps", "sans-serif"),
+};
+
 export const accentFamilies: Record<AccentFont, string> = {
   georgia: "Georgia,serif",
   fraunces: titleFamilies.fraunces,

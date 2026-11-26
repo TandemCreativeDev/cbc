@@ -81,8 +81,7 @@ function prepareOpeningSound(card){
   try{
     openingContext||=new (window.AudioContext||window.webkitAudioContext)();
     if(!openingBuffer){
-      const bytes=Uint8Array.from(atob(openingSoundUrl.split(',')[1]),char=>char.charCodeAt(0));
-      openingBuffer=openingContext.decodeAudioData(bytes.buffer).catch(()=>null);
+      openingBuffer=fetch(openingSoundUrl).then(response=>response.ok?response.arrayBuffer():Promise.reject()).then(bytes=>openingContext.decodeAudioData(bytes)).catch(()=>null);
     }
     const ready=Promise.all([openingBuffer,openingContext.resume()]).catch(()=>[]);
     const effect={card};
@@ -223,7 +222,7 @@ function bindCaseGestures(card){
   article.onpointerdown=event=>{
     if(!event.isPrimary||event.button!==0)return;
     card.ignoreClick=false;
-    if(gift.hidden||!card.audio||event.target.closest('.close-door,.case-download'))return;
+    if(gift.hidden||!card.audio||event.target.closest('.close-door'))return;
     const gesture={id:event.pointerId,x:event.clientX,startX:event.clientX,startY:event.clientY};
     card.gesture=gesture;
     gesture.timer=setTimeout(()=>beginPortrait(card,gesture),portraitHoldMs);
@@ -250,7 +249,7 @@ function bindCaseGestures(card){
     if(event.pointerType!=='mouse'&&(card.gesture||card.ignoreClick))event.preventDefault();
   };
   article.onclick=event=>{
-    if(event.target.closest('.close-door,.case-download')||(event.detail&&card.ignoreClick))return;
+    if(event.target.closest('.close-door')||(event.detail&&card.ignoreClick))return;
     if(gift.hidden){
       if(event.target.closest('.door')&&!door.disabled)openDoor(card,true);
     }else togglePlayback(card);
@@ -270,6 +269,33 @@ function bindCaseGestures(card){
     seekCase(card,targets[event.key]/duration);
   };
 }
+function releaseSnow(card){
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  const bursts=document.querySelectorAll('.snow-burst');
+  if(bursts.length>=5)bursts[0].remove();
+  const layer=document.createElement('div');
+  layer.className='snow-burst';
+  layer.setAttribute('aria-hidden','true');
+  const bounds=card.door.getBoundingClientRect();
+  for(let index=0;index<10;index++){
+    const flake=document.createElement('span');
+    flake.className='snow-flake';
+    flake.style.left=(bounds.left+bounds.width*(.2+Math.random()*.6))+'px';
+    flake.style.top=(bounds.top+bounds.height*.55)+'px';
+    const drift=(Math.random()-.5)*110;
+    flake.style.setProperty('--snow-lift-x',drift*.4+'px');
+    flake.style.setProperty('--snow-lift-y',-(18+Math.random()*28)+'px');
+    flake.style.setProperty('--snow-drift',drift+'px');
+    flake.style.setProperty('--snow-drop',(55+Math.random()*65)+'px');
+    flake.style.setProperty('--snow-turn',(Math.random()-.5)*150+'deg');
+    flake.style.setProperty('--snow-duration',(1.5+Math.random()*.65)+'s');
+    flake.style.width=flake.style.height=(8+Math.random()*6)+'px';
+    flake.innerHTML='<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M10 2v16M3.1 6l13.8 8M3.1 14l13.8-8M7 4l3 3 3-3M7 16l3-3 3 3"/></svg>';
+    layer.append(flake);
+  }
+  document.body.append(layer);
+  setTimeout(()=>layer.remove(),2300);
+}
 function openDoor(card,animate){
   const {door,gift,day}=card;
   gift.hidden=false;
@@ -278,6 +304,7 @@ function openDoor(card,animate){
   renderPlayer(card);
   if(animate){
     remember(day);
+    releaseSnow(card);
     door.classList.add('revealing');
     gift.classList.add('revealing');
     startOpeningPlayback(card);
@@ -317,17 +344,16 @@ for(let day=1;day<=days;day++){
 function updateDoor(card,entry,today){
   const {door,gift,content,day}=card;
   const previous=card.entry;
-  const changed=entry?.audio!==previous?.audio||entry?.title!==previous?.title||entry?.note!==previous?.note||entry?.color!==previous?.color||entry?.image!==previous?.image;
+  const changed=entry?.audio!==previous?.audio||entry?.title!==previous?.title||entry?.note!==previous?.note||entry?.image!==previous?.image;
   card.entry=entry;
   door.disabled=!entry;
   if(!entry){
-    if(previous){closeDoor(card);content.replaceChildren();card.audio=card.download=null}
+    if(previous){closeDoor(card);content.replaceChildren();card.audio=null}
     door.setAttribute('aria-label',fill(M.door,{day})+(day>today?M.upcoming:M.preparing));
     door.querySelector('.mark').textContent='·';
     return;
   }
   if(!changed)return;
-  if(entry.color)card.article.style.setProperty('--door-color',entry.color);else card.article.style.removeProperty('--door-color');
   if(entry.image)card.article.style.setProperty('--door-image','url('+JSON.stringify(entry.image)+')');else card.article.style.removeProperty('--door-image');
   card.article.classList.toggle('has-image',Boolean(entry.image));
   if(gift.hidden){
@@ -342,7 +368,6 @@ function updateDoor(card,entry,today){
     stopGesture(card);
     pauseCase(card);
     card.audio=null;
-    card.download=null;
     card.pendingSeek=null;
   }
   if(entry.audio&&!card.audio){
@@ -363,11 +388,6 @@ function updateDoor(card,entry,today){
     card.time=document.createElement('small');
     card.time.className='case-time';
     card.time.setAttribute('aria-hidden','true');
-    card.download=document.createElement('a');
-    card.download.className='case-download';
-    card.download.href=entry.audio+'&download=1';
-    card.download.download='';
-    card.download.textContent=M.download;
   }
   content.querySelector('h2')?.remove();
   content.querySelector('p')?.remove();
@@ -376,10 +396,8 @@ function updateDoor(card,entry,today){
   if(audioChanged){
     content.querySelector('.case-time')?.remove();
     content.querySelector('audio')?.remove();
-    content.querySelector('.case-download')?.remove();
-    if(card.audio)content.append(card.time,card.download,card.audio);
+    if(card.audio)content.append(card.time,card.audio);
   }
-  card.download?.setAttribute('aria-label',fill(M.downloadLabel,{title:entry.title}));
   renderPlayer(card);
   const remembered=preview?previewOpened:opened;
   if(!previous&&(remembered&(1<<(day-1))))openDoor(card,false);
