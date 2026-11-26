@@ -81,6 +81,8 @@ Payload generates the Postgres schema from the collection config in `src/collect
 
 There is no test framework. Every constraint, trigger and hand-written index is proven on the Neon `preview` branch with SQL (the `db` method in `docs/tickets/INSTRUCTIONS.md` §3), after `payload migrate` has applied it there: show that valid data passes and that the misuse it guards against fails. The `dev` branch cannot be used for this: it only ever receives dev-mode pushes, so migrations never run on it.
 
+Never run `pnpm dev` against `preview`. A dev server pushes the schema and leaves a `dev` row in `payload_migrations`, and every later `payload migrate` there, including the deploy preview build, then stops at Payload's dev-mode prompt and hangs. To look at a page against `preview`, use `pnpm build && pnpm start`. If the row is already there, delete it (`DELETE FROM payload_migrations WHERE name = 'dev'`) or reset `preview` to its parent.
+
 ## Register of departures
 
 Every denormalisation, banned field type used anyway, and hand-written database object, with its reason and the migration that holds it.
