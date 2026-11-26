@@ -18,7 +18,7 @@ main{width:min(1120px,100% - 40px);margin:auto;padding:42px 0 48px}
 .brand-caps img{width:.19em;height:.19em;display:block;transform:translateY(.06em);filter:drop-shadow(.02em .02em 0 var(--color-clarks-red))}
 .brand:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
 button{font:inherit;color:inherit;cursor:pointer}
-.masthead-tools{display:flex;flex-direction:column;align-items:center;gap:10px}
+.masthead-tools{display:flex;flex-direction:column;align-items:flex-end;gap:10px}
 .sound{border:1px solid var(--ink);border-radius:30px;background:var(--paper);padding:7px 14px;font-size:.78rem}
 .preview-tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:0 0 14px}
 .preview-tools[hidden]{display:none}
