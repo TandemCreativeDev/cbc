@@ -8,30 +8,31 @@ import { getCalendarDay } from "@/lib/calendar/schedule";
 
 const subscribe = () => () => {};
 
-const isCalendarSeason = () => {
+const getSeason = () => {
   const { today, ended } = getCalendarDay(new Date(), {
     year: defaultYear,
     opensAtHour: 0,
   });
-  return today > 0 && !ended;
+  if (today === 0) return "before";
+  return ended ? "after" : "during";
 };
 
 /** Shown from 1 to 24 December, Paris time, and earlier to signed-in members when the admin allows it. Checked in the browser so the home page stays static. */
 export default function CalendarButton() {
   const { isFrench } = useLanguage();
-  const inSeason = useSyncExternalStore(subscribe, isCalendarSeason, () => false);
+  const season = useSyncExternalStore(subscribe, getSeason, () => null);
 
   const [memberPreview, setMemberPreview] = useState(false);
 
   useEffect(() => {
-    if (inSeason) return;
+    if (season !== "before") return;
     fetch("/api/calendar/button", { cache: "no-store" })
       .then((response) => (response.ok ? response.json() : null))
       .then((body: { show: boolean } | null) => setMemberPreview(body?.show === true))
       .catch(() => {});
-  }, [inSeason]);
+  }, [season]);
 
-  if (!inSeason && !memberPreview) return null;
+  if (season !== "during" && !memberPreview) return null;
 
   return (
     <Link
