@@ -19,6 +19,7 @@ main{width:min(1120px,100% - 40px);margin:auto;padding:42px 0 48px}
 .brand:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
 button{font:inherit;color:inherit;cursor:pointer}
 .masthead-tools{display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.calendar-language .text-clarks-orange{color:var(--color-clarks-red)}
 .sound{border:1px solid var(--ink);border-radius:30px;background:var(--paper);padding:7px 14px;font-size:.78rem}
 .preview-tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:0 0 14px}
 .preview-tools[hidden]{display:none}
