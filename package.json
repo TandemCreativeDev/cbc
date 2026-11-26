@@ -9,8 +9,6 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "content:import": "NODE_ENV=production payload run src/scripts/importSheet.ts",
-    "content:compare": "NODE_ENV=production payload run src/scripts/compareSources.ts",
     "payload": "payload"
   },
   "dependencies": {
@@ -26,7 +24,6 @@
     "hls.js": "^1.7.4",
     "next": "16.4.6",
     "nodemailer": "^10.5.0",
-    "papaparse": "^5.7.0",
     "payload": "3.93.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
@@ -39,7 +36,6 @@
     "@tailwindcss/postcss": "^4.3.5",
     "@types/node": "^26.6.6",
     "@types/nodemailer": "^8.0.2",
-    "@types/papaparse": "^5.5.2",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@types/three": "^0.187.0",

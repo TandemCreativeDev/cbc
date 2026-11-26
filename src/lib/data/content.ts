@@ -1,22 +1,16 @@
 import { cacheLife, cacheTag } from "next/cache";
 import { fallbackCarousel } from "./carouselFallback";
 import * as payloadSource from "./payload";
-import * as sheetSource from "./sheet";
 
-export type { BilingualPage, CarouselPhoto } from "./sheet";
-
-// Production reads the sheet until DATABASE_URL is set there (switchover step 4).
-const source = process.env.DATABASE_URL ? payloadSource : sheetSource;
+export type { BilingualPage, CarouselPhoto } from "./payload";
 
 export async function getAboutPage() {
   "use cache";
   cacheLife("minutes");
   cacheTag("about");
-  const carousel = process.env.DATABASE_URL
-    ? await payloadSource.getCarousel()
-    : [];
+  const carousel = await payloadSource.getCarousel();
   return {
-    ...(await source.getAboutPage()),
+    ...(await payloadSource.getAboutPage()),
     carousel: carousel.length ? carousel : fallbackCarousel,
   };
 }
@@ -25,26 +19,26 @@ export async function getTourPage() {
   "use cache";
   cacheLife("minutes");
   cacheTag("tour");
-  return source.getTourPage();
+  return payloadSource.getTourPage();
 }
 
 export async function getTourDates() {
   "use cache";
   cacheLife("minutes");
   cacheTag("tour-dates");
-  return source.getTourDates();
+  return payloadSource.getTourDates();
 }
 
 export async function getMusicItems() {
   "use cache";
   cacheLife("minutes");
   cacheTag("music");
-  return source.getMusicItems();
+  return payloadSource.getMusicItems();
 }
 
 export async function getLyrics() {
   "use cache";
   cacheLife("minutes");
   cacheTag("lyrics");
-  return source.getLyrics();
+  return payloadSource.getLyrics();
 }
