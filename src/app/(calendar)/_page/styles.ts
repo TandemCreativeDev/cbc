@@ -12,10 +12,10 @@ body{margin:0;background:${background}radial-gradient(ellipse at 94% 0%,var(--gl
 main{width:min(1120px,100% - 40px);margin:auto;padding:42px 0 48px}
 .masthead{display:flex;align-items:center;justify-content:space-between;gap:14px;border-bottom:2px solid var(--ink);padding-bottom:16px}
 .label,.month{letter-spacing:.16em;text-transform:uppercase;font-size:.69rem;font-weight:700}
-.brand{--clarks-orange:#febc12;--clarks-red:#c14627;display:flex;flex-direction:column;align-items:center;color:var(--ink);font-size:3.25rem;text-decoration:none}
-.brand-script{color:var(--clarks-orange);text-shadow:.03em .03em 0 var(--clarks-red);font:normal 1.35em/1 var(--font-logo-script)}
-.brand-caps{display:flex;align-items:center;gap:.06em;margin-top:-.44em;font:normal 1em/1 var(--font-logo-caps)}
-.brand-caps img{width:.19em;height:.19em;display:block;transform:translateY(.06em);filter:drop-shadow(.02em .02em 0 var(--clarks-red))}
+.brand{display:flex;flex-direction:column;align-items:center;color:var(--ink);font-size:3.25rem;text-decoration:none}
+.brand-script{color:var(--color-clarks-orange);text-shadow:.03em .03em 0 var(--color-clarks-red);font:normal 1.35em/1 var(--font-logo-script)}
+.brand-caps{display:flex;align-items:center;gap:.06em;margin-top:-.44em;transform:translateX(.092em);font:normal 1em/1 var(--font-logo-caps)}
+.brand-caps img{width:.19em;height:.19em;display:block;transform:translateY(.06em);filter:drop-shadow(.02em .02em 0 var(--color-clarks-red))}
 .brand:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
 button{font:inherit;color:inherit;cursor:pointer}
 .masthead-tools{display:flex;flex-direction:column;align-items:center;gap:10px}
