@@ -14,6 +14,7 @@ import {
   titleFamilies,
 } from "@/lib/calendar/fonts";
 import { isMember } from "@/lib/calendar/member";
+import { defaultOpeningSoundUrl } from "@/lib/calendar/settings";
 import {
   defaultDoorRows,
   doorRowsCss,
@@ -85,7 +86,9 @@ async function Calendar({ locale }: PageProps) {
   const script = [
     `const M=${scriptJson(messages)},LANG=${scriptJson(locale)},YEAR=${settings.year};`,
     "const fill=(text,values)=>text.replace(/\\{(\\w+)\\}/g,(_,key)=>values[key]);",
-    calendarScript.replace("__OPENING_SOUND__", () => scriptJson(settings.openingSoundUrl)),
+    calendarScript
+      .replace("__OPENING_SOUND__", () => scriptJson(settings.openingSoundUrl))
+      .replace("__FALLBACK_SOUND__", () => scriptJson(defaultOpeningSoundUrl)),
   ].join("\n");
 
   const title = `${messages.title} ${messages.accentLine}`;

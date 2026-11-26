@@ -69,7 +69,8 @@ sound.onclick=()=>{
   sound.setAttribute('aria-pressed',String(soundOn));
   sound.textContent=soundOn?M.soundOn:M.soundOff;
 };
-const openingSoundUrl=__OPENING_SOUND__;
+const openingSoundUrl=__OPENING_SOUND__,fallbackSoundUrl=__FALLBACK_SOUND__;
+const fetchSound=url=>fetch(url).then(response=>response.ok?response.arrayBuffer():Promise.reject());
 let openingContext,openingBuffer,openingEffect;
 function stopOpeningSound(){
   const effect=openingEffect;
@@ -81,7 +82,7 @@ function prepareOpeningSound(card){
   try{
     openingContext||=new (window.AudioContext||window.webkitAudioContext)();
     if(!openingBuffer){
-      openingBuffer=fetch(openingSoundUrl).then(response=>response.ok?response.arrayBuffer():Promise.reject()).then(bytes=>openingContext.decodeAudioData(bytes)).catch(()=>null);
+      openingBuffer=fetchSound(openingSoundUrl).catch(()=>fetchSound(fallbackSoundUrl)).then(bytes=>openingContext.decodeAudioData(bytes)).catch(()=>null);
     }
     const ready=Promise.all([openingBuffer,openingContext.resume()]).catch(()=>[]);
     const effect={card};
