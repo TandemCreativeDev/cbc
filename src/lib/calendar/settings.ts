@@ -20,6 +20,7 @@ import { defaultFonts } from "./fontOptions";
 
 export interface CalendarSettings {
   visible: boolean;
+  previewButton: boolean;
   year: number;
   opensAtHour: number;
   afterEnd: "open" | "holding";
@@ -88,6 +89,7 @@ export async function getCalendarSettings(): Promise<CalendarSettings> {
 
   return {
     visible: en.behaviour?.visible ?? true,
+    previewButton: en.behaviour?.previewButton ?? false,
     year: en.behaviour?.year ?? defaultYear,
     opensAtHour: en.behaviour?.opensAtHour ?? defaultHour,
     afterEnd: en.behaviour?.afterEnd ?? "open",

@@ -1,27 +1,38 @@
 "use client";
 
 import Link from "next/link";
-import { useSyncExternalStore } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import { defaultYear } from "@/lib/calendar/defaults";
 import { getCalendarDay } from "@/lib/calendar/schedule";
 
 const subscribe = () => () => {};
 
-const isCalendarSeason = () => {
+const getSeason = () => {
   const { today, ended } = getCalendarDay(new Date(), {
     year: defaultYear,
     opensAtHour: 0,
   });
-  return today > 0 && !ended;
+  if (today === 0) return "before";
+  return ended ? "after" : "during";
 };
 
-/** Shown from 1 to 24 December, Paris time. Checked in the browser so the home page stays static. */
+/** Shown from 1 to 24 December, Paris time, and earlier to signed-in members when the admin allows it. Checked in the browser so the home page stays static. */
 export default function CalendarButton() {
   const { isFrench } = useLanguage();
-  const inSeason = useSyncExternalStore(subscribe, isCalendarSeason, () => false);
+  const season = useSyncExternalStore(subscribe, getSeason, () => null);
 
-  if (!inSeason) return null;
+  const [memberPreview, setMemberPreview] = useState(false);
+
+  useEffect(() => {
+    if (season !== "before") return;
+    fetch("/api/calendar/button", { cache: "no-store" })
+      .then((response) => (response.ok ? response.json() : null))
+      .then((body: { show: boolean } | null) => setMemberPreview(body?.show === true))
+      .catch(() => {});
+  }, [season]);
+
+  if (season !== "during" && !memberPreview) return null;
 
   return (
     <Link

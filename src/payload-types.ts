@@ -568,6 +568,10 @@ export interface CalendarSetting {
      * The calendar opens to visitors by itself on 1 December. Untick to take it down (visitors get a holding page); tick again to bring it back. Signed-in members always see the preview.
      */
     visible?: boolean | null;
+    /**
+     * Show the home page calendar button before 1 December to people signed in to this admin. Visitors see nothing different until 1 December.
+     */
+    previewButton?: boolean | null;
     year: number;
     /**
      * Hour (0 to 23, Paris time) when each day's door opens.
@@ -697,6 +701,7 @@ export interface CalendarSettingsSelect<T extends boolean = true> {
     | T
     | {
         visible?: T;
+        previewButton?: T;
         year?: T;
         opensAtHour?: T;
         afterEnd?: T;
