@@ -9,7 +9,7 @@ export const calendarCss = ({ vars, background, doorRows, accentStyle }: CssInpu
 *{box-sizing:border-box}
 :root{color-scheme:light;${vars}}
 body{margin:0;background:${background}radial-gradient(ellipse at 94% 0%,var(--glow-soft),transparent 52%),var(--sand);color:var(--ink);font:16px/1.5 var(--font-body)}
-main{width:min(1120px,100% - 40px);margin:auto;padding:42px 0 48px;container-type:inline-size}
+main{width:min(1120px,100% - 40px);margin:auto;padding:42px 0 48px}
 .masthead{display:flex;align-items:center;justify-content:space-between;gap:14px;border-bottom:2px solid var(--ink);padding-bottom:16px}
 .label,.month{letter-spacing:.16em;text-transform:uppercase;font-size:.69rem;font-weight:700}
 .brand{--clarks-orange:#febc12;--clarks-red:#c14627;display:flex;flex-direction:column;align-items:center;color:var(--ink);font-size:3.25rem;text-decoration:none}
@@ -30,7 +30,7 @@ button:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
 .hero::after,.portrait-vinyl{border-radius:50%;background:radial-gradient(circle,var(--vinyl-core) 0 2%,var(--gold) 2.5% 17%,var(--ring) 17.5% 25%,transparent 25.5%),repeating-radial-gradient(circle,var(--groove-a) 0 4px,var(--groove-b) 5px 6px,var(--groove-a) 7px 11px);box-shadow:0 0 0 8px var(--rim-a),0 0 0 19px var(--rim-b)}
 .hero::after{content:"";position:absolute;z-index:-1;width:clamp(210px,42vw,520px);aspect-ratio:1;right:-2%;top:14px;transform:rotate(-12deg);opacity:.93}
 .label{display:inline-block;margin:0 0 14px;padding:4px 11px;border:1px solid var(--orange);border-radius:20px;color:var(--orange);background:var(--sand)}
-h1{font:bold min(clamp(3.25rem,8vw,7rem),100cqi / (var(--title-chars) * .5))/.87 var(--font-title);letter-spacing:-.075em;margin:0;text-wrap:balance}
+h1{font:bold clamp(3.25rem,8vw,7rem)/.87 var(--font-title);letter-spacing:-.075em;margin:0;max-width:68%;text-wrap:balance}
 h1 em{display:block;color:var(--orange);font-weight:normal;font-family:var(--font-accent);font-style:${accentStyle}}
 .intro{color:var(--quiet);margin:22px 0 0;max-width:min(52%,32rem)}
 .instagram-follow{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-top:20px;font-size:.9rem;font-weight:600}
@@ -91,7 +91,7 @@ html:has(.portrait-dialog[open]){overflow:hidden}
 @media(orientation:portrait){.portrait-stage{width:100%}}
 footer{border-top:2px solid var(--ink);margin-top:28px;padding-top:14px;color:var(--quiet);font-size:.75rem}
 @media(max-width:720px){.hero::after{right:-12%;opacity:.77}.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.door{padding:9px 12px}.gift{padding:10px}}
-@media(max-width:460px){main{width:calc(100% - 26px);padding-top:22px}.hero{padding:33px 0 24px}.hero::after{right:-34%;top:37px;opacity:.28}.intro{max-width:31ch}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}}
+@media(max-width:460px){main{width:calc(100% - 26px);padding-top:22px}.hero{padding:33px 0 24px}.hero::after{right:-34%;top:37px;opacity:.28}h1{max-width:100%}.intro{max-width:31ch}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}}
 .snow-burst{position:fixed;inset:0;z-index:80;overflow:hidden;pointer-events:none}
 .snow-flake{position:absolute;width:12px;height:12px;color:#fff;filter:drop-shadow(0 1px 1px #351c1633);animation:snow-fall var(--snow-duration) ease-out both}
 .snow-flake svg{display:block;width:100%;height:100%}

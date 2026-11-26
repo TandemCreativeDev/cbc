@@ -50,7 +50,7 @@ export const defaultTexts: Record<CalendarLocale, Record<TextName, string>> = {
     holding: "Le calendrier de l’Avent revient bientôt.",
   },
   en: {
-    title: "Advent calendar",
+    title: "Calendar",
     accentLine: "by Clark's",
     intro:
       "An unreleased song demo every day until 24 December. Merry Christmas!",

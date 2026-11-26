@@ -72,7 +72,7 @@ async function Calendar({ locale }: PageProps) {
     `--font-logo-caps:${logoFamilies.caps}`,
   ].join(";");
   const css = calendarCss({
-    vars: `${themeVariables(settings.colors)};${fonts};--title-chars:${[...messages.title].length}`,
+    vars: `${themeVariables(settings.colors)};${fonts}`,
     background: settings.backgroundUrl
       ? `url("${encodeURI(settings.backgroundUrl)}") center/cover fixed no-repeat,`
       : "",
