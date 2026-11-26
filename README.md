@@ -113,6 +113,13 @@ Create a `.env.local` file in the root directory:
 DATABASE_URL=postgres://user:password@host/db
 PAYLOAD_SECRET=a_long_random_string
 
+# Media storage (S3-compatible, Neon object storage)
+S3_ENDPOINT=https://storage.example.com
+S3_REGION=eu-central-1
+S3_BUCKET=media
+S3_ACCESS_KEY_ID=your_access_key_id
+S3_SECRET_ACCESS_KEY=your_secret_access_key
+
 # Site Configuration
 NEXT_PUBLIC_SITE_URL=https://clarksbowlingclub.com
 
