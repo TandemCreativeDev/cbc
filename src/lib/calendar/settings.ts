@@ -1,7 +1,7 @@
 import { cacheLife, cacheTag } from "next/cache";
 import { getPayload } from "payload";
 import config from "../../payload.config";
-import type { Media } from "../../payload-types";
+import type { Audio, Media } from "../../payload-types";
 import { isHexColor } from "./color";
 import {
   colorNames,
@@ -27,12 +27,21 @@ export interface CalendarSettings {
   colors: Record<ColorName, string>;
   doorColors: DoorColors[] | null;
   fonts: { title: string; accent: string; body: string };
+  openingSoundUrl: string;
   backgroundUrl: string | null;
   shareUrl: string | null;
 }
 
 const mediaUrl = (media: number | Media | null | undefined) =>
   typeof media === "object" && media?.url ? media.url : null;
+
+export const defaultOpeningSoundUrl = "/audio/calendar-opening.mp3";
+
+/** The page fetches the chosen sound through the site, so storage needs no CORS rule. */
+const openingSoundUrl = (sound: number | Audio | null | undefined) =>
+  typeof sound === "object" && sound?.url
+    ? `/api/calendar/opening-sound?v=${new Date(sound.updatedAt).getTime()}`
+    : defaultOpeningSoundUrl;
 
 /** Admin changes expire the `calendar-settings` tag; the lifetime is the fallback and stays under a minute. */
 export async function getCalendarSettings(): Promise<CalendarSettings> {
@@ -92,6 +101,7 @@ export async function getCalendarSettings(): Promise<CalendarSettings> {
       accent: en.fonts?.accent ?? defaultFonts.accent,
       body: en.fonts?.body ?? defaultFonts.body,
     },
+    openingSoundUrl: openingSoundUrl(en.openingSound),
     backgroundUrl: mediaUrl(en.images?.background),
     shareUrl: mediaUrl(en.images?.share),
   };

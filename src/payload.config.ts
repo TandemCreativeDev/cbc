@@ -3,6 +3,7 @@ import { fileURLToPath } from "url";
 import { postgresAdapter } from "@payloadcms/db-postgres";
 import { buildConfig } from "payload";
 import sharp from "sharp";
+import { Audio } from "./collections/Audio";
 import { CalendarDoors } from "./collections/CalendarDoors";
 import { Lyrics } from "./collections/Lyrics";
 import { Media } from "./collections/Media";
@@ -35,7 +36,15 @@ export default buildConfig({
       baseDir: dirname,
     },
   },
-  collections: [Users, Media, TourDates, MusicItems, Lyrics, CalendarDoors],
+  collections: [
+    Users,
+    Media,
+    Audio,
+    TourDates,
+    MusicItems,
+    Lyrics,
+    CalendarDoors,
+  ],
   globals: [AboutPage, TourPage, CalendarSettings],
   localization: {
     locales: ["en", "fr"],
