@@ -18,4 +18,5 @@ jobs:
       - run: pnpm typecheck
       - run: pnpm build
         env:
-          SHEET_CSV_URL: ${{ vars.SHEET_CSV_URL }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          PAYLOAD_SECRET: ${{ secrets.PAYLOAD_SECRET }}

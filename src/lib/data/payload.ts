@@ -1,7 +1,21 @@
 import { getPayload } from "payload";
 import config from "../../payload.config";
-import type { IFrameProps, LyricsProps, TourDateType } from "../../utils/types";
-import type { BilingualPage, CarouselPhoto } from "./sheet";
+import type {
+  IFrameProps,
+  LyricsProps,
+  Page,
+  TourDateType,
+} from "../../utils/types";
+
+export interface BilingualPage {
+  french: Page;
+  english: Page;
+}
+
+export interface CarouselPhoto {
+  src: string;
+  alt: { english: string; french: string };
+}
 
 const locales = ["en", "fr"] as const;
 const read = { depth: 0, fallbackLocale: "en", limit: 0, pagination: false } as const;
