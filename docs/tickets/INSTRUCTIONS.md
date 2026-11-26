@@ -75,14 +75,13 @@ One checkout, one ticket in flight at a time, except under `/orchestrate-tickets
 | Dev server | `pnpm dev --port <4000 + issue number>`, e.g. ticket 27 uses 4027. Run it in the background and stop it when you're done |
 | The user's own server | Port 3000 belongs to the user. Never use it, never stop it |
 | Env file | `.env.local` in the repo root. Read variable names only. Once Payload lands (#33), its `DATABASE_URL` must point at the Neon `dev` branch, because `pnpm dev` will push the Payload schema to it |
-| Content | Payload when `DATABASE_URL` is set (`src/lib/data/payload.ts`), otherwise the published Google Sheet (`src/lib/data/sheet.ts`). Production reads the sheet until the switchover in #33. Local storage variables are `S3_ENDPOINT`, `S3_REGION`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY` and `S3_BUCKET`; `neon checkout` writes Neon's `AWS_*` names, so copy them across. `pnpm content:import` and `pnpm content:compare` run against whatever `DATABASE_URL` points at |
+| Content | Payload (`src/lib/data/payload.ts`), which needs `DATABASE_URL`. Local storage variables are `S3_ENDPOINT`, `S3_REGION`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY` and `S3_BUCKET`; `neon checkout` writes Neon's `AWS_*` names, so copy them across. |
 | Artefacts | Screenshots, logs and scratch scripts go in `.git/ticket/<issue number>/artefacts/`, never in the working tree |
 
 Rules:
 
 - Stop only your own dev server, by port: `lsof -tiTCP:<port> -sTCP:LISTEN | xargs kill`. Never `pkill`.
 - Never print `.env.local` or any secret, and never commit one.
-- The Google Sheet throttles: a burst of requests made it stop answering for about 15 minutes on 11 November 2026, and pages sat on "Loading...". Load pages that read it as few times as you need, and don't script loops against it.
 - The contact form sends real email through the band's mailbox. Never submit it against production. To test it locally, start the dev server with `EMAIL_HOST`, `EMAIL_PORT` and `EMAIL_SECURE` overridden in the shell to point at a local SMTP catcher (for example `maildev`), and read the message there.
 - Parallel sessions share the Playwright browser tab; prefer an isolated headless script.
 
@@ -130,7 +129,7 @@ The Netlify, Neon and GitHub tools are installed and signed in. Use them to find
 | Deploy previews | One per PR, at `https://deploy-preview-<PR number>--clarksbowlingclub.netlify.app`. `gh pr checks <branch>` shows when it is ready |
 | Build | `@netlify/plugin-nextjs`; settings are in the Netlify UI until `netlify.toml` lands (#26) |
 | Free plan limits | 100 GB bandwidth, 300 build minutes and 125,000 function calls a month. Each push to a PR costs a build, so push as few times as you can |
-| Environment variables | All contexts: `EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_SECURE`, `EMAIL_USER`, `EMAIL_PASSWORD` (secret), `SHEET_CSV_URL` (server-only; it replaced `NEXT_PUBLIC_CSV_URL` in #27). Deploy previews only, until the migration: `DATABASE_URL`, `PAYLOAD_SECRET`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY` (secrets), `S3_ENDPOINT`, `S3_REGION`, `S3_BUCKET`. Netlify reserves the `AWS_*` names, so Neon's storage credentials are stored as `S3_*` |
+| Environment variables | All contexts: `EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_SECURE`, `EMAIL_USER`, `EMAIL_PASSWORD` (secret). Also `DATABASE_URL`, `PAYLOAD_SECRET`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY` (secrets), `S3_ENDPOINT`, `S3_REGION`, `S3_BUCKET`. Netlify reserves the `AWS_*` names, so Neon's storage credentials are stored as `S3_*` |
 | Database | Neon project `cbc` (`damp-truth-56586096`), Frankfurt, free plan, in the Tandem Neon account: run Neon commands with `NEON_PROFILE=tandem`. Branches: `main` (production, empty until the migration), `preview` (shared by every deploy preview), `dev` (local). Bucket `media` on each branch. Spiked in #32; migration in #33 |
 
 Reads are always fine: deploy logs (`netlify api getDeploy`, `listSiteDeploys`), variable names, DNS lookups. Anything that changes a hosted service needs the user's approval first; agents ask the `/tickets` driver, and the driver asks the user. The one standing exception is the Neon `dev` and `preview` branches: a ticket may push schema to `dev`, run `payload migrate` on `preview` and create test content on either. Both are disposable: a ticket or driver may reset them to their parent (`neon branches reset <branch> --parent`) whenever work needs it. Deleting a branch still needs approval, and `main` is never written.

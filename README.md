@@ -7,7 +7,7 @@
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![Three.js](https://img.shields.io/badge/Three.js-0.187-black?style=flat-square&logo=three.js&logoColor=white)](https://threejs.org/)
 
-A dynamic Next.js website for the 6-piece funk/pop band Clark's Bowling Club, featuring bilingual content, interactive 3D elements, and content management via Google Sheets.
+A dynamic Next.js website for the 6-piece funk/pop band Clark's Bowling Club, featuring bilingual content, interactive 3D elements, and content managed in Payload CMS.
 
 ## Table of Contents
 
@@ -33,7 +33,7 @@ A dynamic Next.js website for the 6-piece funk/pop band Clark's Bowling Club, fe
 🎤 **Lyrics Display**: Searchable lyrics organised by album  
 🔍 **SEO Optimised**: Automatic sitemap generation, robots.txt, and LLMs.txt  
 ♿ **Accessibility**: ARIA labels, keyboard navigation, reduced motion support  
-📊 **Dynamic Content**: Pages populated from Google Sheets CMS
+📊 **Dynamic Content**: Pages populated from the Payload CMS
 
 ## Tech Stack
 
@@ -41,7 +41,7 @@ A dynamic Next.js website for the 6-piece funk/pop band Clark's Bowling Club, fe
 - **Styling**: [Tailwind CSS](https://tailwindcss.com/) with custom fonts
 - **3D Graphics**: [Three.js](https://threejs.org/) for interactive elements
 - **Email**: [Nodemailer](https://nodemailer.com/) for contact forms
-- **Data**: Google Sheets as CMS via CSV exports
+- **Data**: [Payload CMS](https://payloadcms.com/) on Neon Postgres
 - **Icons**: [React Icons](https://react-icons.github.io/react-icons/) (Font Awesome 6)
 - **State**: React Context for language switching
 - **Deployment**: [Netlify](https://www.netlify.com/)
@@ -109,8 +109,9 @@ src/
 Create a `.env.local` file in the root directory:
 
 ```bash
-# Google Sheets Configuration
-SHEET_CSV_URL=https://docs.google.com/spreadsheets/d/[SHEET_ID]/export?format=csv
+# Payload Configuration
+DATABASE_URL=postgres://user:password@host/db
+PAYLOAD_SECRET=a_long_random_string
 
 # Site Configuration
 NEXT_PUBLIC_SITE_URL=https://clarksbowlingclub.com
@@ -125,23 +126,7 @@ EMAIL_PASSWORD=your_app_password
 
 ## Content Management
 
-Content is managed via Google Sheets with specific tab GIDs:
-
-- **About Page**: GID 0 (title, content)
-- **Music**: GID 1713768433 (embedded media, categories)
-- **Lyrics**: GID 145198726 (songs, albums, lyrics)
-- **Tour Page**: GID 127405583 (page content)
-- **Tour Dates**: GID 572869052 (events, venues, tickets)
-
-### Sheet Format
-
-Pages use this structure:
-
-```csv
-key,english,french
-title,About,Bio
-content,"Band description...","Description du groupe..."
-```
+Content is edited in the Payload admin at `/admin`. See `docs/admin-guide.md`.
 
 ## Key Components
 
