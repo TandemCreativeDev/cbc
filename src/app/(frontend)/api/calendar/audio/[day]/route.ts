@@ -56,11 +56,5 @@ export async function GET(
   const headers = new Headers(file.headers);
   headers.set("Cache-Control", privateHeaders["Cache-Control"]);
   headers.set("Accept-Ranges", "bytes");
-  if (request.nextUrl.searchParams.has("download")) {
-    headers.set(
-      "Content-Disposition",
-      `attachment; filename="${String(day).padStart(2, "0")}.mp3"`
-    );
-  }
   return new Response(file.body, { status: file.status, headers });
 }

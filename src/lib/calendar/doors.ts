@@ -9,7 +9,6 @@ export interface DoorEntry {
   title: string;
   note: string;
   audio: string;
-  color?: string;
   image?: string;
 }
 
@@ -45,7 +44,6 @@ export async function findDoors(
       title: door.title || fallback?.title || "",
       note: door.note || fallback?.note || "",
       audio: `/api/calendar/audio/${door.day}?v=${new Date(door.updatedAt).getTime()}`,
-      ...(door.color ? { color: door.color } : {}),
       ...(image ? { image } : {}),
     };
   });
