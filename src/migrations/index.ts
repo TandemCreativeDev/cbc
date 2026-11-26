@@ -5,6 +5,7 @@ import * as migration_20261113_001547_carousel from './20261113_001547_carousel'
 import * as migration_20261113_225308_visible_on_by_default from './20261113_225308_visible_on_by_default';
 import * as migration_20261126_190804_calendar_remove_download_and_color from './20261126_190804_calendar_remove_download_and_color';
 import * as migration_20261126_190808_audio_and_opening_sound from './20261126_190808_audio_and_opening_sound';
+import * as migration_20261126_193319_calendar_preview_button from './20261126_193319_calendar_preview_button';
 
 export const migrations = [
   {
@@ -40,6 +41,11 @@ export const migrations = [
   {
     up: migration_20261126_190808_audio_and_opening_sound.up,
     down: migration_20261126_190808_audio_and_opening_sound.down,
-    name: '20261126_190808_audio_and_opening_sound'
+    name: '20261126_190808_audio_and_opening_sound',
+  },
+  {
+    up: migration_20261126_193319_calendar_preview_button.up,
+    down: migration_20261126_193319_calendar_preview_button.down,
+    name: '20261126_193319_calendar_preview_button'
   },
 ];

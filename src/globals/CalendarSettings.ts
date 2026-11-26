@@ -87,6 +87,15 @@ export const CalendarSettings: GlobalConfig = {
           },
         },
         {
+          name: "previewButton",
+          type: "checkbox",
+          defaultValue: false,
+          admin: {
+            description:
+              "Show the home page calendar button before 1 December to people signed in to this admin. Visitors see nothing different until 1 December.",
+          },
+        },
+        {
           name: "year",
           type: "number",
           required: true,
