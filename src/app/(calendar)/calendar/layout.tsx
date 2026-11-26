@@ -1,3 +1,5 @@
+import "../../(frontend)/globals.css";
+
 export default function CalendarLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {

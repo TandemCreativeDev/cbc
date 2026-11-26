@@ -20,7 +20,8 @@ import {
   sandColor,
   themeVariables,
 } from "@/lib/calendar/theme";
-import { calendarMarkup, holdingMarkup } from "./markup";
+import { Masthead } from "./Masthead";
+import { calendarMarkup, holdingMarkup, portraitMarkup } from "./markup";
 import { getMessages } from "./messages";
 import { calendarScript } from "./script";
 import { calendarCss } from "./styles";
@@ -70,6 +71,7 @@ async function Calendar({ locale }: PageProps) {
     `--font-body:${pick(bodyFamilies, settings.fonts.body, bodyFamilies.system)}`,
     `--font-logo-script:${logoFamilies.script}`,
     `--font-logo-caps:${logoFamilies.caps}`,
+    `--next-font-blanch:${logoFamilies.caps}`,
   ].join(";");
   const css = calendarCss({
     vars: `${themeVariables(settings.colors)};${fonts}`,
@@ -110,15 +112,23 @@ async function Calendar({ locale }: PageProps) {
       ) : null}
       {holding ? <meta name="robots" content="noindex" /> : null}
       <style dangerouslySetInnerHTML={{ __html: css }} />
-      <div
-        id="calendar-root"
-        data-preview={String(member)}
-        data-start-preview={String(member && !open)}
-        suppressHydrationWarning
-        dangerouslySetInnerHTML={{
-          __html: holding ? holdingMarkup(messages, paths[other], home) : calendarMarkup(messages, paths[other], home),
-        }}
-      />
+      <main>
+        <Masthead
+          messages={messages}
+          isFrench={locale === "fr"}
+          homeHref={home}
+          switchHref={paths[other]}
+          withSound={!holding}
+        />
+        <div
+          id="calendar-root"
+          data-preview={String(member)}
+          data-start-preview={String(member && !open)}
+          suppressHydrationWarning
+          dangerouslySetInnerHTML={{ __html: holding ? holdingMarkup(messages) : calendarMarkup(messages) }}
+        />
+      </main>
+      {holding ? null : <div dangerouslySetInnerHTML={{ __html: portraitMarkup(messages) }} />}
       {holding ? null : <script dangerouslySetInnerHTML={{ __html: script }} />}
     </>
   );
